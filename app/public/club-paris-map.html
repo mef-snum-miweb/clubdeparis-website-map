@@ -7,12 +7,13 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
 <style>
-  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f5f9; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f5f9; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 0.5rem; box-sizing: border-box; }
+  club-paris-map { width: 100%; max-width: 1100px; height: 90vh; max-height: 700px; min-height: 350px; }
 </style>
 </head>
 <body>
 
-<club-paris-map style="width:1100px; height:650px;"></club-paris-map>
+<club-paris-map></club-paris-map>
 
 <script>
 class ClubParisMap extends HTMLElement {
@@ -280,6 +281,30 @@ class ClubParisMap extends HTMLElement {
 
     this._svg = svg;
     this._g = g;
+
+    // Resize observer for responsive redraw
+    this._resizeObserver = new ResizeObserver(() => this._onResize());
+    this._resizeObserver.observe(container);
+  }
+
+  _onResize() {
+    const container = this.shadowRoot.getElementById('map-area');
+    if (!container || !this._svg) return;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    if (w < 1 || h < 1) return;
+
+    this._projection
+      .scale(w / 6.5)
+      .center([10, 25])
+      .translate([w / 2, h / 2]);
+    this._pathGen = d3.geoPath().projection(this._projection);
+
+    this._svg.attr('width', w).attr('height', h);
+    this._g.selectAll('path.country').attr('d', this._pathGen);
+
+    // Reset zoom transform
+    this._svg.call(this._zoom.transform, d3.zoomIdentity);
   }
 
   _updateColors() {
@@ -614,6 +639,8 @@ class ClubParisMap extends HTMLElement {
         position: relative;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         color: #1e293b;
+        container-name: wrapper;
+        container-type: inline-size;
       }
 
       /* ---- TOP BAR ---- */
@@ -800,6 +827,52 @@ class ClubParisMap extends HTMLElement {
         border-radius: 50%; animation: spin .8s linear infinite;
       }
       @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* ---- RESPONSIVE ---- */
+
+      /* Tablet / small widget (< 700px) */
+      @container wrapper (max-width: 700px) {
+        .top-bar { gap: 0.5rem; padding: 0.4rem 0.5rem; }
+        .legend-bar { display: none; }
+        .search-input { width: 140px; }
+        .panel { width: 260px; }
+        .bottom-bar { padding: 0.3rem 0.5rem 0.4rem; }
+        .year-label { font-size: 0.55rem; }
+      }
+
+      /* Mobile / tiny widget (< 480px) */
+      @container wrapper (max-width: 480px) {
+        .top-bar { flex-direction: column; align-items: stretch; gap: 0.35rem; padding: 0.35rem 0.5rem; }
+        .filter-group { justify-content: center; }
+        .search-container { order: -1; }
+        .search-input { width: 100%; box-sizing: border-box; }
+        .filter-btn { padding: 0.25rem 0.5rem; font-size: 0.7rem; }
+        .panel { width: 100%; max-width: 100%; }
+        .panel h2 { font-size: 1rem; }
+        .stat-val { font-size: 0.85rem; }
+        .year-label { font-size: 0.5rem; padding: 0.1rem 0.1rem; }
+        .bottom-bar { padding: 0.25rem 0.4rem 0.35rem; }
+      }
+
+      /* Fallback for browsers without container queries */
+      @media (max-width: 700px) {
+        .top-bar { gap: 0.5rem; padding: 0.4rem 0.5rem; }
+        .legend-bar { display: none; }
+        .search-input { width: 140px; }
+        .panel { width: 260px; }
+        .year-label { font-size: 0.55rem; }
+      }
+      @media (max-width: 480px) {
+        .top-bar { flex-direction: column; align-items: stretch; gap: 0.35rem; padding: 0.35rem 0.5rem; }
+        .filter-group { justify-content: center; }
+        .search-container { order: -1; }
+        .search-input { width: 100%; box-sizing: border-box; }
+        .filter-btn { padding: 0.25rem 0.5rem; font-size: 0.7rem; }
+        .panel { width: 100%; max-width: 100%; }
+        .panel h2 { font-size: 1rem; }
+        .stat-val { font-size: 0.85rem; }
+        .year-label { font-size: 0.5rem; padding: 0.1rem 0.1rem; }
+      }
     `;
   }
 }
