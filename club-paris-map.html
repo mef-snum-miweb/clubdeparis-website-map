@@ -174,7 +174,7 @@ class ClubParisMap extends HTMLElement {
     this._projection = null;
     this._pathGen = null;
     this._zoom = null;
-    this._lang = this._detectLang();
+    this._lang = 'fr'; // will be resolved in connectedCallback once attributes are available
   }
 
   // Language detection: element lang attr > URL ?lang= > html[lang] > 'fr'
@@ -200,6 +200,7 @@ class ClubParisMap extends HTMLElement {
   }
 
   connectedCallback() {
+    this._lang = this._detectLang();
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>
       <div class="wrapper">
