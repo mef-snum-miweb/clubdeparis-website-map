@@ -5,12 +5,14 @@ import YearSlider from './components/YearSlider';
 import KPIBar from './components/KPIBar';
 import CountrySearch from './components/CountrySearch';
 import FilterBar from './components/FilterBar';
+import { LangProvider, useTranslation } from './i18n/LangContext';
 import type { AllData, CountryData, FilterMode, DebtFilter } from './types';
 import './App.css';
 
 const YEARS = Array.from({ length: 15 }, (_, i) => 2010 + i);
 
-function App() {
+function AppInner() {
+  const { t } = useTranslation();
   const [data, setData] = useState<AllData | null>(null);
   const [selectedYear, setSelectedYear] = useState(2024);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
@@ -23,7 +25,7 @@ function App() {
   useEffect(() => {
     fetch(import.meta.env.BASE_URL + 'data.json')
       .then((res) => {
-        if (!res.ok) throw new Error('Erreur de chargement des données');
+        if (!res.ok) throw new Error(t('error.load'));
         return res.json();
       })
       .then((json: AllData) => {
@@ -60,7 +62,7 @@ function App() {
     return (
       <div className="loading">
         <div className="spinner" />
-        <p>Chargement des données...</p>
+        <p>{t('loading')}</p>
       </div>
     );
   }
@@ -68,7 +70,7 @@ function App() {
   if (error || !data) {
     return (
       <div className="error">
-        <p>Erreur: {error || 'Données non disponibles'}</p>
+        <p>Erreur: {error || t('error.unavailable')}</p>
       </div>
     );
   }
@@ -79,10 +81,8 @@ function App() {
     <div className="app">
       <header className="header">
         <div className="header-content">
-          <h1>Club de Paris — Carte interactive</h1>
-          <p className="subtitle">
-            Pays créditeurs et débiteurs du Club de Paris (2010–2024)
-          </p>
+          <h1>{t('header.title')}</h1>
+          <p className="subtitle">{t('header.subtitle')}</p>
         </div>
       </header>
 
@@ -121,12 +121,17 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>
-          Données: Club de Paris — Accords signés avec les pays débiteurs et créditeurs •
-          Source: Club de Paris / Direction Générale du Trésor
-        </p>
+        <p>{t('footer')}</p>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <LangProvider>
+      <AppInner />
+    </LangProvider>
   );
 }
 

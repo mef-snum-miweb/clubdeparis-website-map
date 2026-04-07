@@ -7,6 +7,7 @@ import {
 } from 'react-simple-maps';
 import { scaleLinear } from 'd3-scale';
 import type { YearData, CountryData, FilterMode, DebtFilter } from '../types';
+import { useTranslation } from '../i18n/LangContext';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
@@ -50,55 +51,6 @@ const numericToAlpha3: Record<string, string> = {
   '-99': 'XKX', '659': 'KNA',
 };
 
-// Country names in French
-const countryNames: Record<string, string> = {
-  'ZAF': 'Afrique du Sud', 'ALB': 'Albanie', 'DZA': 'Algérie', 'AGO': 'Angola',
-  'ATG': 'Antigua-et-Barbuda', 'SAU': 'Arabie Saoudite', 'ARG': 'Argentine',
-  'ARM': 'Arménie', 'AUS': 'Australie', 'AUT': 'Autriche',
-  'AZE': 'Azerbaïdjan', 'BGD': 'Bangladesh', 'BEL': 'Belgique', 'BEN': 'Bénin',
-  'BOL': 'Bolivie', 'BIH': 'Bosnie-Herzégovine', 'BWA': 'Botswana', 'BRA': 'Brésil',
-  'BFA': 'Burkina Faso', 'BDI': 'Burundi', 'KHM': 'Cambodge', 'CMR': 'Cameroun',
-  'CAN': 'Canada', 'CPV': 'Cap-Vert', 'CAF': 'Centrafrique', 'CHL': 'Chili',
-  'CHN': 'Chine', 'COL': 'Colombie', 'COM': 'Comores', 'COG': 'Congo',
-  'COD': 'RD Congo', 'PRK': 'Corée du Nord', 'KOR': 'Corée du Sud',
-  'CRI': 'Costa Rica', 'CIV': "Côte d'Ivoire", 'HRV': 'Croatie', 'CUB': 'Cuba',
-  'CZE': 'Rép. Tchèque', 'DNK': 'Danemark', 'DJI': 'Djibouti', 'DMA': 'Dominique',
-  'DOM': 'Rép. Dominicaine', 'EGY': 'Égypte', 'SLV': 'El Salvador',
-  'ARE': 'Émirats Arabes Unis', 'ECU': 'Équateur', 'ERI': 'Érythrée',
-  'ESP': 'Espagne', 'ETH': 'Éthiopie', 'FJI': 'Fidji', 'FIN': 'Finlande',
-  'FRA': 'France', 'GAB': 'Gabon', 'GMB': 'Gambie', 'GEO': 'Géorgie',
-  'DEU': 'Allemagne', 'GHA': 'Ghana', 'GRC': 'Grèce', 'GRD': 'Grenade',
-  'GTM': 'Guatemala', 'GIN': 'Guinée', 'GNB': 'Guinée-Bissau',
-  'GNQ': 'Guinée Équatoriale', 'GUY': 'Guyana', 'HTI': 'Haïti',
-  'HND': 'Honduras', 'HUN': 'Hongrie', 'IND': 'Inde', 'IDN': 'Indonésie',
-  'IRQ': 'Irak', 'IRN': 'Iran', 'IRL': 'Irlande', 'ISR': 'Israël',
-  'ITA': 'Italie', 'JAM': 'Jamaïque', 'JPN': 'Japon', 'JOR': 'Jordanie',
-  'KAZ': 'Kazakhstan', 'KEN': 'Kenya', 'KGZ': 'Kirghizistan', 'KNA': 'Saint-Christophe-et-Niévès',
-  'KWT': 'Koweït', 'LAO': 'Laos', 'LSO': 'Lesotho', 'LBN': 'Liban',
-  'LBR': 'Liberia', 'LBY': 'Libye', 'MKD': 'Macédoine du Nord',
-  'MDG': 'Madagascar', 'MYS': 'Malaisie', 'MWI': 'Malawi', 'MDV': 'Maldives',
-  'MLI': 'Mali', 'MAR': 'Maroc', 'MUS': 'Maurice', 'MRT': 'Mauritanie',
-  'MEX': 'Mexique', 'MDA': 'Moldavie', 'MNG': 'Mongolie', 'MNE': 'Monténégro',
-  'MOZ': 'Mozambique', 'MMR': 'Myanmar', 'NAM': 'Namibie', 'NPL': 'Népal',
-  'NLD': 'Pays-Bas', 'NZL': 'Nouvelle-Zélande', 'NIC': 'Nicaragua',
-  'NER': 'Niger', 'NGA': 'Nigeria', 'NOR': 'Norvège', 'OMN': 'Oman',
-  'UGA': 'Ouganda', 'UZB': 'Ouzbékistan', 'PAK': 'Pakistan', 'PAN': 'Panama',
-  'PNG': 'Papouasie-N.-Guinée', 'PRY': 'Paraguay', 'PER': 'Pérou',
-  'PHL': 'Philippines', 'POL': 'Pologne', 'PRT': 'Portugal',
-  'ROU': 'Roumanie', 'RUS': 'Russie', 'RWA': 'Rwanda',
-  'LCA': 'Sainte-Lucie', 'VCT': 'Saint-Vincent-et-les-Grenadines',
-  'STP': 'Sao Tomé-et-Principe', 'SEN': 'Sénégal', 'SRB': 'Serbie',
-  'SYC': 'Seychelles', 'SLE': 'Sierra Leone', 'SVN': 'Slovénie',
-  'SOM': 'Somalie', 'SDN': 'Soudan', 'LKA': 'Sri Lanka', 'SUR': 'Suriname',
-  'SWE': 'Suède', 'CHE': 'Suisse', 'SYR': 'Syrie', 'TJK': 'Tadjikistan',
-  'TZA': 'Tanzanie', 'TCD': 'Tchad', 'THA': 'Thaïlande', 'TGO': 'Togo',
-  'TTO': 'Trinité-et-Tobago', 'TUN': 'Tunisie', 'TKM': 'Turkménistan',
-  'TUR': 'Turquie', 'UKR': 'Ukraine', 'GBR': 'Royaume-Uni',
-  'USA': 'États-Unis', 'URY': 'Uruguay', 'VEN': 'Venezuela', 'VNM': 'Vietnam',
-  'WSM': 'Samoa', 'YEM': 'Yémen', 'ZMB': 'Zambie', 'ZWE': 'Zimbabwe',
-  'XKX': 'Kosovo',
-};
-
 interface WorldMapProps {
   data: YearData;
   selectedCountry: string | null;
@@ -108,6 +60,7 @@ interface WorldMapProps {
 }
 
 const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountrySelect }: WorldMapProps) => {
+  const { t, getCountryName } = useTranslation();
   const [tooltipContent, setTooltipContent] = useState<string>('');
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
@@ -158,7 +111,6 @@ const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountr
 
     // Mode "all": show both
     if (isDebtor && isCreditor) {
-      // Dual: use a blended indicator — show debtor color by default
       return debtorColorScale(country.debtor!.apd);
     }
     if (isCreditor) {
@@ -179,17 +131,17 @@ const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountr
   const handleMouseEnter = (geoId: string, geoName: string, event: React.MouseEvent) => {
     const isoCode = getIsoAlpha3(geoId);
     const country = data.countries[isoCode];
-    const displayName = countryNames[isoCode] || geoName;
+    const displayName = getCountryName(isoCode, geoName);
 
     if (!country) {
-      setTooltipContent(`${displayName}: Pas de données`);
+      setTooltipContent(`${displayName}: ${t('map.no_data')}`);
     } else {
       const parts = [displayName];
       if (country.debtor && country.debtor.total > 0) {
-        parts.push(`Dette: ${formatCurrency(country.debtor.total)}`);
+        parts.push(`${t('map.debt')}: ${formatCurrency(country.debtor.total)}`);
       }
       if (country.creditor) {
-        parts.push(`Créditeur (${country.creditor.nbAccords} accords)`);
+        parts.push(`${t('map.creditor_label')} (${country.creditor.nbAccords} ${t('map.agreements')})`);
       }
       setTooltipContent(parts.join(' — '));
     }
@@ -206,13 +158,15 @@ const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountr
     if (countryData) {
       const enrichedData = {
         ...countryData,
-        country: countryNames[isoCode] || countryData.country,
+        country: getCountryName(isoCode, countryData.country),
       };
       onCountrySelect(isoCode, enrichedData);
     } else {
       onCountrySelect(null, null);
     }
   };
+
+  const filterLabel = debtFilter === 'apd' ? t('filter.apd') : t('filter.napd');
 
   return (
     <div className="map-container">
@@ -275,7 +229,7 @@ const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountr
       <div className="map-legend">
         {(filterMode === 'all' || filterMode === 'débiteur') && (
           <div className="legend-section">
-            <div className="legend-title">Débiteurs ({debtFilter === 'apd' ? 'APD' : 'Hors APD'})</div>
+            <div className="legend-title">{t('map.legend_debtors')} ({filterLabel})</div>
             <div
               className="gradient-bar"
               style={{
@@ -290,7 +244,7 @@ const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountr
         )}
         {(filterMode === 'all' || filterMode === 'créditeur') && (
           <div className="legend-section">
-            <div className="legend-title">Créditeurs (nb accords)</div>
+            <div className="legend-title">{t('map.legend_creditors')}</div>
             <div
               className="gradient-bar"
               style={{

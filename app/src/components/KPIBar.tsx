@@ -1,4 +1,5 @@
 import type { YearTotals, FilterMode } from '../types';
+import { useTranslation } from '../i18n/LangContext';
 
 interface KPIBarProps {
   totals: YearTotals;
@@ -13,27 +14,28 @@ const formatCurrency = (value: number) => {
 };
 
 const KPIBar = ({ totals, year, filterMode }: KPIBarProps) => {
+  const { t } = useTranslation();
   const kpis = [];
 
   if (filterMode !== 'créditeur') {
     kpis.push(
       {
-        label: 'Créances APD',
+        label: t('kpi.apd'),
         value: formatCurrency(totals.debtorApd),
         color: '#f97316',
       },
       {
-        label: 'Créances Hors APD',
+        label: t('kpi.napd'),
         value: formatCurrency(totals.debtorNapd),
         color: '#3b82f6',
       },
       {
-        label: 'Total créances',
+        label: t('kpi.total'),
         value: formatCurrency(totals.debtorTotal),
         color: '#ef4444',
       },
       {
-        label: 'Pays débiteurs',
+        label: t('kpi.debtors'),
         value: `${totals.debtorCount}`,
         color: '#f97316',
       },
@@ -42,21 +44,21 @@ const KPIBar = ({ totals, year, filterMode }: KPIBarProps) => {
 
   if (filterMode !== 'débiteur') {
     kpis.push({
-      label: 'Pays créditeurs',
+      label: t('kpi.creditors'),
       value: `${totals.creditorCount}`,
       color: '#10b981',
     });
   }
 
   kpis.push({
-    label: 'Année',
+    label: t('kpi.year'),
     value: `${year}`,
     color: '#6b7280',
   });
 
   return (
     <div className="kpi-bar">
-      <h3 className="kpi-title">Statistiques du Club de Paris</h3>
+      <h3 className="kpi-title">{t('kpi.title')}</h3>
       <div className="kpi-grid" style={{ gridTemplateColumns: `repeat(${kpis.length}, 1fr)` }}>
         {kpis.map((kpi, index) => (
           <div key={index} className="kpi-item">

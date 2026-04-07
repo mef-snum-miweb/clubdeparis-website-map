@@ -1,3 +1,5 @@
+import { useTranslation } from '../i18n/LangContext';
+
 interface YearSliderProps {
   years: number[];
   selectedYear: number;
@@ -5,6 +7,8 @@ interface YearSliderProps {
 }
 
 const YearSlider = ({ years, selectedYear, onYearChange }: YearSliderProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="year-slider">
       <div className="slider-label">
@@ -12,7 +16,7 @@ const YearSlider = ({ years, selectedYear, onYearChange }: YearSliderProps) => {
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
         </svg>
-        <span>Année sélectionnée</span>
+        <span>{t('slider.year')}</span>
       </div>
 
       <div className="slider-container">

@@ -1,4 +1,5 @@
 import type { CountryData } from '../types';
+import { useTranslation } from '../i18n/LangContext';
 
 interface CountryPanelProps {
   countryCode: string | null;
@@ -20,12 +21,14 @@ const CountryPanel = ({
   year,
   onClose,
 }: CountryPanelProps) => {
+  const { t } = useTranslation();
+
   if (!countryCode || !countryData) {
     return (
       <div className="country-panel empty">
         <div className="panel-content">
-          <h3>Sélectionnez un pays</h3>
-          <p>Cliquez sur un pays sur la carte pour voir les détails.</p>
+          <h3>{t('panel.select')}</h3>
+          <p>{t('panel.click')}</p>
         </div>
       </div>
     );
@@ -45,10 +48,10 @@ const CountryPanel = ({
         <h2>{countryData.country}</h2>
         <p className="subtitle">
           {isDebtor && isCreditor
-            ? 'Pays débiteur et créditeur'
+            ? t('panel.debtor_creditor')
             : isCreditor
-            ? 'Pays créditeur'
-            : 'Pays débiteur'}
+            ? t('panel.creditor')
+            : t('panel.debtor')}
         </p>
       </div>
 
@@ -56,14 +59,14 @@ const CountryPanel = ({
         {/* Debtor section */}
         {isDebtor && (
           <div className="panel-section">
-            <h4 className="section-title section-title-debtor">Créances (débiteur)</h4>
+            <h4 className="section-title section-title-debtor">{t('panel.section_debtor')}</h4>
             <div className="stat-item apd">
               <div className="stat-info">
-                <span className="stat-label">Créances APD</span>
+                <span className="stat-label">{t('panel.apd')}</span>
                 <span className="stat-value">{formatCurrency(debtor.apd)}</span>
                 {debtor.total > 0 && (
                   <span className="stat-percent">
-                    {((debtor.apd / debtor.total) * 100).toFixed(1)}% du total
+                    {((debtor.apd / debtor.total) * 100).toFixed(1)}% {t('panel.pct_total')}
                   </span>
                 )}
               </div>
@@ -71,11 +74,11 @@ const CountryPanel = ({
 
             <div className="stat-item napd">
               <div className="stat-info">
-                <span className="stat-label">Créances Hors APD</span>
+                <span className="stat-label">{t('panel.napd')}</span>
                 <span className="stat-value">{formatCurrency(debtor.napd)}</span>
                 {debtor.total > 0 && (
                   <span className="stat-percent">
-                    {((debtor.napd / debtor.total) * 100).toFixed(1)}% du total
+                    {((debtor.napd / debtor.total) * 100).toFixed(1)}% {t('panel.pct_total')}
                   </span>
                 )}
               </div>
@@ -83,7 +86,7 @@ const CountryPanel = ({
 
             <div className="stat-item total">
               <div className="stat-info">
-                <span className="stat-label">Total</span>
+                <span className="stat-label">{t('panel.total')}</span>
                 <span className="stat-value highlight">{formatCurrency(debtor.total)}</span>
               </div>
             </div>
@@ -99,13 +102,13 @@ const CountryPanel = ({
               />
             </div>
             <div className="bar-legend">
-              <span><span className="dot apd" /> APD</span>
-              <span><span className="dot napd" /> Hors APD</span>
+              <span><span className="dot apd" /> {t('panel.apd_short')}</span>
+              <span><span className="dot napd" /> {t('panel.napd_short')}</span>
             </div>
 
             {debtor.url && (
               <a href={debtor.url} target="_blank" rel="noopener noreferrer" className="panel-link panel-link-debtor">
-                Voir la fiche pays débiteur
+                {t('panel.debtor_link')}
               </a>
             )}
           </div>
@@ -114,11 +117,11 @@ const CountryPanel = ({
         {/* Creditor section */}
         {isCreditor && (
           <div className="panel-section">
-            <h4 className="section-title section-title-creditor">Membre créditeur</h4>
+            <h4 className="section-title section-title-creditor">{t('panel.section_creditor')}</h4>
 
             <div className="stat-item creditor-stat">
               <div className="stat-info">
-                <span className="stat-label">Accords signés</span>
+                <span className="stat-label">{t('panel.agreements')}</span>
                 <span className="stat-value">{creditor.nbAccords}</span>
               </div>
             </div>
@@ -126,7 +129,7 @@ const CountryPanel = ({
             {creditor.premiereParticipation && (
               <div className="stat-item creditor-stat">
                 <div className="stat-info">
-                  <span className="stat-label">Membre depuis</span>
+                  <span className="stat-label">{t('panel.member_since')}</span>
                   <span className="stat-value">{creditor.premiereParticipation}</span>
                 </div>
               </div>
@@ -135,7 +138,7 @@ const CountryPanel = ({
             {creditor.statut && (
               <div className="stat-item creditor-stat">
                 <div className="stat-info">
-                  <span className="stat-label">Statut</span>
+                  <span className="stat-label">{t('panel.status')}</span>
                   <span className="stat-value">{creditor.statut}</span>
                 </div>
               </div>
@@ -143,7 +146,7 @@ const CountryPanel = ({
 
             {creditor.url && (
               <a href={creditor.url} target="_blank" rel="noopener noreferrer" className="panel-link panel-link-creditor">
-                Voir la fiche pays créditeur
+                {t('panel.creditor_link')}
               </a>
             )}
           </div>
@@ -157,8 +160,8 @@ const CountryPanel = ({
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
           <div>
-            <span className="update-label">Données au</span>
-            <span className="update-date">31 décembre {year}</span>
+            <span className="update-label">{t('panel.data_at')}</span>
+            <span className="update-date">{t('panel.date')} {year}</span>
           </div>
         </div>
       </div>
