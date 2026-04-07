@@ -15,6 +15,152 @@
 <club-paris-map style="width:1100px; height:650px;"></club-paris-map>
 
 <script>
+// ---------------------------------------------------------------------------
+// Translations
+// ---------------------------------------------------------------------------
+const TRANSLATIONS = {
+  fr: {
+    'filter.all': 'Tous',
+    'filter.debtors': 'Débiteurs',
+    'filter.creditors': 'Créditeurs',
+    'filter.apd': 'APD',
+    'filter.napd': 'Hors APD',
+    'map.legend_debtors': 'Débiteurs',
+    'map.legend_creditors': 'Créditeurs',
+    'loading': 'Chargement…',
+    'map.no_data': 'Pas de données',
+    'map.debt': 'Dette',
+    'map.creditor_label': 'Créditeur',
+    'map.agreements': 'accords',
+    'panel.debtor_creditor': 'Débiteur et créditeur',
+    'panel.creditor': 'Pays créditeur',
+    'panel.debtor': 'Pays débiteur',
+    'panel.year': 'Année',
+    'panel.section_debtor': 'Créances (débiteur)',
+    'panel.apd_short': 'APD',
+    'panel.napd_short': 'Hors APD',
+    'panel.total': 'Total',
+    'panel.debtor_link': 'Fiche pays débiteur',
+    'panel.section_creditor': 'Membre créditeur',
+    'panel.agreements': 'Accords signés',
+    'panel.member_since': 'Membre depuis',
+    'panel.status': 'Statut',
+    'panel.creditor_link': 'Fiche pays créditeur',
+  },
+  en: {
+    'filter.all': 'All',
+    'filter.debtors': 'Debtors',
+    'filter.creditors': 'Creditors',
+    'filter.apd': 'ODA',
+    'filter.napd': 'Non-ODA',
+    'map.legend_debtors': 'Debtors',
+    'map.legend_creditors': 'Creditors',
+    'loading': 'Loading…',
+    'map.no_data': 'No data',
+    'map.debt': 'Debt',
+    'map.creditor_label': 'Creditor',
+    'map.agreements': 'agreements',
+    'panel.debtor_creditor': 'Debtor and creditor',
+    'panel.creditor': 'Creditor country',
+    'panel.debtor': 'Debtor country',
+    'panel.year': 'Year',
+    'panel.section_debtor': 'Claims (debtor)',
+    'panel.apd_short': 'ODA',
+    'panel.napd_short': 'Non-ODA',
+    'panel.total': 'Total',
+    'panel.debtor_link': 'Debtor country profile',
+    'panel.section_creditor': 'Creditor Member',
+    'panel.agreements': 'Signed agreements',
+    'panel.member_since': 'Member since',
+    'panel.status': 'Status',
+    'panel.creditor_link': 'Creditor country profile',
+  },
+};
+
+const COUNTRY_NAMES = {
+  fr: {
+    'ZAF':'Afrique du Sud','ALB':'Albanie','DZA':'Algérie','AGO':'Angola',
+    'ATG':'Antigua-et-Barbuda','SAU':'Arabie Saoudite','ARG':'Argentine',
+    'AUS':'Australie','AUT':'Autriche','AZE':'Azerbaïdjan','BGD':'Bangladesh',
+    'BEL':'Belgique','BEN':'Bénin','BOL':'Bolivie','BIH':'Bosnie-Herzégovine',
+    'BRA':'Brésil','BFA':'Burkina Faso','BDI':'Burundi','KHM':'Cambodge',
+    'CMR':'Cameroun','CAN':'Canada','CPV':'Cap-Vert','CAF':'Centrafrique',
+    'TCD':'Tchad','CHL':'Chili','CHN':'Chine','COL':'Colombie','COM':'Comores',
+    'COG':'Congo','COD':'RD Congo','CRI':'Costa Rica','CIV':"Côte d'Ivoire",
+    'HRV':'Croatie','CUB':'Cuba','CZE':'Rép. Tchèque','DNK':'Danemark',
+    'DJI':'Djibouti','DMA':'Dominique','DOM':'Rép. Dominicaine','EGY':'Égypte',
+    'SLV':'El Salvador','ARE':'Émirats Arabes Unis','ECU':'Équateur',
+    'ERI':'Érythrée','ESP':'Espagne','ETH':'Éthiopie','FJI':'Fidji',
+    'FIN':'Finlande','FRA':'France','GAB':'Gabon','GMB':'Gambie','GEO':'Géorgie',
+    'DEU':'Allemagne','GHA':'Ghana','GRD':'Grenade','GTM':'Guatemala',
+    'GIN':'Guinée','GNB':'Guinée-Bissau','GNQ':'Guinée Équatoriale',
+    'GUY':'Guyana','HTI':'Haïti','HND':'Honduras','HUN':'Hongrie','IND':'Inde',
+    'IDN':'Indonésie','IRQ':'Irak','IRN':'Iran','IRL':'Irlande','ISR':'Israël',
+    'ITA':'Italie','JAM':'Jamaïque','JPN':'Japon','JOR':'Jordanie',
+    'KAZ':'Kazakhstan','KEN':'Kenya','KGZ':'Kirghizistan','KNA':'St-Christophe-et-Niévès',
+    'KOR':'Corée du Sud','KWT':'Koweït','LAO':'Laos','LBN':'Liban',
+    'LSO':'Lesotho','LBR':'Liberia','LBY':'Libye','MKD':'Macédoine du Nord',
+    'MDG':'Madagascar','MWI':'Malawi','MDV':'Maldives','MLI':'Mali','MAR':'Maroc',
+    'MRT':'Mauritanie','MUS':'Maurice','MEX':'Mexique','MDA':'Moldavie',
+    'MNG':'Mongolie','MNE':'Monténégro','MOZ':'Mozambique','MMR':'Myanmar',
+    'NAM':'Namibie','NPL':'Népal','NLD':'Pays-Bas','NZL':'Nouvelle-Zélande',
+    'NIC':'Nicaragua','NER':'Niger','NGA':'Nigeria','NOR':'Norvège',
+    'PAK':'Pakistan','PAN':'Panama','PNG':'Papouasie-N.-Guinée','PRY':'Paraguay',
+    'PER':'Pérou','PHL':'Philippines','POL':'Pologne','PRT':'Portugal',
+    'ROU':'Roumanie','RUS':'Russie','RWA':'Rwanda','LCA':'Sainte-Lucie',
+    'VCT':'St-Vincent-et-les-Grenadines','STP':'Sao Tomé-et-Principe',
+    'SEN':'Sénégal','SRB':'Serbie','SYC':'Seychelles','SLE':'Sierra Leone',
+    'SVN':'Slovénie','SOM':'Somalie','SDN':'Soudan','LKA':'Sri Lanka',
+    'SUR':'Suriname','SWE':'Suède','CHE':'Suisse','SYR':'Syrie',
+    'TJK':'Tadjikistan','TZA':'Tanzanie','TGO':'Togo','TTO':'Trinité-et-Tobago',
+    'TUN':'Tunisie','TUR':'Turquie','UKR':'Ukraine','GBR':'Royaume-Uni',
+    'USA':'États-Unis','URY':'Uruguay','VEN':'Venezuela','VNM':'Vietnam',
+    'WSM':'Samoa','YEM':'Yémen','ZMB':'Zambie','ZWE':'Zimbabwe','XKX':'Kosovo',
+  },
+  en: {
+    'ZAF':'South Africa','ALB':'Albania','DZA':'Algeria','AGO':'Angola',
+    'ATG':'Antigua and Barbuda','SAU':'Saudi Arabia','ARG':'Argentina',
+    'AUS':'Australia','AUT':'Austria','AZE':'Azerbaijan','BGD':'Bangladesh',
+    'BEL':'Belgium','BEN':'Benin','BOL':'Bolivia','BIH':'Bosnia and Herzegovina',
+    'BRA':'Brazil','BFA':'Burkina Faso','BDI':'Burundi','KHM':'Cambodia',
+    'CMR':'Cameroon','CAN':'Canada','CPV':'Cape Verde','CAF':'Central African Republic',
+    'TCD':'Chad','CHL':'Chile','CHN':'China','COL':'Colombia','COM':'Comoros',
+    'COG':'Congo','COD':'DR Congo','CRI':'Costa Rica','CIV':"Côte d'Ivoire",
+    'HRV':'Croatia','CUB':'Cuba','CZE':'Czech Republic','DNK':'Denmark',
+    'DJI':'Djibouti','DMA':'Dominica','DOM':'Dominican Republic','EGY':'Egypt',
+    'SLV':'El Salvador','ARE':'United Arab Emirates','ECU':'Ecuador',
+    'ERI':'Eritrea','ESP':'Spain','ETH':'Ethiopia','FJI':'Fiji',
+    'FIN':'Finland','FRA':'France','GAB':'Gabon','GMB':'Gambia','GEO':'Georgia',
+    'DEU':'Germany','GHA':'Ghana','GRD':'Grenada','GTM':'Guatemala',
+    'GIN':'Guinea','GNB':'Guinea-Bissau','GNQ':'Equatorial Guinea',
+    'GUY':'Guyana','HTI':'Haiti','HND':'Honduras','HUN':'Hungary','IND':'India',
+    'IDN':'Indonesia','IRQ':'Iraq','IRN':'Iran','IRL':'Ireland','ISR':'Israel',
+    'ITA':'Italy','JAM':'Jamaica','JPN':'Japan','JOR':'Jordan',
+    'KAZ':'Kazakhstan','KEN':'Kenya','KGZ':'Kyrgyzstan','KNA':'Saint Kitts and Nevis',
+    'KOR':'South Korea','KWT':'Kuwait','LAO':'Laos','LBN':'Lebanon',
+    'LSO':'Lesotho','LBR':'Liberia','LBY':'Libya','MKD':'North Macedonia',
+    'MDG':'Madagascar','MWI':'Malawi','MDV':'Maldives','MLI':'Mali','MAR':'Morocco',
+    'MRT':'Mauritania','MUS':'Mauritius','MEX':'Mexico','MDA':'Moldova',
+    'MNG':'Mongolia','MNE':'Montenegro','MOZ':'Mozambique','MMR':'Myanmar',
+    'NAM':'Namibia','NPL':'Nepal','NLD':'Netherlands','NZL':'New Zealand',
+    'NIC':'Nicaragua','NER':'Niger','NGA':'Nigeria','NOR':'Norway',
+    'PAK':'Pakistan','PAN':'Panama','PNG':'Papua New Guinea','PRY':'Paraguay',
+    'PER':'Peru','PHL':'Philippines','POL':'Poland','PRT':'Portugal',
+    'ROU':'Romania','RUS':'Russia','RWA':'Rwanda','LCA':'Saint Lucia',
+    'VCT':'Saint Vincent and the Grenadines','STP':'São Tomé and Príncipe',
+    'SEN':'Senegal','SRB':'Serbia','SYC':'Seychelles','SLE':'Sierra Leone',
+    'SVN':'Slovenia','SOM':'Somalia','SDN':'Sudan','LKA':'Sri Lanka',
+    'SUR':'Suriname','SWE':'Sweden','CHE':'Switzerland','SYR':'Syria',
+    'TJK':'Tajikistan','TZA':'Tanzania','TGO':'Togo','TTO':'Trinidad and Tobago',
+    'TUN':'Tunisia','TUR':'Turkey','UKR':'Ukraine','GBR':'United Kingdom',
+    'USA':'United States','URY':'Uruguay','VEN':'Venezuela','VNM':'Vietnam',
+    'WSM':'Samoa','YEM':'Yemen','ZMB':'Zambia','ZWE':'Zimbabwe','XKX':'Kosovo',
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Web Component
+// ---------------------------------------------------------------------------
 class ClubParisMap extends HTMLElement {
   constructor() {
     super();
@@ -28,6 +174,29 @@ class ClubParisMap extends HTMLElement {
     this._projection = null;
     this._pathGen = null;
     this._zoom = null;
+    this._lang = this._detectLang();
+  }
+
+  // Language detection: element lang attr > URL ?lang= > html[lang] > 'fr'
+  _detectLang() {
+    const attr = this.getAttribute('lang');
+    if (attr === 'en') return 'en';
+    if (attr === 'fr') return 'fr';
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get('lang');
+    if (p === 'en') return 'en';
+    if (p === 'fr') return 'fr';
+    const html = document.documentElement.lang?.toLowerCase() ?? '';
+    if (html.startsWith('en')) return 'en';
+    return 'fr';
+  }
+
+  _t(key) {
+    return TRANSLATIONS[this._lang][key] ?? TRANSLATIONS.fr[key] ?? key;
+  }
+
+  _isoToName(iso) {
+    return COUNTRY_NAMES[this._lang][iso] || iso;
   }
 
   connectedCallback() {
@@ -36,22 +205,22 @@ class ClubParisMap extends HTMLElement {
       <div class="wrapper">
         <div class="top-bar">
           <div class="filter-group">
-            <button class="filter-btn active" data-filter="all">Tous</button>
-            <button class="filter-btn filter-debtor" data-filter="débiteur">Débiteurs</button>
-            <button class="filter-btn filter-creditor" data-filter="créditeur">Créditeurs</button>
+            <button class="filter-btn active" data-filter="all">${this._t('filter.all')}</button>
+            <button class="filter-btn filter-debtor" data-filter="débiteur">${this._t('filter.debtors')}</button>
+            <button class="filter-btn filter-creditor" data-filter="créditeur">${this._t('filter.creditors')}</button>
           </div>
           <div class="filter-group debt-sub" style="display:none">
-            <button class="filter-btn sub active" data-debt="apd">APD</button>
-            <button class="filter-btn sub" data-debt="napd">Hors APD</button>
+            <button class="filter-btn sub active" data-debt="apd">${this._t('filter.apd')}</button>
+            <button class="filter-btn sub" data-debt="napd">${this._t('filter.napd')}</button>
           </div>
           <div class="legend-bar">
             <div class="legend-item">
               <div class="legend-gradient debtor-gradient"></div>
-              <span class="legend-text">Débiteurs</span>
+              <span class="legend-text">${this._t('map.legend_debtors')}</span>
             </div>
             <div class="legend-item">
               <div class="legend-gradient creditor-gradient"></div>
-              <span class="legend-text">Créditeurs</span>
+              <span class="legend-text">${this._t('map.legend_creditors')}</span>
             </div>
           </div>
         </div>
@@ -63,7 +232,7 @@ class ClubParisMap extends HTMLElement {
           <div class="tooltip" id="tooltip"></div>
           <div class="loading-overlay" id="loading">
             <div class="spinner"></div>
-            <span>Chargement…</span>
+            <span>${this._t('loading')}</span>
           </div>
         </div>
         <div class="bottom-bar">
@@ -242,8 +411,8 @@ class ClubParisMap extends HTMLElement {
     const name = this._isoToName(iso) || d.properties?.name || iso;
     let text = name;
     if (c) {
-      if (c.debtor && c.debtor.total > 0) text += ` — Dette: ${this._fmt(c.debtor.total)}`;
-      if (c.creditor) text += ` — Créditeur (${c.creditor.nbAccords} accords)`;
+      if (c.debtor && c.debtor.total > 0) text += ` — ${this._t('map.debt')}: ${this._fmt(c.debtor.total)}`;
+      if (c.creditor) text += ` — ${this._t('map.creditor_label')} (${c.creditor.nbAccords} ${this._t('map.agreements')})`;
     }
     tip.textContent = text;
     tip.style.display = 'block';
@@ -311,49 +480,6 @@ class ClubParisMap extends HTMLElement {
       '716':'ZWE','-99':'XKX','659':'KNA'
     };
     return map[numId] || null;
-  }
-
-  _isoToName(iso) {
-    const names = {
-      'ZAF':'Afrique du Sud','ALB':'Albanie','DZA':'Algérie','AGO':'Angola',
-      'ATG':'Antigua-et-Barbuda','SAU':'Arabie Saoudite','ARG':'Argentine',
-      'AUS':'Australie','AUT':'Autriche','AZE':'Azerbaïdjan','BGD':'Bangladesh',
-      'BEL':'Belgique','BEN':'Bénin','BOL':'Bolivie','BIH':'Bosnie-Herzégovine',
-      'BRA':'Brésil','BFA':'Burkina Faso','BDI':'Burundi','KHM':'Cambodge',
-      'CMR':'Cameroun','CAN':'Canada','CPV':'Cap-Vert','CAF':'Centrafrique',
-      'TCD':'Tchad','CHL':'Chili','CHN':'Chine','COL':'Colombie','COM':'Comores',
-      'COG':'Congo','COD':'RD Congo','CRI':'Costa Rica','CIV':"Côte d'Ivoire",
-      'HRV':'Croatie','CUB':'Cuba','CZE':'Rép. Tchèque','DNK':'Danemark',
-      'DJI':'Djibouti','DMA':'Dominique','DOM':'Rép. Dominicaine','EGY':'Égypte',
-      'SLV':'El Salvador','ARE':'Émirats Arabes Unis','ECU':'Équateur',
-      'ERI':'Érythrée','ESP':'Espagne','ETH':'Éthiopie','FJI':'Fidji',
-      'FIN':'Finlande','FRA':'France','GAB':'Gabon','GMB':'Gambie','GEO':'Géorgie',
-      'DEU':'Allemagne','GHA':'Ghana','GRD':'Grenade','GTM':'Guatemala',
-      'GIN':'Guinée','GNB':'Guinée-Bissau','GNQ':'Guinée Équatoriale',
-      'GUY':'Guyana','HTI':'Haïti','HND':'Honduras','HUN':'Hongrie','IND':'Inde',
-      'IDN':'Indonésie','IRQ':'Irak','IRN':'Iran','IRL':'Irlande','ISR':'Israël',
-      'ITA':'Italie','JAM':'Jamaïque','JPN':'Japon','JOR':'Jordanie',
-      'KAZ':'Kazakhstan','KEN':'Kenya','KGZ':'Kirghizistan','KNA':'St-Christophe-et-Niévès',
-      'KOR':'Corée du Sud','KWT':'Koweït','LAO':'Laos','LBN':'Liban',
-      'LSO':'Lesotho','LBR':'Liberia','LBY':'Libye','MKD':'Macédoine du Nord',
-      'MDG':'Madagascar','MWI':'Malawi','MDV':'Maldives','MLI':'Mali','MAR':'Maroc',
-      'MRT':'Mauritanie','MUS':'Maurice','MEX':'Mexique','MDA':'Moldavie',
-      'MNG':'Mongolie','MNE':'Monténégro','MOZ':'Mozambique','MMR':'Myanmar',
-      'NAM':'Namibie','NPL':'Népal','NLD':'Pays-Bas','NZL':'Nouvelle-Zélande',
-      'NIC':'Nicaragua','NER':'Niger','NGA':'Nigeria','NOR':'Norvège',
-      'PAK':'Pakistan','PAN':'Panama','PNG':'Papouasie-N.-Guinée','PRY':'Paraguay',
-      'PER':'Pérou','PHL':'Philippines','POL':'Pologne','PRT':'Portugal',
-      'ROU':'Roumanie','RUS':'Russie','RWA':'Rwanda','LCA':'Sainte-Lucie',
-      'VCT':'St-Vincent-et-les-Grenadines','STP':'Sao Tomé-et-Principe',
-      'SEN':'Sénégal','SRB':'Serbie','SYC':'Seychelles','SLE':'Sierra Leone',
-      'SVN':'Slovénie','SOM':'Somalie','SDN':'Soudan','LKA':'Sri Lanka',
-      'SUR':'Suriname','SWE':'Suède','CHE':'Suisse','SYR':'Syrie',
-      'TJK':'Tadjikistan','TZA':'Tanzanie','TGO':'Togo','TTO':'Trinité-et-Tobago',
-      'TUN':'Tunisie','TUR':'Turquie','UKR':'Ukraine','GBR':'Royaume-Uni',
-      'USA':'États-Unis','URY':'Uruguay','VEN':'Venezuela','VNM':'Vietnam',
-      'WSM':'Samoa','YEM':'Yémen','ZMB':'Zambie','ZWE':'Zimbabwe'
-    };
-    return names[iso] || iso;
   }
 
   _getYearData() {
@@ -424,36 +550,40 @@ class ClubParisMap extends HTMLElement {
     if (!this._selectedIso) { el.innerHTML = ''; return; }
     const yd = this._getYearData();
     const c = yd?.countries[this._selectedIso];
-    if (!c) { el.innerHTML = '<p>Pas de données</p>'; return; }
+    if (!c) { el.innerHTML = `<p>${this._t('map.no_data')}</p>`; return; }
 
-    const name = c.country || this._isoToName(this._selectedIso);
+    const name = this._isoToName(this._selectedIso) || c.country;
     const isDebtor = c.debtor && c.debtor.total > 0;
     const isCreditor = !!c.creditor;
 
+    const subtitle = isDebtor && isCreditor
+      ? this._t('panel.debtor_creditor')
+      : isCreditor ? this._t('panel.creditor') : this._t('panel.debtor');
+
     let html = `<h2>${name}</h2>`;
-    html += `<p class="panel-subtitle">${isDebtor && isCreditor ? 'Débiteur et créditeur' : isCreditor ? 'Pays créditeur' : 'Pays débiteur'}</p>`;
-    html += `<p class="panel-year">Année ${this._selectedYear}</p>`;
+    html += `<p class="panel-subtitle">${subtitle}</p>`;
+    html += `<p class="panel-year">${this._t('panel.year')} ${this._selectedYear}</p>`;
 
     if (isDebtor) {
       const d = c.debtor;
       const apdPct = d.total > 0 ? ((d.apd / d.total) * 100).toFixed(1) : 0;
       const napdPct = d.total > 0 ? ((d.napd / d.total) * 100).toFixed(1) : 0;
-      html += `<div class="section"><h4 class="section-head debtor-head">Créances (débiteur)</h4>`;
-      html += `<div class="stat"><span class="stat-label">APD</span><span class="stat-val">${this._fmt(d.apd)}</span><span class="stat-pct">${apdPct}%</span></div>`;
-      html += `<div class="stat"><span class="stat-label">Hors APD</span><span class="stat-val">${this._fmt(d.napd)}</span><span class="stat-pct">${napdPct}%</span></div>`;
-      html += `<div class="stat total"><span class="stat-label">Total</span><span class="stat-val">${this._fmt(d.total)}</span></div>`;
+      html += `<div class="section"><h4 class="section-head debtor-head">${this._t('panel.section_debtor')}</h4>`;
+      html += `<div class="stat"><span class="stat-label">${this._t('panel.apd_short')}</span><span class="stat-val">${this._fmt(d.apd)}</span><span class="stat-pct">${apdPct}%</span></div>`;
+      html += `<div class="stat"><span class="stat-label">${this._t('panel.napd_short')}</span><span class="stat-val">${this._fmt(d.napd)}</span><span class="stat-pct">${napdPct}%</span></div>`;
+      html += `<div class="stat total"><span class="stat-label">${this._t('panel.total')}</span><span class="stat-val">${this._fmt(d.total)}</span></div>`;
       html += `<div class="bar"><div class="bar-apd" style="width:${apdPct}%"></div><div class="bar-napd" style="width:${napdPct}%"></div></div>`;
-      if (d.url) html += `<a class="link debtor-link" href="${d.url}" target="_blank" rel="noopener">Fiche pays débiteur &#8599;</a>`;
+      if (d.url) html += `<a class="link debtor-link" href="${d.url}" target="_blank" rel="noopener">${this._t('panel.debtor_link')} &#8599;</a>`;
       html += `</div>`;
     }
 
     if (isCreditor) {
       const cr = c.creditor;
-      html += `<div class="section"><h4 class="section-head creditor-head">Membre créditeur</h4>`;
-      html += `<div class="stat creditor"><span class="stat-label">Accords signés</span><span class="stat-val">${cr.nbAccords}</span></div>`;
-      if (cr.premiereParticipation) html += `<div class="stat creditor"><span class="stat-label">Membre depuis</span><span class="stat-val">${cr.premiereParticipation}</span></div>`;
-      if (cr.statut) html += `<div class="stat creditor"><span class="stat-label">Statut</span><span class="stat-val">${cr.statut}</span></div>`;
-      if (cr.url) html += `<a class="link creditor-link" href="${cr.url}" target="_blank" rel="noopener">Fiche pays créditeur &#8599;</a>`;
+      html += `<div class="section"><h4 class="section-head creditor-head">${this._t('panel.section_creditor')}</h4>`;
+      html += `<div class="stat creditor"><span class="stat-label">${this._t('panel.agreements')}</span><span class="stat-val">${cr.nbAccords}</span></div>`;
+      if (cr.premiereParticipation) html += `<div class="stat creditor"><span class="stat-label">${this._t('panel.member_since')}</span><span class="stat-val">${cr.premiereParticipation}</span></div>`;
+      if (cr.statut) html += `<div class="stat creditor"><span class="stat-label">${this._t('panel.status')}</span><span class="stat-val">${cr.statut}</span></div>`;
+      if (cr.url) html += `<a class="link creditor-link" href="${cr.url}" target="_blank" rel="noopener">${this._t('panel.creditor_link')} &#8599;</a>`;
       html += `</div>`;
     }
 
