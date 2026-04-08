@@ -450,9 +450,9 @@ class ClubParisMap extends HTMLElement {
       .attr('data-id', d => this._numToIso(String(d.id)) || '')
       .attr('fill', d => {
         const iso = this._numToIso(String(d.id));
-        return iso ? this._getColor(iso) : '#c0593a';
+        return iso ? this._getColor(iso) : '#e8c4b0';
       })
-      .attr('stroke', '#a04020')
+      .attr('stroke', '#90a4ae')
       .attr('stroke-width', 0.5)
       .style('cursor', 'pointer')
       .on('click', function(event, d) {
@@ -471,7 +471,7 @@ class ClubParisMap extends HTMLElement {
         const iso = self._numToIso(String(d3.select(this).datum().id));
         const isSel = iso === self._selectedIso;
         d3.select(this)
-          .attr('stroke', isSel ? '#fbbf24' : '#a04020')
+          .attr('stroke', isSel ? '#fbbf24' : '#90a4ae')
           .attr('stroke-width', isSel ? 2 : 0.5);
         self._hideTooltip();
       });
@@ -510,11 +510,11 @@ class ClubParisMap extends HTMLElement {
     this._g.selectAll('path.country')
       .attr('fill', function() {
         const iso = d3.select(this).attr('data-id');
-        return iso ? self._getColor(iso) : '#c0593a';
+        return iso ? self._getColor(iso) : '#e8c4b0';
       })
       .attr('stroke', function() {
         const iso = d3.select(this).attr('data-id');
-        return iso === self._selectedIso ? '#fbbf24' : '#a04020';
+        return iso === self._selectedIso ? '#fbbf24' : '#90a4ae';
       })
       .attr('stroke-width', function() {
         const iso = d3.select(this).attr('data-id');
@@ -566,18 +566,20 @@ class ClubParisMap extends HTMLElement {
     const yd = this._getYearData();
     if (!yd) return [];
     const names = this._isoToNameMap();
+    const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const nQuery = normalize(query);
     const results = [];
     for (const [iso, name] of Object.entries(names)) {
       const country = yd.countries[iso];
-      if (!country) continue;
-      if (this._filterMode === 'débiteur' && !(country.debtor && country.debtor.total > 0)) continue;
-      if (this._filterMode === 'créditeur' && !country.creditor) continue;
-      const lower = name.toLowerCase();
-      const idx = lower.indexOf(query);
+      if (this._filterMode === 'débiteur' && !(country && country.debtor && country.debtor.total > 0)) continue;
+      if (this._filterMode === 'créditeur' && !(country && country.creditor)) continue;
+      const nName = normalize(name);
+      const idx = nName.indexOf(nQuery);
       if (idx === -1) continue;
+      const matchLen = nQuery.length;
       const highlighted = name.substring(0, idx)
-        + '<span class="match">' + name.substring(idx, idx + query.length) + '</span>'
-        + name.substring(idx + query.length);
+        + '<span class="match">' + name.substring(idx, idx + matchLen) + '</span>'
+        + name.substring(idx + matchLen);
       results.push({ iso, name, highlighted, startsWithMatch: idx === 0 });
     }
     results.sort((a, b) => {
@@ -631,25 +633,25 @@ class ClubParisMap extends HTMLElement {
 
   _getColor(iso) {
     const yd = this._getYearData();
-    if (!yd) return '#c0593a';
+    if (!yd) return '#e8c4b0';
     const c = yd.countries[iso];
-    if (!c) return '#c0593a';
+    if (!c) return '#e8c4b0';
     const isDebtor = c.debtor && c.debtor.total > 0;
     const isCreditor = !!c.creditor;
     if (!this._maxDebtor) this._computeMaxValues();
 
     if (this._filterMode === 'créditeur') {
-      return isCreditor ? this._greenScale(c.creditor.nbAccords) : '#c0593a';
+      return isCreditor ? this._greenScale(c.creditor.nbAccords) : '#e8c4b0';
     }
     if (this._filterMode === 'débiteur') {
-      if (!isDebtor) return '#c0593a';
+      if (!isDebtor) return '#e8c4b0';
       const val = this._debtFilter === 'apd' ? c.debtor.apd : c.debtor.napd;
-      return val > 0 ? this._orangeScale(val) : '#c0593a';
+      return val > 0 ? this._orangeScale(val) : '#e8c4b0';
     }
     if (isCreditor && !isDebtor) return this._greenScale(c.creditor.nbAccords);
     if (isDebtor) return this._orangeScale(c.debtor.apd);
     if (isCreditor) return this._greenScale(c.creditor.nbAccords);
-    return '#c0593a';
+    return '#e8c4b0';
   }
 
   _computeMaxValues() {
@@ -669,7 +671,7 @@ class ClubParisMap extends HTMLElement {
 
   _orangeScale(val) {
     const t = Math.min(val / this._maxDebtor, 1);
-    return this._interpolateColors([[214,163,120],[245,213,172],[252,235,198],[255,247,230]], t);
+    return this._interpolateColors([[8,48,107],[33,113,181],[107,174,214],[199,233,252]], t);
   }
 
   _greenScale(val) {
@@ -788,7 +790,7 @@ class ClubParisMap extends HTMLElement {
       /* ---- MAP AREA ---- */
       .map-area {
         flex: 1; position: relative; min-height: 0;
-        background: #c0593a;
+        background: #d4eaf7;
         overflow: hidden;
       }
       .map-area svg { display: block; }
@@ -964,7 +966,7 @@ class ClubParisMap extends HTMLElement {
       .legend-bar { display: flex; gap: 0.75rem; align-items: center; }
       .legend-item { display: flex; align-items: center; gap: 0.35rem; }
       .legend-gradient { width: 50px; height: 6px; border-radius: 3px; }
-      .debtor-gradient { background: linear-gradient(to right, #c0593a, #d6a378, #f5d5ac, #fff7e6); }
+      .debtor-gradient { background: linear-gradient(to right, #08306b, #2171b5, #6baed6, #c7e9fc); }
       .creditor-gradient { background: linear-gradient(to right, #ecfdf5, #6ee7b7, #10b981, #047857); }
       .legend-text { font-size: 0.72rem; color: #64748b; }
 
