@@ -109,6 +109,42 @@ Ce sont des **snapshots de l'année la plus récente** du dataset (une ligne par
 
 Pour le dataset complet 2010-2024, consulter directement `sources/debtors.csv` et `sources/creditors.csv` (long format).
 
+## Cohérence avec le FMI et conventions cartographiques
+
+Le Club de Paris et le FMI (Fonds Monétaire International) travaillent main dans la main sur les restructurations de dette souveraine : par nature, les deux organisations s'alignent sur les mêmes listes de pays.
+
+### Liste des pays — 100 % membres FMI
+
+Le FMI compte **191 pays membres** en 2026 (190 membres UN + Kosovo). Les non-membres notables sont : Cuba, Monaco, Corée du Nord, Taïwan.
+
+Nos 129 pays ont été vérifiés contre la liste FMI : **aucun des 129 pays de `sources/countries.csv` n'est non-membre du FMI**. L'ensemble est un sous-ensemble propre des 191 membres — ce sont les pays ayant eu au moins une ligne créditeur ou débiteur au Club de Paris entre 2010 et 2024.
+
+### Fond cartographique — Natural Earth 110m
+
+La carte rendue dans `index.html` utilise [Natural Earth 1:110m](https://www.naturalearthdata.com/) via le package npm [`world-atlas@2`](https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json) (public domain, politiquement neutre, utilisé par la Banque Mondiale, ONU OCHA et Reuters Graphics).
+
+Quelques conventions diffèrent entre Natural Earth et le [DataMapper du FMI](https://www.imf.org/external/datamapper/) :
+
+| Zone | Natural Earth (nous) | FMI | Impact sur la carte |
+|---|---|---|---|
+| **Taïwan** | Polygone séparé (TWN) | « Taiwan, Province of China » | TWN n'est pas dans nos 129 ISOs → rendu en *cream « pas de données »*, jamais colorié en créditeur/débiteur |
+| **Crimée** | Incluse dans Ukraine | Exclue des données Ukraine | UKR n'apparaît pas comme débiteur au Club de Paris → aucun impact |
+| **Sahara occidental** | Polygone séparé (ESH) | Généralement intégré au Maroc | Zone sans données Club de Paris → neutre |
+| **Kosovo** | Polygone séparé (XKX) | Membre FMI à part entière | ✅ Aligné |
+| **Soudan / Sud-Soudan** | Deux polygones | Deux membres FMI | ✅ Aligné |
+| **Somaliland** | Inclus dans Somalie | Inclus dans Somalie | ✅ Aligné |
+
+**En pratique**, les divergences (Taïwan, Crimée, Sahara occidental) concernent uniquement des zones qui **n'ont jamais de données Club de Paris dans le dataset 2010-2024**, donc elles s'affichent toutes en cream neutre et ne véhiculent aucun message politique. Le message éditorial de la carte reste aligné sur celui du FMI.
+
+### Pourquoi pas migrer vers des shapefiles FMI ?
+
+Le FMI ne publie pas de GeoJSON/TopoJSON téléchargeable sous licence ouverte. Le DataMapper utilise ses propres assets non redistribuables. Natural Earth est public domain, stable, versionné et éditorialement défendable — c'est le bon choix pour ce projet.
+
+**Sources de vérification** :
+- [FMI — Liste des membres (date d'entrée)](https://www.imf.org/external/np/sec/memdir/memdate.htm)
+- [FMI — Member Countries Factsheet (191 membres)](https://www.imf.org/en/About/Factsheets/Sheets/2023/IMF-members-quotas)
+- [Natural Earth — 110m Admin 0 Countries](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/)
+
 ## Accessibilité
 
 Audit mené face à la checklist du support [*Cartographie accessible*](https://beta.gouv.fr/) (Pôle Numérique Inclusif, beta.gouv.fr) et aux critères **WCAG 2.1 niveau AA**. Ci-dessous la liste exhaustive de ce qui est en place.
