@@ -128,13 +128,13 @@ Quelques conventions diffèrent entre Natural Earth et le [DataMapper du FMI](ht
 | Zone | Natural Earth (nous) | FMI | Impact sur la carte |
 |---|---|---|---|
 | **Taïwan** | Polygone séparé (TWN) | « Taiwan, Province of China » | TWN n'est pas dans nos 129 ISOs → rendu en *cream « pas de données »*, jamais colorié en créditeur/débiteur |
-| **Crimée** | Incluse dans Ukraine | Exclue des données Ukraine | UKR n'apparaît pas comme débiteur au Club de Paris → aucun impact |
+| **Crimée** | Incluse dans le polygone Ukraine | Exclue des données Ukraine depuis 2014 | ⚠️ **Divergence visible** : UKR est débiteur tous les ans de 2010 à 2024 (9,23 Md€ en 2024), donc la Crimée est colorée en orange avec le reste de l'Ukraine. Le FMI, lui, exclut la Crimée et Sébastopol des données ukrainiennes depuis la crise de 2014. |
 | **Sahara occidental** | Polygone séparé (ESH) | Généralement intégré au Maroc | Zone sans données Club de Paris → neutre |
 | **Kosovo** | Polygone séparé (XKX) | Membre FMI à part entière | ✅ Aligné |
 | **Soudan / Sud-Soudan** | Deux polygones | Deux membres FMI | ✅ Aligné |
 | **Somaliland** | Inclus dans Somalie | Inclus dans Somalie | ✅ Aligné |
 
-**En pratique**, les divergences (Taïwan, Crimée, Sahara occidental) concernent uniquement des zones qui **n'ont jamais de données Club de Paris dans le dataset 2010-2024**, donc elles s'affichent toutes en cream neutre et ne véhiculent aucun message politique. Le message éditorial de la carte reste aligné sur celui du FMI.
+**En pratique**, les divergences Taïwan et Sahara occidental concernent des zones sans données Club de Paris, donc sans impact visuel. **En revanche, la Crimée est une vraie divergence éditoriale** : elle apparaît colorée comme partie intégrante de l'Ukraine débitrice, alors que les données du Club de Paris (et du FMI) ne la comptabilisent plus depuis 2014. Corriger ce point demanderait soit de modifier le polygone Natural Earth de l'Ukraine, soit de superposer un polygone Crimée stylé « pas de données » — deux options non triviales qui restent à arbitrer.
 
 ### Pourquoi pas migrer vers des shapefiles FMI ?
 
