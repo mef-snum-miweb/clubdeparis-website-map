@@ -15,16 +15,21 @@ Carte du monde zoomable, slider temporel, bascule FR/EN, données par pays créd
 │   ├── debtors.csv             # year, iso, apd_eur, napd_eur
 │   ├── creditors.csv           # year, iso, nb_accords, statut, premiere_participation
 │   └── country_urls.csv        # iso, role, url_fr, url_en
+├── downloads/          # Snapshot "dernière année" exposé aux utilisateurs, généré
+│   ├── club_de_paris_pays_debiteurs.csv
+│   ├── club_de_paris_debtor_countries.csv
+│   ├── club_de_paris_pays_crediteurs.csv
+│   └── club_de_paris_creditor_countries.csv
 ├── processing/
-│   └── build_data.py           # Transforme sources/*.csv → data.json
+│   └── build_data.py           # Transforme sources/*.csv → data.json + downloads/
 └── .github/workflows/
-    ├── build-data.yml          # Regénère data.json sur modif de sources/
+    ├── build-data.yml          # Regénère data.json et downloads/ sur modif de sources/
     └── deploy.yml              # Publie sur GitHub Pages
 ```
 
 ## Pipeline de données
 
-Les 4 CSV de `sources/` sont la **seule source de vérité**. `data.json` est un artefact dérivé.
+Les 4 CSV de `sources/` sont la **seule source de vérité**. `data.json` et `downloads/*.csv` sont des artefacts dérivés.
 
 ### Mise à jour des données
 
@@ -88,6 +93,27 @@ URLs des fiches pays sur `clubdeparis.org`, FR et EN. Un pays peut apparaître d
 | `role` | `debtor` ou `creditor` |
 | `url_fr` | `https://clubdeparis.org/sites/…/afghanistan.html` |
 | `url_en` | `https://clubdeparis.org/en/sites/…/afghanistan.html` |
+
+## Fichiers téléchargeables (`downloads/`)
+
+Générés par `build_data.py`, commités dans le repo, exposés sur le site à l'URL `/downloads/*.csv` et depuis l'accordéon d'accessibilité de la carte.
+
+Ce sont des **snapshots de l'année la plus récente** du dataset (une ligne par pays), pensés pour une réutilisation rapide par des non-dev. Chaque fichier porte à la fois le nom FR et le nom EN de chaque pays, et pointe vers la fiche pays `clubdeparis.org` dans la langue adéquate.
+
+| Fichier | Langue | Contenu |
+|---|---|---|
+| `club_de_paris_pays_debiteurs.csv` | FR | Débiteurs, headers FR, URLs `clubdeparis.org/` |
+| `club_de_paris_debtor_countries.csv` | EN | Débiteurs, headers EN, URLs `clubdeparis.org/en/` |
+| `club_de_paris_pays_crediteurs.csv` | FR | Créditeurs, headers FR, URLs `clubdeparis.org/` |
+| `club_de_paris_creditor_countries.csv` | EN | Créditeurs, headers EN, URLs `clubdeparis.org/en/` |
+
+Pour le dataset complet 2010-2024, consulter directement `sources/debtors.csv` et `sources/creditors.csv` (long format).
+
+## Accessibilité
+
+- **Skip link** (premier tab à l'arrivée sur la page) → ouvre l'accordéon `<details>` en bas, focus le titre.
+- L'accordéon contient une description textuelle de la carte et les liens de téléchargement des 4 CSV ci-dessus — permet d'accéder aux données sans utiliser la visualisation graphique.
+- i18n FR/EN automatique (param `?lang=en` ou `html[lang]`).
 
 ## Tester localement
 

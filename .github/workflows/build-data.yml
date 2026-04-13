@@ -27,14 +27,14 @@ jobs:
       - name: Build data.json from CSV sources
         run: python3 processing/build_data.py
 
-      - name: Commit regenerated data.json
+      - name: Commit regenerated artifacts
         run: |
-          if git diff --quiet data.json; then
-            echo "data.json is up to date — nothing to commit."
+          if git diff --quiet data.json downloads/; then
+            echo "Generated files are up to date — nothing to commit."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data.json
-          git commit -m "chore: regenerate data.json from sources [skip ci]"
+          git add data.json downloads/
+          git commit -m "chore: regenerate data.json and downloads from sources [skip ci]"
           git push

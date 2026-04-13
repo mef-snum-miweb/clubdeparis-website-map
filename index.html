@@ -62,6 +62,46 @@ const TRANSLATIONS = {
     'panel.member_since': 'Première participation',
     'panel.status': 'Statut',
     'panel.creditor_link': 'Voir la fiche pays créancier',
+    'a11y.skip': 'Aller au descriptif et aux téléchargements',
+    'info.label': 'À propos',
+    'info.summary': 'Descriptif et téléchargement des données',
+    'info.desc_title': 'À propos de cette carte',
+    'info.desc_body':
+      '<p>Cette carte interactive présente les créances d\'Aide Publique au Développement (APD) gérées par le <a href="https://clubdeparis.org" target="_blank" rel="noopener">Club de Paris</a>, de 2010 à 2024. Utilisez le slider pour changer d\'année, les filtres pour isoler les pays créanciers ou débiteurs, et cliquez sur un pays pour ouvrir sa fiche détaillée.</p>' +
+      '<p>Les pays <strong>débiteurs</strong> (en orange) bénéficient d\'accords de restructuration de dette. Les pays <strong>créanciers</strong> (en bleu) sont membres permanents, <em>ad hoc</em> ou prospectifs du Club de Paris.</p>',
+    'info.dl_title': 'Télécharger les données (snapshot année la plus récente)',
+    'info.dl_note':
+      'Une ligne par pays, nom français et anglais, montants en euros, lien vers la fiche pays. Le jeu complet 2010-2024 est disponible dans le <a href="https://github.com/bmatge/map-creances-apd" target="_blank" rel="noopener">repo GitHub</a>.',
+    'info.dl_debt_fr': 'Pays débiteurs (français)',
+    'info.dl_debt_en': 'Pays débiteurs (anglais)',
+    'info.dl_cred_fr': 'Pays créanciers (français)',
+    'info.dl_cred_en': 'Pays créanciers (anglais)',
+    'render.label': 'Légende',
+    'render.colors': 'Couleurs',
+    'render.patterns': 'Motifs',
+    'header.title': 'Créances APD gérées par le Club de Paris',
+    'header.source': 'Source :',
+    'header.source_name': 'clubdeparis.org',
+    'header.updated': 'Mise à jour :',
+    'header.updated_date': 'avril 2026',
+    'a11y.map_label': 'Carte mondiale des créances du Club de Paris pour l\'année {0}',
+    'a11y.map_instructions': 'Carte interactive des créances APD du Club de Paris. Utilisez Tab pour entrer dans la carte, puis les flèches directionnelles pour naviguer entre les pays, et Entrée ou Espace pour sélectionner un pays. Une liste détaillée sous forme de tableau est disponible dans le panneau « Descriptif et téléchargement des données » en bas de page.',
+    'a11y.country_selected': '{0} sélectionné.',
+    'a11y.close_panel': 'Fermer le panneau pays',
+    'info.tables_title': 'Données détaillées pour l\'année {0}',
+    'info.tables_search_placeholder': 'Filtrer les pays du tableau…',
+    'info.tables_no_result': 'Aucun pays ne correspond à la recherche.',
+    'info.table_creditors': 'Pays créditeurs ({0})',
+    'info.table_debtors': 'Pays débiteurs ({0})',
+    'info.col_country': 'Pays',
+    'info.col_nb_accords': 'Accords signés',
+    'info.col_statut': 'Statut',
+    'info.col_premiere': 'Première participation',
+    'info.col_apd': 'APD (€)',
+    'info.col_napd': 'Non-APD (€)',
+    'info.col_total': 'Total (€)',
+    'info.col_link': 'Fiche pays',
+    'info.link_open': 'Ouvrir',
   },
   en: {
     'filter.all': 'All',
@@ -105,6 +145,46 @@ const TRANSLATIONS = {
     'panel.member_since': 'First participation',
     'panel.status': 'Status',
     'panel.creditor_link': 'View creditor country profile',
+    'a11y.skip': 'Skip to description and downloads',
+    'info.label': 'About',
+    'info.summary': 'Map description and data downloads',
+    'info.desc_title': 'About this map',
+    'info.desc_body':
+      '<p>This interactive map shows Official Development Assistance (ODA) claims managed by the <a href="https://clubdeparis.org/en" target="_blank" rel="noopener">Paris Club</a> from 2010 to 2024. Use the slider to change the year, the filters to isolate creditor or debtor countries, and click on any country to open its detailed profile.</p>' +
+      '<p><strong>Debtor</strong> countries (orange) benefit from debt restructuring agreements. <strong>Creditor</strong> countries (blue) are permanent, <em>ad hoc</em> or prospective members of the Paris Club.</p>',
+    'info.dl_title': 'Download the data (latest year snapshot)',
+    'info.dl_note':
+      'One row per country, French and English names, amounts in euros, link to the country profile. The full 2010-2024 dataset is available in the <a href="https://github.com/bmatge/map-creances-apd" target="_blank" rel="noopener">GitHub repo</a>.',
+    'info.dl_debt_fr': 'Debtor countries (French names)',
+    'info.dl_debt_en': 'Debtor countries (English names)',
+    'info.dl_cred_fr': 'Creditor countries (French names)',
+    'info.dl_cred_en': 'Creditor countries (English names)',
+    'render.label': 'Legend',
+    'render.colors': 'Colors',
+    'render.patterns': 'Patterns',
+    'header.title': 'ODA claims managed by the Paris Club',
+    'header.source': 'Source:',
+    'header.source_name': 'clubdeparis.org',
+    'header.updated': 'Updated:',
+    'header.updated_date': 'April 2026',
+    'a11y.map_label': 'World map of Paris Club claims for year {0}',
+    'a11y.map_instructions': 'Interactive map of Paris Club ODA claims. Press Tab to enter the map, then use the arrow keys to navigate between countries, and Enter or Space to select a country. A detailed table is available in the “Map description and data downloads” panel at the bottom of the page.',
+    'a11y.country_selected': '{0} selected.',
+    'a11y.close_panel': 'Close country panel',
+    'info.tables_title': 'Detailed data for year {0}',
+    'info.tables_search_placeholder': 'Filter countries in the table…',
+    'info.tables_no_result': 'No country matches the search.',
+    'info.table_creditors': 'Creditor countries ({0})',
+    'info.table_debtors': 'Debtor countries ({0})',
+    'info.col_country': 'Country',
+    'info.col_nb_accords': 'Signed agreements',
+    'info.col_statut': 'Status',
+    'info.col_premiere': 'First participation',
+    'info.col_apd': 'ODA (€)',
+    'info.col_napd': 'Non-ODA (€)',
+    'info.col_total': 'Total (€)',
+    'info.col_link': 'Country profile',
+    'info.link_open': 'Open',
   },
 };
 
@@ -203,6 +283,7 @@ class ClubParisMap extends HTMLElement {
     this._data = null;
     this._selectedYear = 2024;
     this._filterMode = 'all';
+    this._renderMode = 'colors';
     this._selectedIso = null;
     this._geojson = null;
     this._projection = null;
@@ -240,21 +321,32 @@ class ClubParisMap extends HTMLElement {
     this._lang = this._detectLang();
     this.shadowRoot.innerHTML = `
       <style>${this._getStyles()}</style>
-      <div class="wrapper">
+      <div class="wrapper" data-render="colors">
+        <a href="#info-row" class="skip-link" id="skip-link">${this._t('a11y.skip')}</a>
+        <header class="map-header">
+          <h1 class="map-title" id="map-title"></h1>
+          <p class="map-meta">
+            <span class="map-meta-item"><strong>${this._t('header.source')}</strong> ${this._t('header.source_name')}</span>
+            <span class="map-meta-sep" aria-hidden="true">·</span>
+            <span class="map-meta-item"><strong>${this._t('header.updated')}</strong> ${this._t('header.updated_date')}</span>
+          </p>
+        </header>
+        <p class="sr-only" id="map-instructions">${this._t('a11y.map_instructions')}</p>
+        <div class="sr-only" role="status" aria-live="polite" id="sr-announce"></div>
         <div class="map-area" id="map-area">
-          <div class="search-container" id="search-container">
-            <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
-            <input type="text" class="search-input" id="search-input" placeholder="${this._t('search.placeholder')}" autocomplete="off" />
-            <div class="search-dropdown" id="search-dropdown"></div>
-          </div>
-          <div class="panel" id="panel">
-            <button class="panel-close" id="panel-close">&times;</button>
+          <div class="panel" id="panel" inert>
+            <button class="panel-close" id="panel-close" aria-label="${this._t('a11y.close_panel')}">&times;</button>
             <div id="panel-content"></div>
           </div>
           <div class="tooltip" id="tooltip"></div>
           <div class="loading-overlay" id="loading">
             <div class="spinner"></div>
             <span>${this._t('loading')}</span>
+          </div>
+          <div class="search-container" id="search-container">
+            <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+            <input type="text" class="search-input" id="search-input" placeholder="${this._t('search.placeholder')}" autocomplete="off" />
+            <div class="search-dropdown" id="search-dropdown"></div>
           </div>
         </div>
         <div class="bottom-bar">
@@ -266,6 +358,11 @@ class ClubParisMap extends HTMLElement {
               <button class="filter-btn filter-debtor" data-filter="débiteur">${this._t('filter.debtors')}</button>
             </div>
             <div class="filter-spacer"></div>
+            <span class="filter-label legend-label">${this._t('render.label')}</span>
+            <div class="render-toggle" role="radiogroup" aria-label="${this._t('render.label')}">
+              <button type="button" role="radio" aria-checked="true" class="render-btn active" data-render="colors">${this._t('render.colors')}</button>
+              <button type="button" role="radio" aria-checked="false" class="render-btn" data-render="patterns">${this._t('render.patterns')}</button>
+            </div>
             <div class="legend-bar">
               <div class="legend-item">
                 <div class="legend-swatch legend-swatch-creditor"></div>
@@ -281,6 +378,32 @@ class ClubParisMap extends HTMLElement {
             <input type="range" class="year-slider" id="year-slider" min="2010" max="2024" value="2024" step="1" />
             <div class="year-labels" id="year-labels"></div>
           </div>
+          <details class="info-row" id="info-row">
+            <summary>
+              <span class="info-chevron" aria-hidden="true">▸</span>
+              <span>${this._t('info.summary')}</span>
+            </summary>
+            <div class="info-content">
+              <div class="info-desc">${this._t('info.desc_body')}</div>
+              <div class="info-dl-title">${this._t('info.dl_title')}</div>
+              <div class="info-dl-note">${this._t('info.dl_note')}</div>
+              <ul class="info-dl-list">
+                <li><a href="downloads/club_de_paris_pays_debiteurs.csv" download>${this._t('info.dl_debt_fr')}</a></li>
+                <li><a href="downloads/club_de_paris_debtor_countries.csv" download>${this._t('info.dl_debt_en')}</a></li>
+                <li><a href="downloads/club_de_paris_pays_crediteurs.csv" download>${this._t('info.dl_cred_fr')}</a></li>
+                <li><a href="downloads/club_de_paris_creditor_countries.csv" download>${this._t('info.dl_cred_en')}</a></li>
+              </ul>
+              <h3 class="info-tables-title" id="info-tables-title"></h3>
+              <div class="info-tables-search">
+                <label class="sr-only" for="info-table-filter">${this._t('info.tables_search_placeholder')}</label>
+                <input type="search" id="info-table-filter" class="info-table-filter-input" placeholder="${this._t('info.tables_search_placeholder')}" autocomplete="off" />
+              </div>
+              <div class="info-tables" id="info-tables">
+                <!-- populated by _buildTables() -->
+              </div>
+              <p class="info-table-empty sr-only" id="info-table-empty" role="status" aria-live="polite">${this._t('info.tables_no_result')}</p>
+            </div>
+          </details>
         </div>
       </div>
     `;
@@ -290,9 +413,43 @@ class ClubParisMap extends HTMLElement {
   async _setup() {
     this._buildYearLabels();
     this._bindEvents();
+    this._updateMapHeader();
     await this._loadData();
     this._initMap();
+    this._updateMapA11yLabel();
+    this._updateTabindex();
+    this._buildTables();
     this.shadowRoot.getElementById('loading').style.display = 'none';
+  }
+
+  _updateMapHeader() {
+    const el = this.shadowRoot.getElementById('map-title');
+    if (!el) return;
+    el.textContent = `${this._t('header.title')} — ${this._selectedYear}`;
+  }
+
+  _updateMapA11yLabel() {
+    if (!this._svg) return;
+    const label = this._t('a11y.map_label').replace('{0}', this._selectedYear);
+    this._svg.attr('aria-label', label);
+  }
+
+  _announce(msg) {
+    const el = this.shadowRoot.getElementById('sr-announce');
+    if (!el) return;
+    // Clear first so assistive tech re-announces the same message.
+    el.textContent = '';
+    setTimeout(() => { el.textContent = msg; }, 30);
+  }
+
+  _onYearChanged() {
+    this._updateYearLabels();
+    this._updateColors();
+    this._updatePanel();
+    this._updateMapHeader();
+    this._updateMapA11yLabel();
+    this._updateTabindex();
+    this._buildTables();
   }
 
   _buildYearLabels() {
@@ -314,25 +471,58 @@ class ClubParisMap extends HTMLElement {
         btn.classList.add('active');
         this._filterMode = btn.dataset.filter;
         this._updateColors();
+        this._updateTabindex();
+      });
+    });
+    const wrapper = sr.querySelector('.wrapper');
+    sr.querySelectorAll('.render-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this._renderMode = btn.dataset.render;
+        sr.querySelectorAll('.render-btn').forEach(b => {
+          const on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-checked', on ? 'true' : 'false');
+        });
+        wrapper.dataset.render = this._renderMode;
+        this._updateColors();
       });
     });
     const slider = sr.getElementById('year-slider');
     slider.addEventListener('input', () => {
       this._selectedYear = parseInt(slider.value);
-      this._updateYearLabels();
-      this._updateColors();
-      this._updatePanel();
+      this._onYearChanged();
     });
     sr.getElementById('year-labels').addEventListener('click', (e) => {
       if (e.target.dataset.year) {
         this._selectedYear = parseInt(e.target.dataset.year);
         slider.value = this._selectedYear;
-        this._updateYearLabels();
-        this._updateColors();
-        this._updatePanel();
+        this._onYearChanged();
       }
     });
+
+    // Accordion table filter
+    const tableFilter = sr.getElementById('info-table-filter');
+    if (tableFilter) {
+      tableFilter.addEventListener('input', () => {
+        this._filterTables(tableFilter.value);
+      });
+    }
     sr.getElementById('panel-close').addEventListener('click', () => this._closePanel());
+
+    // Skip link → open the a11y disclosure row and focus its summary
+    const skipLink = sr.getElementById('skip-link');
+    const infoRow = sr.getElementById('info-row');
+    if (skipLink && infoRow) {
+      skipLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        infoRow.open = true;
+        const summary = infoRow.querySelector('summary');
+        if (summary) {
+          summary.focus();
+          summary.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+      });
+    }
 
     // Search autocomplete
     const searchInput = sr.getElementById('search-input');
@@ -430,7 +620,26 @@ class ClubParisMap extends HTMLElement {
       .insert('svg', ':first-child')
       .attr('width', w)
       .attr('height', h)
+      .attr('role', 'img')
+      .attr('aria-describedby', 'map-instructions')
       .style('display', 'block');
+
+    // Patterns used when renderMode === 'patterns' — kept deliberately sparse
+    // so the underlying geography stays readable.
+    const defs = svg.append('defs');
+    const debtorPat = defs.append('pattern')
+      .attr('id', 'pattern-debtor')
+      .attr('patternUnits', 'userSpaceOnUse')
+      .attr('width', 8).attr('height', 8)
+      .attr('patternTransform', 'rotate(45)');
+    debtorPat.append('rect').attr('width', 8).attr('height', 8).attr('fill', '#fde8d9');
+    debtorPat.append('rect').attr('x', 0).attr('y', 0).attr('width', 1.6).attr('height', 8).attr('fill', '#f97316');
+    const creditorPat = defs.append('pattern')
+      .attr('id', 'pattern-creditor')
+      .attr('patternUnits', 'userSpaceOnUse')
+      .attr('width', 8).attr('height', 8);
+    creditorPat.append('rect').attr('width', 8).attr('height', 8).attr('fill', '#eff6ff');
+    creditorPat.append('circle').attr('cx', 4).attr('cy', 4).attr('r', 1.1).attr('fill', '#1e40af');
 
     const g = svg.append('g');
 
@@ -448,7 +657,7 @@ class ClubParisMap extends HTMLElement {
       .attr('data-id', d => this._numToIso(String(d.id)) || '')
       .attr('fill', d => {
         const iso = this._numToIso(String(d.id));
-        return iso ? this._getColor(iso) : '#e8c4b0';
+        return iso ? this._getFill(iso) : '#e8c4b0';
       })
       .attr('stroke', '#90a4ae')
       .attr('stroke-width', 0.5)
@@ -472,7 +681,13 @@ class ClubParisMap extends HTMLElement {
           .attr('stroke', isSel ? '#fbbf24' : '#90a4ae')
           .attr('stroke-width', isSel ? 2 : 0.5);
         self._hideTooltip();
-      });
+      })
+      .on('keydown', function(event) { self._onCountryKeydown(event); })
+      .on('focus', function(event, d) {
+        const iso = self._numToIso(String(d.id));
+        self._showTooltipAtElement(this, iso, d);
+      })
+      .on('blur', function() { self._hideTooltip(); });
 
     this._svg = svg;
     this._g = g;
@@ -506,7 +721,7 @@ class ClubParisMap extends HTMLElement {
     this._g.selectAll('path.country')
       .attr('fill', function() {
         const iso = d3.select(this).attr('data-id');
-        return iso ? self._getColor(iso) : '#e8c4b0';
+        return iso ? self._getFill(iso) : '#e8c4b0';
       })
       .attr('stroke', function() {
         const iso = d3.select(this).attr('data-id');
@@ -518,19 +733,35 @@ class ClubParisMap extends HTMLElement {
       });
   }
 
-  _showTooltip(event, iso, d) {
-    const tip = this.shadowRoot.getElementById('tooltip');
+  _tooltipText(iso, d) {
     const yd = this._getYearData();
     const c = yd?.countries[iso];
-    const name = this._isoToName(iso) || d.properties?.name || iso;
+    const name = this._isoToName(iso) || d?.properties?.name || iso;
     let text = name;
     if (c) {
       if (c.debtor && c.debtor.total > 0) text += ` — ${this._t('map.debt')}: ${this._fmt(c.debtor.total)}`;
       if (c.creditor) text += ` — ${this._t('map.creditor_label')} (${c.creditor.nbAccords} ${this._t('map.agreements')})`;
     }
-    tip.textContent = text;
+    return text;
+  }
+
+  _showTooltip(event, iso, d) {
+    const tip = this.shadowRoot.getElementById('tooltip');
+    tip.textContent = this._tooltipText(iso, d);
     tip.style.display = 'block';
     this._moveTooltip(event);
+  }
+
+  _showTooltipAtElement(pathEl, iso, d) {
+    const tip = this.shadowRoot.getElementById('tooltip');
+    const area = this.shadowRoot.getElementById('map-area');
+    if (!tip || !area || !pathEl) return;
+    tip.textContent = this._tooltipText(iso, d);
+    tip.style.display = 'block';
+    const areaRect = area.getBoundingClientRect();
+    const pathRect = pathEl.getBoundingClientRect();
+    tip.style.left = (pathRect.left - areaRect.left + pathRect.width / 2 + 12) + 'px';
+    tip.style.top = (pathRect.top - areaRect.top - 28) + 'px';
   }
 
   _moveTooltip(event) {
@@ -549,13 +780,196 @@ class ClubParisMap extends HTMLElement {
     this._selectedIso = iso;
     this._updateColors();
     this._updatePanel();
-    this.shadowRoot.getElementById('panel').classList.add('open');
+    const panel = this.shadowRoot.getElementById('panel');
+    panel.classList.add('open');
+    panel.removeAttribute('inert');
+    const name = this._isoToName(iso) || iso;
+    this._announce(this._t('a11y.country_selected').replace('{0}', name));
   }
 
   _closePanel() {
-    this.shadowRoot.getElementById('panel').classList.remove('open');
+    const panel = this.shadowRoot.getElementById('panel');
+    panel.classList.remove('open');
+    panel.setAttribute('inert', '');
     this._selectedIso = null;
     this._updateColors();
+  }
+
+  // ------- Accessible alternative: tables for the current year -------
+  _buildTables() {
+    const yd = this._getYearData();
+    const container = this.shadowRoot.getElementById('info-tables');
+    const titleEl = this.shadowRoot.getElementById('info-tables-title');
+    if (!container || !titleEl || !yd) return;
+
+    titleEl.textContent = this._t('info.tables_title').replace('{0}', this._selectedYear);
+
+    const names = this._isoToNameMap();
+    const collator = new Intl.Collator(this._lang, { sensitivity: 'base' });
+    const entries = Object.entries(yd.countries);
+
+    const creditors = entries
+      .filter(([, c]) => c.creditor)
+      .map(([iso, c]) => ({ iso, name: names[iso] || c.country || iso, c }))
+      .sort((a, b) => collator.compare(a.name, b.name));
+
+    const debtors = entries
+      .filter(([, c]) => c.debtor && c.debtor.total > 0)
+      .map(([iso, c]) => ({ iso, name: names[iso] || c.country || iso, c }))
+      .sort((a, b) => collator.compare(a.name, b.name));
+
+    const statusMap = {
+      null: 'panel.status.permanent',
+      undefined: 'panel.status.permanent',
+      'Ad hoc': 'panel.status.ad_hoc',
+      'Prospectif': 'panel.status.prospective',
+    };
+    const statusLabel = (s) => this._t(statusMap[s] ?? 'panel.status.permanent');
+
+    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (ch) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[ch]));
+
+    const linkCell = (url) => url
+      ? `<a href="${escapeHtml(this._localizedUrl(url))}" target="_blank" rel="noopener">${this._t('info.link_open')}<span class="sr-only"> ${this._t('info.col_link')}</span></a>`
+      : '—';
+
+    const creditorsRows = creditors.map(({ iso, name, c }) => {
+      const cc = c.creditor;
+      return `<tr data-name="${escapeHtml(name.toLowerCase())}">` +
+        `<th scope="row">${escapeHtml(name)}</th>` +
+        `<td class="num">${cc.nbAccords ?? 0}</td>` +
+        `<td>${escapeHtml(statusLabel(cc.statut))}</td>` +
+        `<td class="num">${cc.premiereParticipation ?? '—'}</td>` +
+        `<td>${linkCell(cc.url)}</td>` +
+        `</tr>`;
+    }).join('');
+
+    const debtorsRows = debtors.map(({ iso, name, c }) => {
+      const d = c.debtor;
+      return `<tr data-name="${escapeHtml(name.toLowerCase())}">` +
+        `<th scope="row">${escapeHtml(name)}</th>` +
+        `<td class="num">${this._fmt(d.apd || 0)}</td>` +
+        `<td class="num">${this._fmt(d.napd || 0)}</td>` +
+        `<td class="num">${this._fmt(d.total || 0)}</td>` +
+        `<td>${linkCell(d.url)}</td>` +
+        `</tr>`;
+    }).join('');
+
+    container.innerHTML = `
+      <section class="info-table-section" data-role="creditors">
+        <div class="info-table-wrap">
+          <table class="info-table">
+            <caption>${this._t('info.table_creditors').replace('{0}', creditors.length)}</caption>
+            <thead>
+              <tr>
+                <th scope="col">${this._t('info.col_country')}</th>
+                <th scope="col" class="num">${this._t('info.col_nb_accords')}</th>
+                <th scope="col">${this._t('info.col_statut')}</th>
+                <th scope="col" class="num">${this._t('info.col_premiere')}</th>
+                <th scope="col">${this._t('info.col_link')}</th>
+              </tr>
+            </thead>
+            <tbody>${creditorsRows}</tbody>
+          </table>
+        </div>
+      </section>
+      <section class="info-table-section" data-role="debtors">
+        <div class="info-table-wrap">
+          <table class="info-table">
+            <caption>${this._t('info.table_debtors').replace('{0}', debtors.length)}</caption>
+            <thead>
+              <tr>
+                <th scope="col">${this._t('info.col_country')}</th>
+                <th scope="col" class="num">${this._t('info.col_apd')}</th>
+                <th scope="col" class="num">${this._t('info.col_napd')}</th>
+                <th scope="col" class="num">${this._t('info.col_total')}</th>
+                <th scope="col">${this._t('info.col_link')}</th>
+              </tr>
+            </thead>
+            <tbody>${debtorsRows}</tbody>
+          </table>
+        </div>
+      </section>
+    `;
+
+    // Reapply the current filter (in case the user changed year while searching)
+    const input = this.shadowRoot.getElementById('info-table-filter');
+    if (input && input.value) this._filterTables(input.value);
+  }
+
+  _filterTables(query) {
+    const sr = this.shadowRoot;
+    const normalize = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const q = normalize(query.trim());
+    let anyVisible = false;
+    sr.querySelectorAll('.info-table tbody tr').forEach(tr => {
+      if (!q) { tr.hidden = false; anyVisible = true; return; }
+      const name = tr.getAttribute('data-name') || '';
+      const match = normalize(name).includes(q);
+      tr.hidden = !match;
+      if (match) anyVisible = true;
+    });
+    // Hide whole section if its tbody is empty after filtering
+    sr.querySelectorAll('.info-table-section').forEach(sec => {
+      const anyRowVisible = [...sec.querySelectorAll('tbody tr')].some(r => !r.hidden);
+      sec.hidden = q && !anyRowVisible;
+    });
+    const emptyEl = sr.getElementById('info-table-empty');
+    if (emptyEl) emptyEl.hidden = anyVisible;
+  }
+
+  // ------- Roving tabindex on country paths (keyboard accessibility) -------
+  _updateTabindex() {
+    if (!this._g) return;
+    const yd = this._getYearData();
+    if (!yd) return;
+    const names = this._isoToNameMap();
+    const collator = new Intl.Collator(this._lang, { sensitivity: 'base' });
+    const withData = [];
+    const self = this;
+    this._g.selectAll('path.country').each(function() {
+      const iso = this.getAttribute('data-id');
+      if (!iso) { this.removeAttribute('tabindex'); return; }
+      const c = yd.countries[iso];
+      if (!c) { this.removeAttribute('tabindex'); return; }
+      if (self._filterMode === 'créditeur' && !c.creditor) { this.removeAttribute('tabindex'); return; }
+      if (self._filterMode === 'débiteur' && !(c.debtor && c.debtor.total > 0)) { this.removeAttribute('tabindex'); return; }
+      withData.push({ el: this, iso, name: names[iso] || iso });
+    });
+    withData.sort((a, b) => collator.compare(a.name, b.name));
+    this._keyboardOrder = withData;
+    withData.forEach((entry, i) => {
+      entry.el.setAttribute('tabindex', i === 0 ? '0' : '-1');
+    });
+  }
+
+  _onCountryKeydown(event) {
+    const path = event.currentTarget;
+    const iso = path.getAttribute('data-id');
+    if (!iso) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this._selectCountry(iso);
+      return;
+    }
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const order = this._keyboardOrder;
+    if (!order || order.length === 0) return;
+    const idx = order.findIndex(o => o.iso === iso);
+    if (idx === -1) return;
+    let next;
+    if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = order.length - 1;
+    else {
+      const delta = (event.key === 'ArrowRight' || event.key === 'ArrowDown') ? 1 : -1;
+      next = (idx + delta + order.length) % order.length;
+    }
+    path.setAttribute('tabindex', '-1');
+    const nextEl = order[next].el;
+    nextEl.setAttribute('tabindex', '0');
+    nextEl.focus();
   }
 
   _searchCountries(query) {
@@ -627,7 +1041,7 @@ class ClubParisMap extends HTMLElement {
     return this._data ? this._data[String(this._selectedYear)] : null;
   }
 
-  _getColor(iso) {
+  _getFill(iso) {
     const yd = this._getYearData();
     if (!yd) return ClubParisMap.DEFAULT_COLOR;
     const c = yd.countries[iso];
@@ -635,15 +1049,20 @@ class ClubParisMap extends HTMLElement {
     const isDebtor = !!(c.debtor && c.debtor.total > 0);
     const isCreditor = !!c.creditor;
 
+    const debtorFill = this._renderMode === 'patterns'
+      ? 'url(#pattern-debtor)' : ClubParisMap.DEBTOR_COLOR;
+    const creditorFill = this._renderMode === 'patterns'
+      ? 'url(#pattern-creditor)' : ClubParisMap.CREDITOR_COLOR;
+
     if (this._filterMode === 'créditeur') {
-      return isCreditor ? ClubParisMap.CREDITOR_COLOR : ClubParisMap.DEFAULT_COLOR;
+      return isCreditor ? creditorFill : ClubParisMap.DEFAULT_COLOR;
     }
     if (this._filterMode === 'débiteur') {
-      return isDebtor ? ClubParisMap.DEBTOR_COLOR : ClubParisMap.DEFAULT_COLOR;
+      return isDebtor ? debtorFill : ClubParisMap.DEFAULT_COLOR;
     }
     // Mode "all": debtor takes precedence over creditor for dual-status countries
-    if (isDebtor) return ClubParisMap.DEBTOR_COLOR;
-    if (isCreditor) return ClubParisMap.CREDITOR_COLOR;
+    if (isDebtor) return debtorFill;
+    if (isCreditor) return creditorFill;
     return ClubParisMap.DEFAULT_COLOR;
   }
 
@@ -849,7 +1268,7 @@ class ClubParisMap extends HTMLElement {
         font-size: 1.5rem; font-weight: 700; margin: 0 0 1.25rem 0;
         color: #1e293b;
       }
-      .no-data { color: #94a3b8; font-style: italic; }
+      .no-data { color: #64748b; font-style: italic; }
 
       /* Info cards */
       .info-card {
@@ -864,8 +1283,8 @@ class ClubParisMap extends HTMLElement {
         flex-shrink: 0;
       }
       .info-icon svg { width: 20px; height: 20px; }
-      .info-icon-blue { background: #dbeafe; color: #2563eb; }
-      .info-icon-orange { background: #ffedd5; color: #ea580c; }
+      .info-icon-blue { background: #dbeafe; color: #1e40af; }
+      .info-icon-orange { background: #ffedd5; color: #c2410c; }
       .info-body { display: flex; flex-direction: column; gap: 0.15rem; }
       .info-label { font-size: 0.78rem; color: #64748b; }
       .info-value { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
@@ -895,14 +1314,89 @@ class ClubParisMap extends HTMLElement {
       .panel-cta {
         display: block; width: 100%; text-align: center;
         margin-top: 1rem; padding: 0.75rem 1rem;
-        border: 2px solid #f97316; border-radius: 8px;
-        color: #f97316; font-size: 0.9rem; font-weight: 600;
+        border: 2px solid #c2410c; border-radius: 8px;
+        color: #c2410c; font-size: 0.9rem; font-weight: 600;
         text-decoration: none; transition: all .2s;
         background: transparent;
       }
-      .panel-cta:hover { background: #f97316; color: #fff; }
+      .panel-cta:hover { background: #c2410c; color: #fff; }
       .panel-cta-creditor { border-color: #1e40af; color: #1e40af; }
       .panel-cta-creditor:hover { background: #1e40af; color: #fff; }
+
+      /* ---- MAP PATHS (countries) — focus styles ---- */
+      path.country { outline: none; }
+      path.country:focus { outline: none; }
+      /* Keyboard focus: thick white stroke + dark halo so the ring stays
+         visible on orange, blue and cream (default) fills alike. */
+      path.country:focus-visible {
+        outline: none;
+        stroke: #fff;
+        stroke-width: 3;
+        filter: drop-shadow(0 0 2px #0f172a) drop-shadow(0 0 2px #0f172a);
+      }
+
+      /* ---- MAP HEADER (title + source + date) ---- */
+      .map-header {
+        background: #fff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 0.55rem 1rem 0.5rem;
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .map-title {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1.25;
+      }
+      .map-meta {
+        margin: 0;
+        font-size: 0.72rem;
+        color: #475569;
+        display: inline-flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-left: auto;
+      }
+      .map-meta-item strong { font-weight: 600; color: #1e293b; }
+      .map-meta a { color: #1e40af; text-decoration: none; }
+      .map-meta a:hover, .map-meta a:focus-visible { text-decoration: underline; }
+      .map-meta-sep { color: #94a3b8; }
+
+      /* ---- SR-ONLY (visually hidden but readable by screen readers) ---- */
+      .sr-only {
+        position: absolute !important;
+        width: 1px; height: 1px;
+        padding: 0; margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* ---- SKIP LINK (a11y) ---- */
+      .skip-link {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        padding: 0.6rem 1rem;
+        background: #fbbf24;
+        color: #1a1a2e;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border-radius: 0 0 0.5rem 0;
+        z-index: 10000;
+        transition: top 0.15s ease-out;
+      }
+      .skip-link:focus {
+        top: 0;
+        outline: 3px solid #1e40af;
+        outline-offset: 2px;
+      }
 
       /* ---- BOTTOM BAR ---- */
       .bottom-bar {
@@ -923,24 +1417,82 @@ class ClubParisMap extends HTMLElement {
       .filter-spacer { flex: 1; }
       .filter-group { display: flex; gap: 0.35rem; align-items: center; }
       .filter-btn {
-        padding: 0.35rem 0.85rem; border: 1px solid #d1d5db; border-radius: 6px;
+        padding: 0.35rem 0.85rem; border: 1px solid #6b7280; border-radius: 6px;
         background: #fff; font-size: 0.82rem; color: #374151; cursor: pointer;
         transition: all .15s; font-family: inherit;
       }
-      .filter-btn:hover { background: #f9fafb; border-color: #9ca3af; }
+      .filter-btn:hover { background: #f9fafb; border-color: #374151; }
       .filter-btn.active {
         background: #1e293b; color: #fff; border-color: #1e293b;
       }
-      .filter-btn.filter-debtor.active { background: #f97316; border-color: #f97316; }
-      .filter-btn.filter-creditor.active { background: #1e40af; border-color: #1e40af; }
+      .filter-btn.filter-debtor {
+        border-color: #c2410c; color: #c2410c;
+      }
+      .filter-btn.filter-debtor:hover {
+        background: #fff7ed; border-color: #c2410c;
+      }
+      .filter-btn.filter-debtor.active {
+        background: #c2410c; border-color: #c2410c; color: #fff;
+      }
+      .filter-btn.filter-creditor {
+        border-color: #1e40af; color: #1e40af;
+      }
+      .filter-btn.filter-creditor:hover {
+        background: #eff6ff; border-color: #1e40af;
+      }
+      .filter-btn.filter-creditor.active {
+        background: #1e40af; border-color: #1e40af; color: #fff;
+      }
+
+      /* Render mode toggle — compact segmented control next to the legend */
+      .render-toggle {
+        display: inline-flex;
+        border: 1px solid #6b7280;
+        border-radius: 6px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .render-btn {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: #475569;
+        padding: 0.3rem 0.65rem;
+        font-size: 0.75rem;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all .15s;
+      }
+      .render-btn + .render-btn { border-left: 1px solid #6b7280; }
+      .render-btn:hover { background: #f9fafb; color: #1e293b; }
+      .render-btn.active {
+        background: #1e293b;
+        color: #fff;
+      }
+      .render-btn:focus-visible {
+        outline: 2px solid #ea580c;
+        outline-offset: 2px;
+        z-index: 1;
+      }
 
       /* Legend */
       .legend-bar { display: flex; gap: 0.75rem; align-items: center; }
       .legend-item { display: flex; align-items: center; gap: 0.35rem; }
-      .legend-swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
-      .legend-swatch-debtor { background: #f97316; }
-      .legend-swatch-creditor { background: #1e40af; }
-      .legend-text { font-size: 0.72rem; color: #64748b; }
+      .legend-swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; border: 1px solid transparent; }
+      .legend-swatch-debtor { background: #f97316; border-color: #c2410c; }
+      .legend-swatch-creditor { background: #1e40af; border-color: #1e40af; }
+      .wrapper[data-render="patterns"] .legend-swatch-debtor {
+        background:
+          repeating-linear-gradient(45deg, #f97316 0 1.5px, #fde8d9 1.5px 8px);
+        border-color: #c2410c;
+      }
+      .wrapper[data-render="patterns"] .legend-swatch-creditor {
+        background:
+          radial-gradient(#1e40af 1px, transparent 1.3px) 0 0 / 8px 8px,
+          #eff6ff;
+        border-color: #1e40af;
+      }
+      .legend-text { font-size: 0.72rem; color: #475569; }
 
       /* Year row */
       .year-row {
@@ -968,11 +1520,180 @@ class ClubParisMap extends HTMLElement {
       }
       .year-label {
         background: none; border: none; font-size: 0.68rem;
-        color: #94a3b8; cursor: pointer; padding: 0.15rem 0.25rem;
+        color: #64748b; cursor: pointer; padding: 0.15rem 0.25rem;
         border-radius: 4px; transition: all .15s; font-family: inherit;
       }
-      .year-label:hover { color: #ea580c; background: #fff7ed; }
-      .year-label.active { color: #ea580c; font-weight: 700; }
+      .year-label:hover { color: #c2410c; background: #fff7ed; }
+      .year-label.active { color: #c2410c; font-weight: 700; }
+
+      /* Info row — a11y description + download links, compact discreet disclosure */
+      .info-row {
+        margin-top: 0.5rem;
+        padding-top: 0.45rem;
+        border-top: 1px solid #e2e8f0;
+      }
+      .info-row > summary {
+        list-style: none;
+        cursor: pointer;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #475569;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.15rem 0.25rem;
+        border-radius: 4px;
+        user-select: none;
+        outline-offset: 2px;
+      }
+      .info-row > summary::-webkit-details-marker { display: none; }
+      .info-row > summary:hover { color: #1e293b; }
+      .info-row > summary:focus-visible {
+        outline: 2px solid #c2410c;
+        color: #1e293b;
+      }
+      .info-row .info-chevron {
+        font-size: 0.7rem;
+        color: #6b7280;
+        transition: transform 0.15s;
+        display: inline-block;
+      }
+      .info-row[open] .info-chevron { transform: rotate(90deg); color: #c2410c; }
+      .info-row[open] > summary { color: #1e293b; }
+      .info-content {
+        margin-top: 0.6rem;
+        padding: 0.6rem 0.75rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        color: #475569;
+        line-height: 1.55;
+      }
+      .info-content p { margin: 0 0 0.4rem; }
+      .info-content p:last-child { margin-bottom: 0; }
+      .info-content a { color: #c2410c; }
+      .info-content a:hover, .info-content a:focus-visible { color: #9a3412; }
+      .info-desc { margin-bottom: 0.75rem; }
+      .info-dl-title {
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 0.78rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0.2rem;
+      }
+      .info-dl-note { margin: 0 0 0.4rem; font-size: 0.73rem; color: #475569; }
+      .info-dl-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.15rem 0.75rem;
+      }
+      .info-dl-list li { padding: 0.15rem 0; }
+      .info-dl-list a {
+        text-decoration: none;
+        font-size: 0.76rem;
+        color: #c2410c;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .info-dl-list a::before {
+        content: '⬇';
+        color: #6b7280;
+        font-size: 0.8rem;
+      }
+      .info-dl-list a:hover,
+      .info-dl-list a:focus-visible {
+        text-decoration: underline;
+        color: #9a3412;
+      }
+      .info-dl-list a:hover::before,
+      .info-dl-list a:focus-visible::before { color: #c2410c; }
+
+      /* ---- Accordion tables (accessible alternative to the map) ---- */
+      .info-tables-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #1e293b;
+        margin: 1.25rem 0 0.5rem;
+      }
+      .info-tables-search { margin-bottom: 0.5rem; }
+      .info-table-filter-input {
+        width: 100%;
+        padding: 0.4rem 0.6rem;
+        border: 1px solid #6b7280;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-family: inherit;
+        color: #1e293b;
+        background: #fff;
+        box-sizing: border-box;
+      }
+      .info-table-filter-input:focus-visible {
+        outline: 2px solid #c2410c;
+        outline-offset: 1px;
+        border-color: #c2410c;
+      }
+      .info-table-section { margin-top: 0.75rem; }
+      .info-table-section h4 {
+        margin: 0 0 0.35rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #1e293b;
+      }
+      .info-table-wrap {
+        overflow-x: auto;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        background: #fff;
+      }
+      table.info-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.74rem;
+        color: #1e293b;
+      }
+      table.info-table caption {
+        text-align: left;
+        font-size: 0.76rem;
+        font-weight: 600;
+        padding: 0.4rem 0.6rem 0.3rem;
+        color: #1e293b;
+        background: #f1f5f9;
+        border-bottom: 1px solid #e2e8f0;
+      }
+      table.info-table th,
+      table.info-table td {
+        padding: 0.35rem 0.6rem;
+        text-align: left;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: top;
+      }
+      table.info-table th {
+        font-weight: 600;
+        color: #475569;
+        background: #f8fafc;
+        position: sticky;
+        top: 0;
+      }
+      table.info-table td.num, table.info-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+      table.info-table tr:last-child td { border-bottom: none; }
+      table.info-table tr[hidden] { display: none; }
+      table.info-table a {
+        color: #c2410c;
+        text-decoration: none;
+        font-size: 0.72rem;
+      }
+      table.info-table a:hover, table.info-table a:focus-visible {
+        text-decoration: underline;
+        color: #9a3412;
+      }
+      .info-table-section[hidden] { display: none; }
 
       /* ---- LOADING ---- */
       .loading-overlay {
@@ -991,7 +1712,8 @@ class ClubParisMap extends HTMLElement {
 
       /* ---- RESPONSIVE ---- */
       @container wrapper (max-width: 700px) {
-        .legend-bar { display: none; }
+        .filter-row { row-gap: 0.4rem; }
+        .filter-spacer { flex: 0 0 100%; height: 0; }
         .search-input { width: 160px; }
         .search-input:focus { width: 200px; }
         .panel { width: 280px; }
@@ -999,9 +1721,10 @@ class ClubParisMap extends HTMLElement {
       }
 
       @container wrapper (max-width: 480px) {
-        .filter-row { gap: 0.35rem; }
+        .filter-row { gap: 0.35rem; row-gap: 0.4rem; }
         .filter-label { font-size: 0.78rem; }
         .filter-btn { padding: 0.25rem 0.55rem; font-size: 0.75rem; }
+        .render-btn { padding: 0.25rem 0.5rem; font-size: 0.72rem; }
         .search-input { width: 140px; }
         .search-input:focus { width: 180px; }
         .panel { width: 100%; max-width: 100%; }
@@ -1011,15 +1734,17 @@ class ClubParisMap extends HTMLElement {
       }
 
       @media (max-width: 700px) {
-        .legend-bar { display: none; }
+        .filter-row { row-gap: 0.4rem; }
+        .filter-spacer { flex: 0 0 100%; height: 0; }
         .search-input { width: 160px; }
         .panel { width: 280px; }
         .year-label { font-size: 0.55rem; }
       }
       @media (max-width: 480px) {
-        .filter-row { gap: 0.35rem; }
+        .filter-row { gap: 0.35rem; row-gap: 0.4rem; }
         .filter-label { font-size: 0.78rem; }
         .filter-btn { padding: 0.25rem 0.55rem; font-size: 0.75rem; }
+        .render-btn { padding: 0.25rem 0.5rem; font-size: 0.72rem; }
         .search-input { width: 140px; }
         .panel { width: 100%; max-width: 100%; }
         .panel-title { font-size: 1.2rem; }

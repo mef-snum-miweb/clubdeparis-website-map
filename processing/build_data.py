@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
-"""Build data.json from the 4 CSV sources in /sources.
+"""Build data.json + downloadable CSVs from the 4 CSV sources in /sources.
 
 Usage: python3 processing/build_data.py [--check]
-  --check: fail if the generated data.json differs from the existing one
+  --check: fail if any generated file differs from its on-disk version
 """
 import argparse
 import csv
+import io
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / 'sources'
-OUT = ROOT / 'data.json'
+OUT_JSON = ROOT / 'data.json'
+DOWNLOADS = ROOT / 'downloads'
+
+STATUS_FR = {None: 'Permanent', 'Ad hoc': 'Ad hoc', 'Prospectif': 'Prospectif'}
+STATUS_EN = {None: 'Permanent', 'Ad hoc': 'Ad hoc', 'Prospectif': 'Prospective'}
 
 
 def load_countries():
@@ -129,27 +134,144 @@ def build():
     return final
 
 
+def _render_csv(header, rows):
+    buf = io.StringIO(newline='')
+    w = csv.writer(buf, lineterminator='\n')
+    w.writerow(header)
+    for r in rows:
+        w.writerow(r)
+    return buf.getvalue()
+
+
+def render_downloads():
+    """Return {filename: csv_string} for the 4 downloadable files.
+
+    Only the most recent year is exported (snapshot format, one row per country).
+    """
+    countries = load_countries()
+    urls = load_urls()
+    debtors = load_debtors()
+    creditors = load_creditors()
+
+    latest = max(r['year'] for r in debtors + creditors)
+    debtors = sorted((r for r in debtors if r['year'] == latest), key=lambda r: r['iso'])
+    creditors = sorted((r for r in creditors if r['year'] == latest), key=lambda r: r['iso'])
+
+    def name(iso, lang):
+        c = countries.get(iso, {})
+        return c.get(f'name_{lang}', iso)
+
+    def url(iso, role, lang):
+        return urls.get((iso, role), {}).get(f'url_{lang}') or ''
+
+    out = {}
+
+    # Debtors FR
+    rows = []
+    for r in debtors:
+        iso = r['iso']
+        total = round(r['apd'] + r['napd'], 2)
+        rows.append([
+            iso, name(iso, 'fr'), name(iso, 'en'),
+            f'{r["apd"]:.2f}', f'{r["napd"]:.2f}', f'{total:.2f}',
+            url(iso, 'debtor', 'fr'),
+        ])
+    out['club_de_paris_pays_debiteurs.csv'] = _render_csv(
+        ['iso', 'pays_fr', 'pays_en',
+         'apd_eur', 'non_apd_eur', 'total_eur', 'fiche_pays'],
+        rows,
+    )
+
+    # Debtors EN
+    rows = []
+    for r in debtors:
+        iso = r['iso']
+        total = round(r['apd'] + r['napd'], 2)
+        rows.append([
+            iso, name(iso, 'en'), name(iso, 'fr'),
+            f'{r["apd"]:.2f}', f'{r["napd"]:.2f}', f'{total:.2f}',
+            url(iso, 'debtor', 'en'),
+        ])
+    out['club_de_paris_debtor_countries.csv'] = _render_csv(
+        ['iso', 'country_en', 'country_fr',
+         'oda_eur', 'non_oda_eur', 'total_eur', 'country_profile'],
+        rows,
+    )
+
+    # Creditors FR
+    rows = []
+    for r in creditors:
+        iso = r['iso']
+        rows.append([
+            iso, name(iso, 'fr'), name(iso, 'en'),
+            r['nb_accords'],
+            STATUS_FR.get(r['statut'], r['statut'] or ''),
+            r['premiere'] if r['premiere'] is not None else '',
+            url(iso, 'creditor', 'fr'),
+        ])
+    out['club_de_paris_pays_crediteurs.csv'] = _render_csv(
+        ['iso', 'pays_fr', 'pays_en',
+         'nb_accords', 'statut', 'premiere_participation', 'fiche_pays'],
+        rows,
+    )
+
+    # Creditors EN
+    rows = []
+    for r in creditors:
+        iso = r['iso']
+        rows.append([
+            iso, name(iso, 'en'), name(iso, 'fr'),
+            r['nb_accords'],
+            STATUS_EN.get(r['statut'], r['statut'] or ''),
+            r['premiere'] if r['premiere'] is not None else '',
+            url(iso, 'creditor', 'en'),
+        ])
+    out['club_de_paris_creditor_countries.csv'] = _render_csv(
+        ['iso', 'country_en', 'country_fr',
+         'nb_agreements', 'status', 'first_participation', 'country_profile'],
+        rows,
+    )
+
+    return out, latest
+
+
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--check', action='store_true', help='fail if data.json would change')
+    p.add_argument('--check', action='store_true',
+                   help='fail if generated files would change on disk')
     args = p.parse_args()
 
     final = build()
-    serialized = json.dumps(final, ensure_ascii=False, indent=2) + '\n'
+    json_payload = json.dumps(final, ensure_ascii=False, indent=2) + '\n'
+    downloads, latest = render_downloads()
+
+    planned = {OUT_JSON: json_payload}
+    for fname, content in downloads.items():
+        planned[DOWNLOADS / fname] = content
 
     if args.check:
-        if not OUT.exists():
-            print(f'error: {OUT} does not exist', file=sys.stderr)
+        stale = []
+        for path, expected in planned.items():
+            if not path.exists() or path.read_text(encoding='utf-8') != expected:
+                stale.append(path.relative_to(ROOT))
+        if stale:
+            print('error: the following generated files are out of date:', file=sys.stderr)
+            for p_ in stale:
+                print(f'  - {p_}', file=sys.stderr)
+            print('run: python3 processing/build_data.py', file=sys.stderr)
             sys.exit(1)
-        if OUT.read_text(encoding='utf-8') != serialized:
-            print(f'error: {OUT} is out of date. Run: python3 processing/build_data.py', file=sys.stderr)
-            sys.exit(1)
-        print('data.json is up to date.')
+        print('All generated files are up to date.')
         return
 
-    OUT.write_text(serialized, encoding='utf-8')
+    DOWNLOADS.mkdir(exist_ok=True)
+    for path, content in planned.items():
+        path.write_text(content, encoding='utf-8')
+
     n_years = len(final)
-    print(f'Wrote {OUT} ({n_years} years)')
+    print(f'Wrote {OUT_JSON.relative_to(ROOT)} ({n_years} years)')
+    for fname in downloads:
+        size = len(downloads[fname].splitlines()) - 1
+        print(f'Wrote downloads/{fname} ({size} rows, year {latest})')
 
 
 if __name__ == '__main__':
