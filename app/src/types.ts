@@ -36,4 +36,3 @@ export interface AllData {
 }
 
 export type FilterMode = 'all' | 'débiteur' | 'créditeur';
-export type DebtFilter = 'apd' | 'napd';

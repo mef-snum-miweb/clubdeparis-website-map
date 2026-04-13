@@ -46,7 +46,7 @@ const KPIBar = ({ totals, year, filterMode }: KPIBarProps) => {
     kpis.push({
       label: t('kpi.creditors'),
       value: `${totals.creditorCount}`,
-      color: '#10b981',
+      color: '#1e40af',
     });
   }
 

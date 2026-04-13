@@ -5,9 +5,12 @@ import {
   Geography,
   ZoomableGroup,
 } from 'react-simple-maps';
-import { scaleLinear } from 'd3-scale';
-import type { YearData, CountryData, FilterMode, DebtFilter } from '../types';
+import type { YearData, CountryData, FilterMode } from '../types';
 import { useTranslation } from '../i18n/LangContext';
+
+const DEBTOR_COLOR = '#f97316';
+const CREDITOR_COLOR = '#1e40af';
+const DEFAULT_COLOR = '#e5e7eb';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
@@ -55,35 +58,13 @@ interface WorldMapProps {
   data: YearData;
   selectedCountry: string | null;
   filterMode: FilterMode;
-  debtFilter: DebtFilter;
   onCountrySelect: (isoCode: string | null, data: CountryData | null) => void;
 }
 
-const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountrySelect }: WorldMapProps) => {
+const WorldMap = memo(({ data, selectedCountry, filterMode, onCountrySelect }: WorldMapProps) => {
   const { t, getCountryName } = useTranslation();
   const [tooltipContent, setTooltipContent] = useState<string>('');
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-
-  // Compute max values for color scales
-  const debtorValues = Object.values(data.countries)
-    .filter((c) => c.debtor)
-    .map((c) => debtFilter === 'apd' ? c.debtor!.apd : c.debtor!.napd);
-  const creditorValues = Object.values(data.countries)
-    .filter((c) => c.creditor)
-    .map((c) => c.creditor!.nbAccords);
-
-  const maxDebtor = Math.max(...debtorValues, 1);
-  const maxCreditor = Math.max(...creditorValues, 1);
-
-  // Orange scale for debtors
-  const debtorColorScale = scaleLinear<string>()
-    .domain([0, maxDebtor / 4, maxDebtor / 2, maxDebtor])
-    .range(['#fef3e2', '#fdba74', '#f97316', '#c2410c']);
-
-  // Green scale for creditors
-  const creditorColorScale = scaleLinear<string>()
-    .domain([0, maxCreditor / 4, maxCreditor / 2, maxCreditor])
-    .range(['#ecfdf5', '#6ee7b7', '#10b981', '#047857']);
 
   const getIsoAlpha3 = (geoId: string): string => {
     return numericToAlpha3[geoId] || geoId;
@@ -92,34 +73,23 @@ const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountr
   const getCountryColor = (geoId: string) => {
     const isoCode = getIsoAlpha3(geoId);
     const country = data.countries[isoCode];
-    if (!country) return '#e5e7eb';
+    if (!country) return DEFAULT_COLOR;
 
-    const isDebtor = country.debtor && country.debtor.total > 0;
+    const isDebtor = !!country.debtor && country.debtor.total > 0;
     const isCreditor = !!country.creditor;
 
     if (filterMode === 'créditeur') {
-      if (!isCreditor) return '#e5e7eb';
-      return creditorColorScale(country.creditor!.nbAccords);
+      return isCreditor ? CREDITOR_COLOR : DEFAULT_COLOR;
     }
 
     if (filterMode === 'débiteur') {
-      if (!isDebtor) return '#e5e7eb';
-      const val = debtFilter === 'apd' ? country.debtor!.apd : country.debtor!.napd;
-      if (val === 0) return '#e5e7eb';
-      return debtorColorScale(val);
+      return isDebtor ? DEBTOR_COLOR : DEFAULT_COLOR;
     }
 
-    // Mode "all": show both
-    if (isDebtor && isCreditor) {
-      return debtorColorScale(country.debtor!.apd);
-    }
-    if (isCreditor) {
-      return creditorColorScale(country.creditor!.nbAccords);
-    }
-    if (isDebtor) {
-      return debtorColorScale(country.debtor!.apd);
-    }
-    return '#e5e7eb';
+    // Mode "all": debtor takes precedence over creditor for dual-status countries
+    if (isDebtor) return DEBTOR_COLOR;
+    if (isCreditor) return CREDITOR_COLOR;
+    return DEFAULT_COLOR;
   };
 
   const formatCurrency = (value: number) => {
@@ -165,8 +135,6 @@ const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountr
       onCountrySelect(null, null);
     }
   };
-
-  const filterLabel = debtFilter === 'apd' ? t('filter.apd') : t('filter.napd');
 
   return (
     <div className="map-container">
@@ -227,34 +195,16 @@ const WorldMap = memo(({ data, selectedCountry, filterMode, debtFilter, onCountr
       )}
 
       <div className="map-legend">
-        {(filterMode === 'all' || filterMode === 'débiteur') && (
-          <div className="legend-section">
-            <div className="legend-title">{t('map.legend_debtors')} ({filterLabel})</div>
-            <div
-              className="gradient-bar"
-              style={{
-                background: 'linear-gradient(to right, #fef3e2, #fdba74, #f97316, #c2410c)',
-              }}
-            />
-            <div className="legend-labels">
-              <span>0</span>
-              <span>{formatCurrency(maxDebtor)}</span>
-            </div>
+        {(filterMode === 'all' || filterMode === 'créditeur') && (
+          <div className="legend-item">
+            <span className="legend-swatch" style={{ background: CREDITOR_COLOR }} />
+            <span className="legend-label">{t('map.legend_creditors')}</span>
           </div>
         )}
-        {(filterMode === 'all' || filterMode === 'créditeur') && (
-          <div className="legend-section">
-            <div className="legend-title">{t('map.legend_creditors')}</div>
-            <div
-              className="gradient-bar"
-              style={{
-                background: 'linear-gradient(to right, #ecfdf5, #6ee7b7, #10b981, #047857)',
-              }}
-            />
-            <div className="legend-labels">
-              <span>0</span>
-              <span>{maxCreditor}</span>
-            </div>
+        {(filterMode === 'all' || filterMode === 'débiteur') && (
+          <div className="legend-item">
+            <span className="legend-swatch" style={{ background: DEBTOR_COLOR }} />
+            <span className="legend-label">{t('map.legend_debtors')}</span>
           </div>
         )}
       </div>

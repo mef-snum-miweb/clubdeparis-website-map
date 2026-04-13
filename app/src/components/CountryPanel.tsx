@@ -1,5 +1,6 @@
 import type { CountryData } from '../types';
 import { useTranslation } from '../i18n/LangContext';
+import type { TranslationKey } from '../i18n/translations';
 
 interface CountryPanelProps {
   countryCode: string | null;
@@ -21,7 +22,16 @@ const CountryPanel = ({
   year,
   onClose,
 }: CountryPanelProps) => {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+
+  const localizedUrl = (url: string) =>
+    lang === 'en' ? url.replace('clubdeparis.org/', 'clubdeparis.org/en/') : url;
+
+  const creditorStatusKey = (statut: string | null): TranslationKey => {
+    if (statut === 'Ad hoc') return 'panel.status.ad_hoc';
+    if (statut === 'Prospectif') return 'panel.status.prospective';
+    return 'panel.status.permanent';
+  };
 
   if (!countryCode || !countryData) {
     return (
@@ -107,7 +117,7 @@ const CountryPanel = ({
             </div>
 
             {debtor.url && (
-              <a href={debtor.url} target="_blank" rel="noopener noreferrer" className="panel-link panel-link-debtor">
+              <a href={localizedUrl(debtor.url)} target="_blank" rel="noopener noreferrer" className="panel-link panel-link-debtor">
                 {t('panel.debtor_link')}
               </a>
             )}
@@ -117,7 +127,9 @@ const CountryPanel = ({
         {/* Creditor section */}
         {isCreditor && (
           <div className="panel-section">
-            <h4 className="section-title section-title-creditor">{t('panel.section_creditor')}</h4>
+            <h4 className="section-title section-title-creditor">
+              {t('panel.creditor_with_status').replace('{0}', t(creditorStatusKey(creditor.statut)))}
+            </h4>
 
             <div className="stat-item creditor-stat">
               <div className="stat-info">
@@ -135,17 +147,8 @@ const CountryPanel = ({
               </div>
             )}
 
-            {creditor.statut && (
-              <div className="stat-item creditor-stat">
-                <div className="stat-info">
-                  <span className="stat-label">{t('panel.status')}</span>
-                  <span className="stat-value">{creditor.statut}</span>
-                </div>
-              </div>
-            )}
-
             {creditor.url && (
-              <a href={creditor.url} target="_blank" rel="noopener noreferrer" className="panel-link panel-link-creditor">
+              <a href={localizedUrl(creditor.url)} target="_blank" rel="noopener noreferrer" className="panel-link panel-link-creditor">
                 {t('panel.creditor_link')}
               </a>
             )}

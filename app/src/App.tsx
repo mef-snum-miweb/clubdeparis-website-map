@@ -6,7 +6,7 @@ import KPIBar from './components/KPIBar';
 import CountrySearch from './components/CountrySearch';
 import FilterBar from './components/FilterBar';
 import { LangProvider, useTranslation } from './i18n/LangContext';
-import type { AllData, CountryData, FilterMode, DebtFilter } from './types';
+import type { AllData, CountryData, FilterMode } from './types';
 import './App.css';
 
 const YEARS = Array.from({ length: 15 }, (_, i) => 2010 + i);
@@ -18,7 +18,6 @@ function AppInner() {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCountryData, setSelectedCountryData] = useState<CountryData | null>(null);
   const [filterMode, setFilterMode] = useState<FilterMode>('all');
-  const [debtFilter, setDebtFilter] = useState<DebtFilter>('apd');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -101,15 +100,12 @@ function AppInner() {
         />
         <FilterBar
           filterMode={filterMode}
-          debtFilter={debtFilter}
           onFilterModeChange={setFilterMode}
-          onDebtFilterChange={setDebtFilter}
         />
         <WorldMap
           data={yearData}
           selectedCountry={selectedCountry}
           filterMode={filterMode}
-          debtFilter={debtFilter}
           onCountrySelect={handleCountrySelect}
         />
         <CountryPanel
