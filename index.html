@@ -1096,30 +1096,6 @@ class ClubParisMap extends HTMLElement {
 
     let html = `<h2 class="panel-title">${name}</h2>`;
 
-    if (isDebtor) {
-      const d = c.debtor;
-      html += `
-        <div class="info-card">
-          <div class="info-icon info-icon-blue">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <div class="info-body">
-            <span class="info-label">${this._t('panel.apd_label')}</span>
-            <span class="info-value">${this._fmtPanel(d.apd)}</span>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-icon info-icon-orange">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <div class="info-body">
-            <span class="info-label">${this._t('panel.napd_label')}</span>
-            <span class="info-value">${this._fmtPanel(d.napd)}</span>
-          </div>
-        </div>
-      `;
-    }
-
     html += `
       <div class="info-card">
         <div class="info-icon info-icon-blue">
@@ -1141,13 +1117,37 @@ class ClubParisMap extends HTMLElement {
       html += `<li><span class="detail-label">${this._t('panel.agreements')}</span><span class="detail-value">${cr.nbAccords}</span></li>`;
       if (cr.premiereParticipation) html += `<li><span class="detail-label">${this._t('panel.member_since')}</span><span class="detail-value">${cr.premiereParticipation}</span></li>`;
       html += `</ul>`;
+      if (cr.url) {
+        html += `<a class="panel-cta panel-cta-creditor" href="${this._localizedUrl(cr.url)}" target="_blank" rel="noopener">${this._t('panel.creditor_link')}</a>`;
+      }
     }
 
-    if (isDebtor && c.debtor.url) {
-      html += `<a class="panel-cta" href="${this._localizedUrl(c.debtor.url)}" target="_blank" rel="noopener">${this._t('panel.debtor_link')}</a>`;
-    }
-    if (isCreditor && c.creditor.url) {
-      html += `<a class="panel-cta panel-cta-creditor" href="${this._localizedUrl(c.creditor.url)}" target="_blank" rel="noopener">${this._t('panel.creditor_link')}</a>`;
+    if (isDebtor) {
+      const d = c.debtor;
+      html += `<div class="panel-section-title">${this._t('panel.section_debtor').toUpperCase()}</div>`;
+      html += `
+        <div class="info-card">
+          <div class="info-icon info-icon-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="info-body">
+            <span class="info-label">${this._t('panel.apd_label')}</span>
+            <span class="info-value">${this._fmtPanel(d.apd)}</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon info-icon-orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="info-body">
+            <span class="info-label">${this._t('panel.napd_label')}</span>
+            <span class="info-value">${this._fmtPanel(d.napd)}</span>
+          </div>
+        </div>
+      `;
+      if (d.url) {
+        html += `<a class="panel-cta" href="${this._localizedUrl(d.url)}" target="_blank" rel="noopener">${this._t('panel.debtor_link')}</a>`;
+      }
     }
 
     el.innerHTML = html;
