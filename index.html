@@ -1210,17 +1210,20 @@ class ClubParisMap extends HTMLElement {
   }
 
   _fmt(val) {
-    if (val >= 1e9) return `${(val / 1e9).toFixed(2)} Md\u0024`;
-    if (val >= 1e6) return `${(val / 1e6).toFixed(1)} M\u0024`;
-    if (val === 0) return '0 \u0024';
-    return val.toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + ' \u0024';
+    const m = Math.round(val / 1e6);
+    if (m === 0) return '0 \u0024';
+    if (m >= 1000) return `${(m / 1000).toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Md\u0024`;
+    return `${m.toLocaleString('fr-FR')} M\u0024`;
   }
 
   _fmtPanel(val) {
-    if (val >= 1e9) return `${(val / 1e9).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} milliards \u0024`;
-    if (val >= 1e6) return `${Math.round(val / 1e6).toLocaleString('fr-FR')} millions \u0024`;
-    if (val === 0) return '0 \u0024';
-    return val.toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + ' \u0024';
+    const m = Math.round(val / 1e6);
+    if (m === 0) return '0 \u0024';
+    if (m >= 1000) {
+      const mds = (m / 1000).toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+      return `${mds} milliards \u0024`;
+    }
+    return `${m.toLocaleString('fr-FR')} millions \u0024`;
   }
 
   _getStyles() {
