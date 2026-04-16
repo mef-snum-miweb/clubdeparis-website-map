@@ -87,16 +87,6 @@
           "url": null
         }
       },
-      "BDI": {
-        "country": "Burundi",
-        "debtor": {
-          "apd": 0,
-          "napd": 0,
-          "total": 0,
-          "type": "accord",
-          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/burundi.html"
-        }
-      },
       "BEN": {
         "country": "Bénin",
         "debtor": {
@@ -175,22 +165,6 @@
           "total": 851576563.09,
           "type": "accord",
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/bolivie.html"
-        }
-      },
-      "BRA": {
-        "country": "Brésil",
-        "debtor": {
-          "apd": 0,
-          "napd": 0,
-          "total": 0,
-          "type": "accord",
-          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/bresil.html"
-        },
-        "creditor": {
-          "nbAccords": 78,
-          "statut": null,
-          "premiereParticipation": 1985,
-          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par-pays-crediteurs/bresil.html"
         }
       },
       "BRB": {
@@ -573,16 +547,6 @@
           "total": 4680959.79,
           "type": "accord",
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/croatie.html"
-        }
-      },
-      "HTI": {
-        "country": "Haïti",
-        "debtor": {
-          "apd": 0,
-          "napd": 0,
-          "total": 0,
-          "type": "accord",
-          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/haiti.html"
         }
       },
       "HUN": {
@@ -1097,22 +1061,6 @@
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/roumanie.html"
         }
       },
-      "RUS": {
-        "country": "Russie",
-        "debtor": {
-          "apd": 0,
-          "napd": 0,
-          "total": 0,
-          "type": "accord",
-          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/federation-de-russie.html"
-        },
-        "creditor": {
-          "nbAccords": 89,
-          "statut": null,
-          "premiereParticipation": 1997,
-          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par-pays-crediteurs/federation-de-russie.html"
-        }
-      },
       "RWA": {
         "country": "Rwanda",
         "debtor": {
@@ -1538,6 +1486,15 @@
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par-pays-crediteurs/belgique.html"
         }
       },
+      "BRA": {
+        "country": "Brésil",
+        "creditor": {
+          "nbAccords": 78,
+          "statut": null,
+          "premiereParticipation": 1985,
+          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par-pays-crediteurs/bresil.html"
+        }
+      },
       "CAN": {
         "country": "Canada",
         "creditor": {
@@ -1700,6 +1657,15 @@
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par-pays-crediteurs/portugal.html"
         }
       },
+      "RUS": {
+        "country": "Russie",
+        "creditor": {
+          "nbAccords": 89,
+          "statut": null,
+          "premiereParticipation": 1997,
+          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par-pays-crediteurs/federation-de-russie.html"
+        }
+      },
       "SWE": {
         "country": "Suède",
         "creditor": {
@@ -1723,7 +1689,7 @@
       "debtorApd": 191476743121.15,
       "debtorNapd": 128691077292.53,
       "debtorTotal": 320167820413.68,
-      "debtorCount": 145,
+      "debtorCount": 141,
       "creditorCount": 33
     }
   }
