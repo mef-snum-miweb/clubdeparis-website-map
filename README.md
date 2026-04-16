@@ -109,41 +109,32 @@ Ce sont des **snapshots de l'année la plus récente** du dataset (une ligne par
 
 Pour le dataset complet 2010-2024, consulter directement `sources/debtors.csv` et `sources/creditors.csv` (long format).
 
-## Cohérence avec le FMI et conventions cartographiques
+## Fond cartographique et conventions
 
-Le Club de Paris et le FMI (Fonds Monétaire International) travaillent main dans la main sur les restructurations de dette souveraine : par nature, les deux organisations s'alignent sur les mêmes listes de pays.
+### Frontières — World Bank Official Boundaries
 
-### Liste des pays — 100 % membres FMI
+La carte utilise les [frontières officielles de la Banque Mondiale](https://datacatalog.worldbank.org/search/dataset/0038272/World-Bank-Official-Boundaries) (Admin 0, licence CC BY 4.0). Ce jeu de données est la référence utilisée par la Banque Mondiale et acceptée par les organisations internationales partenaires du Club de Paris.
 
-Le FMI compte **191 pays membres** en 2026 (190 membres UN + Kosovo). Les non-membres notables sont : Cuba, Monaco, Corée du Nord, Taïwan.
+Le shapefile source (`WB_countries_Admin0_10m`) est converti en TopoJSON simplifié hébergé localement (`wb_countries.topojson`, ~274 Ko). La conversion est reproductible via `mapshaper` :
 
-Nos 129 pays ont été vérifiés contre la liste FMI : **aucun des 129 pays de `sources/countries.csv` n'est non-membre du FMI**. L'ensemble est un sous-ensemble propre des 191 membres — ce sont les pays ayant eu au moins une ligne créditeur ou débiteur au Club de Paris entre 2010 et 2024.
+```bash
+mapshaper WB_countries_Admin0_10m.shp \
+  -filter-fields WB_A3,ISO_A3,NAME_EN,NAME_FR,TYPE \
+  -each 'MATCH_ID = WB_A3' \
+  -dissolve2 MATCH_ID copy-fields=WB_A3,ISO_A3,NAME_EN,NAME_FR,TYPE \
+  -each 'if (ISO_A3 === "-99" || ISO_A3 === "") ISO_A3 = WB_A3' \
+  -simplify 5% keep-shapes \
+  -rename-layers countries \
+  -o format=topojson wb_countries.topojson
+```
 
-### Fond cartographique — Natural Earth 110m
+### Liste des pays
 
-La carte rendue dans `index.html` utilise [Natural Earth 1:110m](https://www.naturalearthdata.com/) via le package npm [`world-atlas@2`](https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json) (public domain, politiquement neutre, utilisé par la Banque Mondiale, ONU OCHA et Reuters Graphics).
+Les pays présents dans `sources/countries.csv` sont un sous-ensemble des pays membres du FMI : ce sont ceux ayant eu au moins une ligne créditeur ou débiteur au Club de Paris entre 2010 et 2024. La couverture a été vérifiée : tous les pays du dataset ont un polygone correspondant dans le fond cartographique Banque Mondiale.
 
-Quelques conventions diffèrent entre Natural Earth et le [DataMapper du FMI](https://www.imf.org/external/datamapper/) :
-
-| Zone | Natural Earth (nous) | FMI | Impact sur la carte |
-|---|---|---|---|
-| **Taïwan** | Polygone séparé (TWN) | « Taiwan, Province of China » | TWN n'est pas dans nos 129 ISOs → rendu en *cream « pas de données »*, jamais colorié en créditeur/débiteur |
-| **Crimée** | Incluse dans le polygone Ukraine | Exclue des données Ukraine depuis 2014 | ⚠️ **Divergence visible** : UKR est débiteur tous les ans de 2010 à 2024 (9,23 Md€ en 2024), donc la Crimée est colorée en orange avec le reste de l'Ukraine. Le FMI, lui, exclut la Crimée et Sébastopol des données ukrainiennes depuis la crise de 2014. |
-| **Sahara occidental** | Polygone séparé (ESH) | Généralement intégré au Maroc | Zone sans données Club de Paris → neutre |
-| **Kosovo** | Polygone séparé (XKX) | Membre FMI à part entière | ✅ Aligné |
-| **Soudan / Sud-Soudan** | Deux polygones | Deux membres FMI | ✅ Aligné |
-| **Somaliland** | Inclus dans Somalie | Inclus dans Somalie | ✅ Aligné |
-
-**En pratique**, les divergences Taïwan et Sahara occidental concernent des zones sans données Club de Paris, donc sans impact visuel. **En revanche, la Crimée est une vraie divergence éditoriale** : elle apparaît colorée comme partie intégrante de l'Ukraine débitrice, alors que les données du Club de Paris (et du FMI) ne la comptabilisent plus depuis 2014. Corriger ce point demanderait soit de modifier le polygone Natural Earth de l'Ukraine, soit de superposer un polygone Crimée stylé « pas de données » — deux options non triviales qui restent à arbitrer.
-
-### Pourquoi pas migrer vers des shapefiles FMI ?
-
-Le FMI ne publie pas de GeoJSON/TopoJSON téléchargeable sous licence ouverte. Le DataMapper utilise ses propres assets non redistribuables. Natural Earth est public domain, stable, versionné et éditorialement défendable — c'est le bon choix pour ce projet.
-
-**Sources de vérification** :
-- [FMI — Liste des membres (date d'entrée)](https://www.imf.org/external/np/sec/memdir/memdate.htm)
-- [FMI — Member Countries Factsheet (191 membres)](https://www.imf.org/en/About/Factsheets/Sheets/2023/IMF-members-quotas)
-- [Natural Earth — 110m Admin 0 Countries](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/)
+**Sources** :
+- [Banque Mondiale — Official Boundaries (Data Catalog)](https://datacatalog.worldbank.org/search/dataset/0038272/World-Bank-Official-Boundaries)
+- [FMI — Liste des membres](https://www.imf.org/external/np/sec/memdir/memdate.htm)
 
 ## Accessibilité
 

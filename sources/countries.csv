@@ -8,12 +8,16 @@ ARM,Arménie,Armenia
 ATG,Antigua-et-Barbuda,Antigua and Barbuda
 AUS,Australie,Australia
 AUT,Autriche,Austria
+AZE,Azerbaïdjan,Azerbaijan
 BDI,Burundi,Burundi
 BEL,Belgique,Belgium
 BEN,Bénin,Benin
 BFA,Burkina Faso,Burkina Faso
+BGD,Bangladesh,Bangladesh
 BGR,Bulgarie,Bulgaria
+BHR,Bahreïn,Bahrain
 BIH,Bosnie-Herzégovine,Bosnia and Herzegovina
+BLR,Biélorussie,Belarus
 BLZ,Belize,Belize
 BOL,Bolivie,Bolivia
 BRA,Brésil,Brazil
@@ -29,9 +33,11 @@ CIV,Côte d'Ivoire,Côte d'Ivoire
 CMR,Cameroun,Cameroon
 COD,RD Congo,Democratic Republic of the Congo
 COG,Congo,Congo
+COL,Colombie,Colombia
 COM,Comores,Comoros
 CPV,Cap-Vert,Cabo Verde
 CRI,Costa Rica,Costa Rica
+CUB,Cuba,Cuba
 CYP,Chypre,Cyprus
 CZE,Rép. Tchèque,Czech Republic
 DEU,Allemagne,Germany
@@ -42,6 +48,7 @@ DOM,Rép. Dominicaine,Dominican Republic
 DZA,Algérie,Algeria
 ECU,Équateur,Ecuador
 EGY,Égypte,Egypt
+ERI,Érythrée,Eritrea
 ESP,Espagne,Spain
 EST,Estonie,Estonia
 ETH,Éthiopie,Ethiopia
@@ -67,6 +74,7 @@ HUN,Hongrie,Hungary
 IDN,Indonésie,Indonesia
 IND,Inde,India
 IRL,Irlande,Ireland
+IRN,Iran,Iran
 IRQ,Irak,Iraq
 ISL,Islande,Iceland
 ISR,Israël,Israel
@@ -74,13 +82,17 @@ ITA,Italie,Italy
 JAM,Jamaïque,Jamaica
 JOR,Jordanie,Jordan
 JPN,Japon,Japan
+KAZ,Kazakhstan,Kazakhstan
 KEN,Kenya,Kenya
 KGZ,Kirghizistan,Kyrgyzstan
 KHM,Cambodge,Cambodia
 KNA,Saint-Christophe-et-Niévès,Saint Kitts and Nevis
 KOR,Corée du Sud,Republic of Korea
 KWT,Koweït,Kuwait
+LAO,Laos,Laos
+LBN,Liban,Lebanon
 LBR,Liberia,Liberia
+LBY,Libye,Libya
 LCA,Sainte-Lucie,Saint Lucia
 LKA,Sri Lanka,Sri Lanka
 LSO,Lesotho,Lesotho
@@ -97,10 +109,13 @@ MLI,Mali,Mali
 MLT,Malte,Malta
 MMR,Myanmar,Myanmar
 MNE,Monténégro,Montenegro
+MNG,Mongolie,Mongolia
 MOZ,Mozambique,Mozambique
 MRT,Mauritanie,Mauritania
+MUS,Maurice,Mauritius
 MWI,Malawi,Malawi
 MYS,Malaisie,Malaysia
+NAM,Namibie,Namibia
 NER,Niger,Niger
 NGA,Nigeria,Nigeria
 NIC,Nicaragua,Nicaragua
@@ -113,13 +128,16 @@ PAK,Pakistan,Pakistan
 PAN,Panama,Panama
 PER,Pérou,Peru
 PHL,Philippines,Philippines
+PLW,Palau,Palau
 PNG,Papouasie-N.-Guinée,Papua New Guinea
 POL,Pologne,Poland
 PRK,Corée du Nord,Democratic People's Republic of Korea
 PRT,Portugal,Portugal
+PRY,Paraguay,Paraguay
 QAT,Qatar,Qatar
 ROU,Roumanie,Romania
 RUS,Russie,Russian Federation
+RWA,Rwanda,Rwanda
 SAU,Arabie Saoudite,Saudi Arabia
 SDN,Soudan,Sudan
 SEN,Sénégal,Senegal
@@ -136,21 +154,29 @@ SVK,Slovaquie,Slovakia
 SWE,Suède,Sweden
 SWZ,Eswatini,Eswatini
 SYC,Seychelles,Seychelles
+SYR,Syrie,Syria
 TCD,Tchad,Chad
 TGO,Togo,Togo
 THA,Thaïlande,Thailand
 TJK,Tadjikistan,Tajikistan
 TKM,Turkménistan,Turkmenistan
+TLS,Timor-Leste,Timor-Leste
 TTO,Trinité-et-Tobago,Trinidad and Tobago
+TUN,Tunisie,Tunisia
 TUR,Turquie,Türkiye
 TZA,Tanzanie,Tanzania
 UGA,Ouganda,Uganda
 UKR,Ukraine,Ukraine
+URY,Uruguay,Uruguay
 USA,États-Unis,United States of America
 UZB,Ouzbékistan,Uzbekistan
 VCT,Saint-Vincent-et-les-Grenadines,Saint Vincent and the Grenadines
+VEN,Venezuela,Venezuela
 VNM,Vietnam,Viet Nam
+VUT,Vanuatu,Vanuatu
 WSM,Samoa,Samoa
+XKX,Kosovo,Kosovo
 YEM,Yémen,Yemen
 ZAF,Afrique du Sud,South Africa
 ZMB,Zambie,Zambia
+ZWE,Zimbabwe,Zimbabwe

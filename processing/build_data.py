@@ -46,8 +46,9 @@ def load_debtors():
             rows.append({
                 'year': r['year'],
                 'iso': r['iso'],
-                'apd': float(r['apd_eur']) if r['apd_eur'] else 0.0,
-                'napd': float(r['napd_eur']) if r['napd_eur'] else 0.0,
+                'apd': float(r['apd_usd']) if r['apd_usd'] else 0.0,
+                'napd': float(r['napd_usd']) if r['napd_usd'] else 0.0,
+                'type': r.get('type', 'accord'),
             })
     return rows
 
@@ -95,6 +96,7 @@ def build():
             'apd': _clean(round(r['apd'], 2)),
             'napd': _clean(round(r['napd'], 2)),
             'total': _clean(round(r['apd'] + r['napd'], 2)),
+            'type': r['type'],
             'url': url,
         }
 
@@ -174,11 +176,12 @@ def render_downloads():
         rows.append([
             iso, name(iso, 'fr'), name(iso, 'en'),
             f'{r["apd"]:.2f}', f'{r["napd"]:.2f}', f'{total:.2f}',
+            r['type'],
             url(iso, 'debtor', 'fr'),
         ])
     out['club_de_paris_pays_debiteurs.csv'] = _render_csv(
         ['iso', 'pays_fr', 'pays_en',
-         'apd_eur', 'non_apd_eur', 'total_eur', 'fiche_pays'],
+         'apd_usd', 'non_apd_usd', 'total_usd', 'type', 'fiche_pays'],
         rows,
     )
 
@@ -190,11 +193,12 @@ def render_downloads():
         rows.append([
             iso, name(iso, 'en'), name(iso, 'fr'),
             f'{r["apd"]:.2f}', f'{r["napd"]:.2f}', f'{total:.2f}',
+            r['type'],
             url(iso, 'debtor', 'en'),
         ])
     out['club_de_paris_debtor_countries.csv'] = _render_csv(
         ['iso', 'country_en', 'country_fr',
-         'oda_eur', 'non_oda_eur', 'total_eur', 'country_profile'],
+         'oda_usd', 'non_oda_usd', 'total_usd', 'type', 'country_profile'],
         rows,
     )
 

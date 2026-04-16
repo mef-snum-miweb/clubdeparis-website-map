@@ -32,8 +32,10 @@ const TRANSLATIONS = {
     'filter.year': 'Année',
     'filter.apply': 'Appliquer',
     'filter.clear': 'Effacer les filtres',
-    'map.legend_debtors': 'Débiteur',
-    'map.legend_creditors': 'Créancier',
+    'map.legend_creditor_permanent': 'Membre permanent',
+    'map.legend_creditor_adhoc': 'Membre ad hoc',
+    'map.legend_debtor_accord': 'Débiteur traité',
+    'map.legend_debtor_encours': 'Débiteur (encours)',
     'loading': 'Chargement…',
     'search.placeholder': 'Rechercher un pays…',
     'search.no_result': 'Aucun résultat',
@@ -67,11 +69,11 @@ const TRANSLATIONS = {
     'info.summary': 'Descriptif et téléchargement des données',
     'info.desc_title': 'À propos de cette carte',
     'info.desc_body':
-      '<p>Cette carte interactive présente les créances d\'Aide Publique au Développement (APD) gérées par le <a href="https://clubdeparis.org" target="_blank" rel="noopener">Club de Paris</a>, de 2010 à 2024. Utilisez le slider pour changer d\'année, les filtres pour isoler les pays créanciers ou débiteurs, et cliquez sur un pays pour ouvrir sa fiche détaillée.</p>' +
+      '<p>Cette carte interactive présente les créances d\'Aide Publique au Développement (APD) gérées par le <a href="https://clubdeparis.org" target="_blank" rel="noopener">Club de Paris</a> en 2024. Utilisez les filtres pour isoler les pays créanciers ou débiteurs, et cliquez sur un pays pour ouvrir sa fiche détaillée.</p>' +
       '<p>Les pays <strong>débiteurs</strong> (en orange) bénéficient d\'accords de restructuration de dette. Les pays <strong>créanciers</strong> (en bleu) sont membres permanents, <em>ad hoc</em> ou prospectifs du Club de Paris.</p>',
     'info.dl_title': 'Télécharger les données (snapshot année la plus récente)',
     'info.dl_note':
-      'Une ligne par pays, nom français et anglais, montants en euros, lien vers la fiche pays. Le jeu complet 2010-2024 est disponible dans le <a href="https://github.com/bmatge/map-creances-apd" target="_blank" rel="noopener">repo GitHub</a>.',
+      'Une ligne par pays, nom français et anglais, montants en euros, lien vers la fiche pays.',
     'info.dl_debt_fr': 'Pays débiteurs (français)',
     'info.dl_debt_en': 'Pays débiteurs (anglais)',
     'info.dl_cred_fr': 'Pays créanciers (français)',
@@ -115,8 +117,10 @@ const TRANSLATIONS = {
     'filter.year': 'Year',
     'filter.apply': 'Apply',
     'filter.clear': 'Clear filters',
-    'map.legend_debtors': 'Debtor',
-    'map.legend_creditors': 'Creditor',
+    'map.legend_creditor_permanent': 'Permanent member',
+    'map.legend_creditor_adhoc': 'Ad hoc member',
+    'map.legend_debtor_accord': 'Treated debtor',
+    'map.legend_debtor_encours': 'Debtor (outstanding)',
     'loading': 'Loading…',
     'search.placeholder': 'Search for a country…',
     'search.no_result': 'No results',
@@ -150,11 +154,11 @@ const TRANSLATIONS = {
     'info.summary': 'Map description and data downloads',
     'info.desc_title': 'About this map',
     'info.desc_body':
-      '<p>This interactive map shows Official Development Assistance (ODA) claims managed by the <a href="https://clubdeparis.org/en" target="_blank" rel="noopener">Paris Club</a> from 2010 to 2024. Use the slider to change the year, the filters to isolate creditor or debtor countries, and click on any country to open its detailed profile.</p>' +
+      '<p>This interactive map shows Official Development Assistance (ODA) claims managed by the <a href="https://clubdeparis.org/en" target="_blank" rel="noopener">Paris Club</a> as of 2024. Use the filters to isolate creditor or debtor countries, and click on any country to open its detailed profile.</p>' +
       '<p><strong>Debtor</strong> countries (orange) benefit from debt restructuring agreements. <strong>Creditor</strong> countries (blue) are permanent, <em>ad hoc</em> or prospective members of the Paris Club.</p>',
     'info.dl_title': 'Download the data (latest year snapshot)',
     'info.dl_note':
-      'One row per country, French and English names, amounts in euros, link to the country profile. The full 2010-2024 dataset is available in the <a href="https://github.com/bmatge/map-creances-apd" target="_blank" rel="noopener">GitHub repo</a>.',
+      'One row per country, French and English names, amounts in euros, link to the country profile.',
     'info.dl_debt_fr': 'Debtor countries (French names)',
     'info.dl_debt_en': 'Debtor countries (English names)',
     'info.dl_cred_fr': 'Creditor countries (French names)',
@@ -290,8 +294,10 @@ const COUNTRY_NAMES = {
 // Web Component
 // ---------------------------------------------------------------------------
 class ClubParisMap extends HTMLElement {
-  static DEBTOR_COLOR = '#f97316';
-  static CREDITOR_COLOR = '#1e40af';
+  static CREDITOR_PERMANENT_COLOR = '#1e40af';
+  static CREDITOR_ADHOC_COLOR = '#93c5fd';
+  static DEBTOR_ACCORD_COLOR = '#f97316';
+  static DEBTOR_ENCOURS_COLOR = '#fdba74';
   static DEFAULT_COLOR = '#e8c4b0';
 
   constructor() {
@@ -382,19 +388,29 @@ class ClubParisMap extends HTMLElement {
             </div>
             <div class="legend-bar">
               <div class="legend-item">
-                <div class="legend-swatch legend-swatch-creditor"></div>
-                <span class="legend-text">${this._t('map.legend_creditors')}</span>
+                <div class="legend-swatch legend-swatch-creditor-permanent"></div>
+                <span class="legend-text">${this._t('map.legend_creditor_permanent')}</span>
               </div>
               <div class="legend-item">
-                <div class="legend-swatch legend-swatch-debtor"></div>
-                <span class="legend-text">${this._t('map.legend_debtors')}</span>
+                <div class="legend-swatch legend-swatch-creditor-adhoc"></div>
+                <span class="legend-text">${this._t('map.legend_creditor_adhoc')}</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-swatch legend-swatch-debtor-accord"></div>
+                <span class="legend-text">${this._t('map.legend_debtor_accord')}</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-swatch legend-swatch-debtor-encours"></div>
+                <span class="legend-text">${this._t('map.legend_debtor_encours')}</span>
               </div>
             </div>
           </div>
+          <!-- SLIDER TEMPORAIREMENT DÉSACTIVÉ — à réactiver quand l'historique sera discuté avec Multifin1
           <div class="year-row">
             <input type="range" class="year-slider" id="year-slider" min="2010" max="2024" value="2024" step="1" />
             <div class="year-labels" id="year-labels"></div>
           </div>
+          -->
           <details class="info-row" id="info-row">
             <summary>
               <span class="info-chevron" aria-hidden="true">▸</span>
@@ -428,7 +444,7 @@ class ClubParisMap extends HTMLElement {
   }
 
   async _setup() {
-    this._buildYearLabels();
+    // this._buildYearLabels(); // SLIDER TEMPORAIREMENT DÉSACTIVÉ
     this._bindEvents();
     this._updateMapHeader();
     await this._loadData();
@@ -459,6 +475,7 @@ class ClubParisMap extends HTMLElement {
     setTimeout(() => { el.textContent = msg; }, 30);
   }
 
+  /* SLIDER TEMPORAIREMENT DÉSACTIVÉ
   _onYearChanged() {
     this._updateYearLabels();
     this._updateColors();
@@ -468,7 +485,9 @@ class ClubParisMap extends HTMLElement {
     this._updateTabindex();
     this._buildTables();
   }
+  */
 
+  /* SLIDER TEMPORAIREMENT DÉSACTIVÉ
   _buildYearLabels() {
     const container = this.shadowRoot.getElementById('year-labels');
     for (let y = 2010; y <= 2024; y++) {
@@ -479,6 +498,7 @@ class ClubParisMap extends HTMLElement {
       container.appendChild(btn);
     }
   }
+  */
 
   _bindEvents() {
     const sr = this.shadowRoot;
@@ -504,6 +524,7 @@ class ClubParisMap extends HTMLElement {
         this._updateColors();
       });
     });
+    /* SLIDER TEMPORAIREMENT DÉSACTIVÉ
     const slider = sr.getElementById('year-slider');
     slider.addEventListener('input', () => {
       this._selectedYear = parseInt(slider.value);
@@ -516,6 +537,7 @@ class ClubParisMap extends HTMLElement {
         this._onYearChanged();
       }
     });
+    */
 
     // Accordion table filter
     const tableFilter = sr.getElementById('info-table-filter');
@@ -604,17 +626,19 @@ class ClubParisMap extends HTMLElement {
     });
   }
 
+  /* SLIDER TEMPORAIREMENT DÉSACTIVÉ
   _updateYearLabels() {
     this.shadowRoot.querySelectorAll('.year-label').forEach(l => {
       l.classList.toggle('active', parseInt(l.dataset.year) === this._selectedYear);
     });
   }
+  */
 
   async _loadData() {
     const base = new URL('.', location.href).href;
     const [dataResp, topoResp] = await Promise.all([
       fetch(base + 'data.json'),
-      fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+      fetch(base + 'wb_countries.topojson')
     ]);
     this._data = await dataResp.json();
     const topo = await topoResp.json();
@@ -626,10 +650,8 @@ class ClubParisMap extends HTMLElement {
     const w = container.clientWidth;
     const h = container.clientHeight;
 
-    this._projection = d3.geoMercator()
-      .scale(w / 6.5)
-      .center([10, 25])
-      .translate([w / 2, h / 2]);
+    this._projection = d3.geoEqualEarth()
+      .fitSize([w, h], this._geojson);
 
     this._pathGen = d3.geoPath().projection(this._projection);
 
@@ -641,22 +663,41 @@ class ClubParisMap extends HTMLElement {
       .attr('aria-describedby', 'map-instructions')
       .style('display', 'block');
 
-    // Patterns used when renderMode === 'patterns' — kept deliberately sparse
-    // so the underlying geography stays readable.
+    // --- SVG pattern definitions ---
+    // 4 category patterns (renderMode === 'patterns') + 1 selection overlay
     const defs = svg.append('defs');
-    const debtorPat = defs.append('pattern')
-      .attr('id', 'pattern-debtor')
-      .attr('patternUnits', 'userSpaceOnUse')
-      .attr('width', 8).attr('height', 8)
-      .attr('patternTransform', 'rotate(45)');
-    debtorPat.append('rect').attr('width', 8).attr('height', 8).attr('fill', '#fde8d9');
-    debtorPat.append('rect').attr('x', 0).attr('y', 0).attr('width', 1.6).attr('height', 8).attr('fill', '#f97316');
-    const creditorPat = defs.append('pattern')
-      .attr('id', 'pattern-creditor')
-      .attr('patternUnits', 'userSpaceOnUse')
-      .attr('width', 8).attr('height', 8);
-    creditorPat.append('rect').attr('width', 8).attr('height', 8).attr('fill', '#eff6ff');
-    creditorPat.append('circle').attr('cx', 4).attr('cy', 4).attr('r', 1.1).attr('fill', '#1e40af');
+
+    // Debtor with agreement: diagonal stripes \ (dense, dark orange)
+    const pDA = defs.append('pattern').attr('id','pattern-debtor-accord')
+      .attr('patternUnits','userSpaceOnUse').attr('width',8).attr('height',8)
+      .attr('patternTransform','rotate(45)');
+    pDA.append('rect').attr('width',8).attr('height',8).attr('fill','#fde8d9');
+    pDA.append('rect').attr('width',1.8).attr('height',8).attr('fill','#f97316');
+
+    // Debtor without agreement: diagonal stripes / (sparse, light orange)
+    const pDE = defs.append('pattern').attr('id','pattern-debtor-encours')
+      .attr('patternUnits','userSpaceOnUse').attr('width',10).attr('height',10)
+      .attr('patternTransform','rotate(-45)');
+    pDE.append('rect').attr('width',10).attr('height',10).attr('fill','#fff7ed');
+    pDE.append('rect').attr('width',1.4).attr('height',10).attr('fill','#fdba74');
+
+    // Permanent creditor: large dots (dark blue)
+    const pCP = defs.append('pattern').attr('id','pattern-creditor-permanent')
+      .attr('patternUnits','userSpaceOnUse').attr('width',8).attr('height',8);
+    pCP.append('rect').attr('width',8).attr('height',8).attr('fill','#eff6ff');
+    pCP.append('circle').attr('cx',4).attr('cy',4).attr('r',1.4).attr('fill','#1e40af');
+
+    // Ad hoc creditor: small dots (light blue)
+    const pCA = defs.append('pattern').attr('id','pattern-creditor-adhoc')
+      .attr('patternUnits','userSpaceOnUse').attr('width',10).attr('height',10);
+    pCA.append('rect').attr('width',10).attr('height',10).attr('fill','#f0f9ff');
+    pCA.append('circle').attr('cx',5).attr('cy',5).attr('r',1.0).attr('fill','#3b82f6');
+
+    // Selection overlay: semi-transparent cross-hatching
+    const pSel = defs.append('pattern').attr('id','pattern-selection')
+      .attr('patternUnits','userSpaceOnUse').attr('width',6).attr('height',6)
+      .attr('patternTransform','rotate(45)');
+    pSel.append('rect').attr('width',1.5).attr('height',6).attr('fill','rgba(15,23,42,0.35)');
 
     const g = svg.append('g');
 
@@ -671,20 +712,20 @@ class ClubParisMap extends HTMLElement {
       .join('path')
       .attr('d', this._pathGen)
       .attr('class', 'country')
-      .attr('data-id', d => this._numToIso(String(d.id)) || '')
+      .attr('data-id', d => d.properties.ISO_A3 || '')
       .attr('fill', d => {
-        const iso = this._numToIso(String(d.id));
+        const iso = d.properties.ISO_A3;
         return iso ? this._getFill(iso) : '#e8c4b0';
       })
       .attr('stroke', '#90a4ae')
       .attr('stroke-width', 0.5)
       .style('cursor', 'pointer')
       .on('click', function(event, d) {
-        const iso = self._numToIso(String(d.id));
+        const iso = d.properties.ISO_A3;
         if (iso) self._selectCountry(iso);
       })
       .on('mouseenter', function(event, d) {
-        const iso = self._numToIso(String(d.id));
+        const iso = d.properties.ISO_A3;
         d3.select(this).attr('stroke', '#fff').attr('stroke-width', 1.5);
         self._showTooltip(event, iso, d);
       })
@@ -692,16 +733,12 @@ class ClubParisMap extends HTMLElement {
         self._moveTooltip(event);
       })
       .on('mouseleave', function() {
-        const iso = self._numToIso(String(d3.select(this).datum().id));
-        const isSel = iso === self._selectedIso;
-        d3.select(this)
-          .attr('stroke', isSel ? '#fbbf24' : '#90a4ae')
-          .attr('stroke-width', isSel ? 2 : 0.5);
+        d3.select(this).attr('stroke', '#90a4ae').attr('stroke-width', 0.5);
         self._hideTooltip();
       })
       .on('keydown', function(event) { self._onCountryKeydown(event); })
       .on('focus', function(event, d) {
-        const iso = self._numToIso(String(d.id));
+        const iso = d.properties.ISO_A3;
         self._showTooltipAtElement(this, iso, d);
       })
       .on('blur', function() { self._hideTooltip(); });
@@ -720,10 +757,7 @@ class ClubParisMap extends HTMLElement {
     const h = container.clientHeight;
     if (w < 1 || h < 1) return;
 
-    this._projection
-      .scale(w / 6.5)
-      .center([10, 25])
-      .translate([w / 2, h / 2]);
+    this._projection.fitSize([w, h], this._geojson);
     this._pathGen = d3.geoPath().projection(this._projection);
 
     this._svg.attr('width', w).attr('height', h);
@@ -740,14 +774,33 @@ class ClubParisMap extends HTMLElement {
         const iso = d3.select(this).attr('data-id');
         return iso ? self._getFill(iso) : '#e8c4b0';
       })
-      .attr('stroke', function() {
-        const iso = d3.select(this).attr('data-id');
-        return iso === self._selectedIso ? '#fbbf24' : '#90a4ae';
-      })
-      .attr('stroke-width', function() {
-        const iso = d3.select(this).attr('data-id');
-        return iso === self._selectedIso ? 2 : 0.5;
-      });
+      .attr('stroke', '#90a4ae')
+      .attr('stroke-width', 0.5);
+    this._updateSelectionOverlay();
+  }
+
+  _updateSelectionOverlay() {
+    this._g.selectAll('.selection-overlay').remove();
+    if (!this._selectedIso) return;
+    const sel = this._g.select(`path.country[data-id="${this._selectedIso}"]`);
+    if (sel.empty()) return;
+    const pathD = sel.attr('d');
+    const cat = this._getCategory(this._selectedIso);
+    if (this._renderMode === 'patterns') {
+      // Pattern mode → solid color fill on selected country
+      this._g.append('path').attr('class', 'selection-overlay')
+        .attr('d', pathD)
+        .attr('fill', this._categorySolidColor(cat))
+        .attr('stroke', '#1e293b').attr('stroke-width', 1.5)
+        .attr('pointer-events', 'none');
+    } else {
+      // Color mode → cross-hatching overlay on selected country
+      this._g.append('path').attr('class', 'selection-overlay')
+        .attr('d', pathD)
+        .attr('fill', 'url(#pattern-selection)')
+        .attr('stroke', '#1e293b').attr('stroke-width', 1.5)
+        .attr('pointer-events', 'none');
+    }
   }
 
   _tooltipText(iso, d) {
@@ -1018,69 +1071,61 @@ class ClubParisMap extends HTMLElement {
 
   // ---- Data helpers ----
 
-  _numToIso(numId) {
-    const map = {
-      '004':'AFG','008':'ALB','012':'DZA','024':'AGO','028':'ATG','032':'ARG',
-      '036':'AUS','040':'AUT','051':'ARM','031':'AZE','050':'BGD','052':'BRB',
-      '056':'BEL','084':'BLZ','204':'BEN','068':'BOL','070':'BIH','072':'BWA',
-      '076':'BRA','096':'BRN','100':'BGR','854':'BFA','108':'BDI','116':'KHM',
-      '120':'CMR','124':'CAN','132':'CPV','140':'CAF','148':'TCD','152':'CHL',
-      '156':'CHN','170':'COL','174':'COM','178':'COG','180':'COD','188':'CRI',
-      '384':'CIV','191':'HRV','192':'CUB','196':'CYP','203':'CZE','208':'DNK',
-      '262':'DJI','212':'DMA','214':'DOM','218':'ECU','818':'EGY','222':'SLV',
-      '226':'GNQ','232':'ERI','233':'EST','231':'ETH','242':'FJI','246':'FIN',
-      '250':'FRA','266':'GAB','270':'GMB','268':'GEO','276':'DEU','288':'GHA',
-      '300':'GRC','308':'GRD','320':'GTM','324':'GIN','624':'GNB','328':'GUY',
-      '332':'HTI','340':'HND','348':'HUN','352':'ISL','356':'IND','360':'IDN',
-      '364':'IRN','368':'IRQ','372':'IRL','376':'ISR','380':'ITA','388':'JAM',
-      '392':'JPN','400':'JOR','398':'KAZ','404':'KEN','408':'PRK','410':'KOR',
-      '414':'KWT','417':'KGZ','418':'LAO','428':'LVA','422':'LBN','426':'LSO',
-      '430':'LBR','434':'LBY','440':'LTU','442':'LUX','807':'MKD','450':'MDG',
-      '454':'MWI','458':'MYS','462':'MDV','466':'MLI','470':'MLT','478':'MRT',
-      '480':'MUS','484':'MEX','498':'MDA','496':'MNG','499':'MNE','504':'MAR',
-      '508':'MOZ','104':'MMR','516':'NAM','524':'NPL','528':'NLD','554':'NZL',
-      '558':'NIC','562':'NER','566':'NGA','578':'NOR','512':'OMN','586':'PAK',
-      '591':'PAN','598':'PNG','600':'PRY','604':'PER','608':'PHL','616':'POL',
-      '620':'PRT','634':'QAT','642':'ROU','643':'RUS','646':'RWA','882':'WSM',
-      '678':'STP','682':'SAU','686':'SEN','688':'SRB','690':'SYC','694':'SLE',
-      '702':'SGP','703':'SVK','705':'SVN','090':'SLB','706':'SOM','710':'ZAF',
-      '728':'SSD','724':'ESP','144':'LKA','662':'LCA','670':'VCT','729':'SDN',
-      '740':'SUR','748':'SWZ','752':'SWE','756':'CHE','760':'SYR','762':'TJK',
-      '834':'TZA','764':'THA','768':'TGO','780':'TTO','788':'TUN','792':'TUR',
-      '795':'TKM','800':'UGA','804':'UKR','784':'ARE','826':'GBR','840':'USA',
-      '858':'URY','860':'UZB','862':'VEN','704':'VNM','887':'YEM','894':'ZMB',
-      '716':'ZWE','-99':'XKX','659':'KNA'
-    };
-    return map[numId] || null;
-  }
-
   _getYearData() {
     return this._data ? this._data[String(this._selectedYear)] : null;
   }
 
-  _getFill(iso) {
+  _getCategory(iso) {
     const yd = this._getYearData();
-    if (!yd) return ClubParisMap.DEFAULT_COLOR;
+    if (!yd) return null;
     const c = yd.countries[iso];
-    if (!c) return ClubParisMap.DEFAULT_COLOR;
-    const isDebtor = !!(c.debtor && c.debtor.total > 0);
+    if (!c) return null;
     const isCreditor = !!c.creditor;
+    const isDebtor = !!(c.debtor && c.debtor.total > 0);
+    // Creditor takes precedence (dual-status countries show as creditors)
+    if (isCreditor) {
+      return c.creditor.statut ? 'creditor-adhoc' : 'creditor-permanent';
+    }
+    if (isDebtor) {
+      return c.debtor.type === 'accord' ? 'debtor-accord' : 'debtor-encours';
+    }
+    return null;
+  }
 
-    const debtorFill = this._renderMode === 'patterns'
-      ? 'url(#pattern-debtor)' : ClubParisMap.DEBTOR_COLOR;
-    const creditorFill = this._renderMode === 'patterns'
-      ? 'url(#pattern-creditor)' : ClubParisMap.CREDITOR_COLOR;
+  _categoryFill(cat) {
+    const C = ClubParisMap;
+    if (this._renderMode === 'patterns') {
+      return cat ? `url(#pattern-${cat})` : C.DEFAULT_COLOR;
+    }
+    switch (cat) {
+      case 'creditor-permanent': return C.CREDITOR_PERMANENT_COLOR;
+      case 'creditor-adhoc':     return C.CREDITOR_ADHOC_COLOR;
+      case 'debtor-accord':      return C.DEBTOR_ACCORD_COLOR;
+      case 'debtor-encours':     return C.DEBTOR_ENCOURS_COLOR;
+      default:                   return C.DEFAULT_COLOR;
+    }
+  }
 
+  _categorySolidColor(cat) {
+    const C = ClubParisMap;
+    switch (cat) {
+      case 'creditor-permanent': return C.CREDITOR_PERMANENT_COLOR;
+      case 'creditor-adhoc':     return C.CREDITOR_ADHOC_COLOR;
+      case 'debtor-accord':      return C.DEBTOR_ACCORD_COLOR;
+      case 'debtor-encours':     return C.DEBTOR_ENCOURS_COLOR;
+      default:                   return C.DEFAULT_COLOR;
+    }
+  }
+
+  _getFill(iso) {
+    const cat = this._getCategory(iso);
     if (this._filterMode === 'créditeur') {
-      return isCreditor ? creditorFill : ClubParisMap.DEFAULT_COLOR;
+      return cat?.startsWith('creditor') ? this._categoryFill(cat) : ClubParisMap.DEFAULT_COLOR;
     }
     if (this._filterMode === 'débiteur') {
-      return isDebtor ? debtorFill : ClubParisMap.DEFAULT_COLOR;
+      return cat?.startsWith('debtor') ? this._categoryFill(cat) : ClubParisMap.DEFAULT_COLOR;
     }
-    // Mode "all": debtor takes precedence over creditor for dual-status countries
-    if (isDebtor) return debtorFill;
-    if (isCreditor) return creditorFill;
-    return ClubParisMap.DEFAULT_COLOR;
+    return this._categoryFill(cat);
   }
 
   _updatePanel() {
@@ -1492,26 +1537,34 @@ class ClubParisMap extends HTMLElement {
         z-index: 1;
       }
 
-      /* Legend */
-      .legend-bar { display: flex; gap: 0.75rem; align-items: center; }
-      .legend-item { display: flex; align-items: center; gap: 0.35rem; }
+      /* Legend — 4 categories */
+      .legend-bar { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+      .legend-item { display: flex; align-items: center; gap: 0.3rem; }
       .legend-swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; border: 1px solid transparent; }
-      .legend-swatch-debtor { background: #f97316; border-color: #c2410c; }
-      .legend-swatch-creditor { background: #1e40af; border-color: #1e40af; }
-      .wrapper[data-render="patterns"] .legend-swatch-debtor {
-        background:
-          repeating-linear-gradient(45deg, #f97316 0 1.5px, #fde8d9 1.5px 8px);
-        border-color: #c2410c;
-      }
-      .wrapper[data-render="patterns"] .legend-swatch-creditor {
-        background:
-          radial-gradient(#1e40af 1px, transparent 1.3px) 0 0 / 8px 8px,
-          #eff6ff;
+      .legend-swatch-creditor-permanent { background: #1e40af; border-color: #1e40af; }
+      .legend-swatch-creditor-adhoc { background: #93c5fd; border-color: #3b82f6; }
+      .legend-swatch-debtor-accord { background: #f97316; border-color: #c2410c; }
+      .legend-swatch-debtor-encours { background: #fdba74; border-color: #f97316; }
+      /* Pattern mode swatches */
+      .wrapper[data-render="patterns"] .legend-swatch-creditor-permanent {
+        background: radial-gradient(#1e40af 1.2px, transparent 1.5px) 0 0 / 8px 8px, #eff6ff;
         border-color: #1e40af;
       }
-      .legend-text { font-size: 0.72rem; color: #475569; }
+      .wrapper[data-render="patterns"] .legend-swatch-creditor-adhoc {
+        background: radial-gradient(#3b82f6 0.8px, transparent 1.1px) 0 0 / 10px 10px, #f0f9ff;
+        border-color: #3b82f6;
+      }
+      .wrapper[data-render="patterns"] .legend-swatch-debtor-accord {
+        background: repeating-linear-gradient(45deg, #f97316 0 1.5px, #fde8d9 1.5px 8px);
+        border-color: #c2410c;
+      }
+      .wrapper[data-render="patterns"] .legend-swatch-debtor-encours {
+        background: repeating-linear-gradient(-45deg, #fdba74 0 1.2px, #fff7ed 1.2px 10px);
+        border-color: #f97316;
+      }
+      .legend-text { font-size: 0.68rem; color: #475569; }
 
-      /* Year row */
+      /* SLIDER TEMPORAIREMENT DÉSACTIVÉ
       .year-row {
         padding-top: 0.25rem;
       }
@@ -1542,6 +1595,7 @@ class ClubParisMap extends HTMLElement {
       }
       .year-label:hover { color: #c2410c; background: #fff7ed; }
       .year-label.active { color: #c2410c; font-weight: 700; }
+      */
 
       /* Info row — a11y description + download links, compact discreet disclosure */
       .info-row {
@@ -1734,7 +1788,7 @@ class ClubParisMap extends HTMLElement {
         .search-input { width: 160px; }
         .search-input:focus { width: 200px; }
         .panel { width: 280px; }
-        .year-label { font-size: 0.55rem; }
+        /* .year-label { font-size: 0.55rem; } SLIDER DÉSACTIVÉ */
       }
 
       @container wrapper (max-width: 480px) {
@@ -1747,7 +1801,7 @@ class ClubParisMap extends HTMLElement {
         .panel { width: 100%; max-width: 100%; }
         .panel-title { font-size: 1.2rem; }
         .info-value { font-size: 0.95rem; }
-        .year-label { font-size: 0.5rem; padding: 0.1rem 0.1rem; }
+        /* .year-label { font-size: 0.5rem; padding: 0.1rem 0.1rem; } SLIDER DÉSACTIVÉ */
       }
 
       @media (max-width: 700px) {
@@ -1755,7 +1809,7 @@ class ClubParisMap extends HTMLElement {
         .filter-spacer { flex: 0 0 100%; height: 0; }
         .search-input { width: 160px; }
         .panel { width: 280px; }
-        .year-label { font-size: 0.55rem; }
+        /* .year-label { font-size: 0.55rem; } SLIDER DÉSACTIVÉ */
       }
       @media (max-width: 480px) {
         .filter-row { gap: 0.35rem; row-gap: 0.4rem; }
@@ -1766,7 +1820,7 @@ class ClubParisMap extends HTMLElement {
         .panel { width: 100%; max-width: 100%; }
         .panel-title { font-size: 1.2rem; }
         .info-value { font-size: 0.95rem; }
-        .year-label { font-size: 0.5rem; padding: 0.1rem 0.1rem; }
+        /* .year-label { font-size: 0.5rem; padding: 0.1rem 0.1rem; } SLIDER DÉSACTIVÉ */
       }
     `;
   }
