@@ -83,8 +83,8 @@ def _fix_double_utf8(s):
 
 
 # Territoires français : leurs polygones ont des ISO_A3 distincts (5 DROM +
-# 7 COM/TAAF) mais le métier les considère comme partie intégrante de la
-# France au regard du Club de Paris. Sans remap, ce sont 12 polygones séparés
+# 7 COM/TAAF) mais ils relèvent d'un seul périmètre côté Club de Paris (la
+# France comme membre permanent). Sans remap, ce sont 12 polygones séparés
 # qui : (1) apparaissent en "pays sans antécédent" sur la carte alors que la
 # France elle-même est membre permanent, et (2) ouvrent un panel vide au clic.
 # Le remap les pousse vers FRA avant dissolve → un seul MultiPolygon "France"

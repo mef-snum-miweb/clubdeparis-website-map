@@ -70,7 +70,7 @@ Montants des créances APD / non-APD par pays débiteur et par année.
 |---|---|---|
 | `year` | `2024` | |
 | `iso` | `AFG` | Doit exister dans `countries.csv` |
-| `nom_metier` | `Afghanistan` | Nom tel qu'écrit par le métier dans son CSV source — sert au rapprochement manuel lors des mises à jour. Ignoré par le pipeline. |
+| `source_label` | `Afghanistan` | Nom tel qu'apparaissait dans le fichier source d'origine — sert au rapprochement manuel lors des mises à jour. Ignoré par le pipeline. |
 | `apd_eur` | `111000000.00` | Aide publique au développement, en euros bruts |
 | `napd_eur` | `957000000.00` | Non-APD, en euros bruts |
 
@@ -81,7 +81,7 @@ Informations sur les pays créditeurs membres du Club de Paris.
 |---|---|---|
 | `year` | `2024` | |
 | `iso` | `DEU` | Doit exister dans `countries.csv` |
-| `nom_metier` | `ALLEMAGNE` | Nom tel qu'écrit par le métier dans son CSV source (MAJUSCULES, sans accents) — sert au rapprochement manuel. Ignoré par le pipeline. |
+| `source_label` | `ALLEMAGNE` | Nom tel qu'apparaissait dans le fichier source d'origine (MAJUSCULES, sans accents) — sert au rapprochement manuel. Ignoré par le pipeline. |
 | `nb_accords` | `380` | Nombre d'accords signés |
 | `statut` | `Ad hoc` | `Ad hoc`, `Prospectif`, ou vide (permanent) |
 | `premiere_participation` | `1956` | Année de première participation |
