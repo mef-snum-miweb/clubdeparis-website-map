@@ -284,7 +284,7 @@
         }
       },
       "CPV": {
-        "country": "Cabo Verde",
+        "country": "Cap Vert",
         "debtor": {
           "apd": 121036804.56,
           "napd": 49675364.87,
@@ -380,7 +380,7 @@
         }
       },
       "EGY": {
-        "country": "République arabe d'Égypte",
+        "country": "Égypte",
         "debtor": {
           "apd": 6892930436.72,
           "napd": 4984791985.92,
@@ -510,7 +510,7 @@
         }
       },
       "GTM": {
-        "country": "Guatemala",
+        "country": "Guatémala",
         "debtor": {
           "apd": 167768132.29,
           "napd": 0,
@@ -592,7 +592,7 @@
         }
       },
       "IRN": {
-        "country": "République islamique d'Iran",
+        "country": "Iran",
         "debtor": {
           "apd": 3000000,
           "napd": 48000000,
@@ -602,7 +602,7 @@
         }
       },
       "IRQ": {
-        "country": "Iraq",
+        "country": "Irak",
         "debtor": {
           "apd": 5906932515.01,
           "napd": 2439161150.7,
@@ -652,7 +652,7 @@
         }
       },
       "KGZ": {
-        "country": "République kirghize",
+        "country": "Kirghizstan",
         "debtor": {
           "apd": 216979480.64,
           "napd": 21091087.85,
@@ -682,7 +682,7 @@
         }
       },
       "LAO": {
-        "country": "République démocratique populaire lao",
+        "country": "Laos",
         "debtor": {
           "apd": 455000000,
           "napd": 203000000,
@@ -702,7 +702,7 @@
         }
       },
       "LBR": {
-        "country": "Liberia",
+        "country": "Libéria",
         "debtor": {
           "apd": 0,
           "napd": 1762838.62,
@@ -759,6 +759,12 @@
           "total": 6693424823.08,
           "type": "accord",
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/maroc.html"
+        },
+        "creditor": {
+          "nbAccords": 5,
+          "statut": "Ad hoc",
+          "premiereParticipation": 1986,
+          "url": null
         }
       },
       "MDA": {
@@ -799,6 +805,12 @@
           "total": 2585215344.03,
           "type": "accord",
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/mexique.html"
+        },
+        "creditor": {
+          "nbAccords": 2,
+          "statut": "Ad hoc",
+          "premiereParticipation": 1983,
+          "url": null
         }
       },
       "MKD": {
@@ -922,7 +934,7 @@
         }
       },
       "NGA": {
-        "country": "Nigeria",
+        "country": "Nigéria",
         "debtor": {
           "apd": 918975403.9,
           "napd": 43442740,
@@ -1168,7 +1180,7 @@
         }
       },
       "SVK": {
-        "country": "République slovaque",
+        "country": "Slovaquie",
         "debtor": {
           "apd": 1000000,
           "napd": 0,
@@ -1198,7 +1210,7 @@
         }
       },
       "SYR": {
-        "country": "République arabe syrienne",
+        "country": "Syrie",
         "debtor": {
           "apd": 861000000,
           "napd": 248000000,
@@ -1258,7 +1270,7 @@
         }
       },
       "TLS": {
-        "country": "Timor-Leste",
+        "country": "Timor oriental",
         "debtor": {
           "apd": 23000000,
           "napd": 0,
@@ -1294,13 +1306,19 @@
         }
       },
       "TUR": {
-        "country": "Türkiye",
+        "country": "Turquie",
         "debtor": {
           "apd": 3603853710.85,
           "napd": 686697202.36,
           "total": 4290550913.21,
           "type": "accord",
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/accords-signes-avec-le-club-de-p/par%20pays-debiteurs/turquie.html"
+        },
+        "creditor": {
+          "nbAccords": 6,
+          "statut": "Ad hoc",
+          "premiereParticipation": 2001,
+          "url": null
         }
       },
       "TZA": {
@@ -1364,7 +1382,7 @@
         }
       },
       "VEN": {
-        "country": "République bolivarienne du Venezuela",
+        "country": "Venezuela",
         "debtor": {
           "apd": 70000000,
           "napd": 8621000000,
@@ -1374,7 +1392,7 @@
         }
       },
       "VNM": {
-        "country": "Viêt Nam",
+        "country": "Vietnam",
         "debtor": {
           "apd": 12593029864.31,
           "napd": 864581967.62,
@@ -1414,7 +1432,7 @@
         }
       },
       "YEM": {
-        "country": "République du Yémen",
+        "country": "Yémen",
         "debtor": {
           "apd": 417080486.26,
           "napd": 1232898678.02,
@@ -1715,7 +1733,7 @@
         "country": "Saint-Barthélemy (Fr.)"
       },
       "BLZ": {
-        "country": "Belize"
+        "country": "Bélize"
       },
       "BMU": {
         "country": "Bermudes (R.-U.)"
@@ -1892,7 +1910,7 @@
         "country": "Îles mineures éloignées des États-Unis (É.-U.)"
       },
       "VAT": {
-        "country": "Cité du Vatican"
+        "country": "Vatican"
       },
       "VGB": {
         "country": "Îles Vierges britanniques (R.-U.)"
@@ -1909,7 +1927,7 @@
       "debtorNapd": 128691077292.53,
       "debtorTotal": 320167820413.68,
       "debtorCount": 141,
-      "creditorCount": 33
+      "creditorCount": 36
     }
   }
 }

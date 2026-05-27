@@ -27,7 +27,7 @@ BHS,Bahamas
 BIH,Bosnie-Herzégovine
 BLM,Saint-Barthélemy (Fr.)
 BLR,Biélorussie
-BLZ,Belize
+BLZ,Bélize
 BMU,Bermudes (R.-U.)
 BOL,Bolivie
 BRA,Brésil
@@ -49,7 +49,7 @@ COG,République du Congo
 COK,Îles Cook (N.-Z.)
 COL,Colombie
 COM,Comores
-CPV,Cabo Verde
+CPV,Cap Vert
 CRI,Costa Rica
 CUB,Cuba
 CUW,Curaçao (P.-B.)
@@ -64,7 +64,7 @@ DNK,Danemark
 DOM,République dominicaine
 DZA,Algérie
 ECU,Équateur
-EGY,République arabe d'Égypte
+EGY,Égypte
 ERI,Érythrée
 ESP,Espagne
 EST,Estonie
@@ -87,7 +87,7 @@ GNQ,Guinée équatoriale
 GRC,Grèce
 GRD,Grenade
 GRL,Groenland (Dan.)
-GTM,Guatemala
+GTM,Guatémala
 GUM,Guam (É.-U.)
 GUY,Guyana
 HKG,"Hong Kong (RAS, Chine)"
@@ -100,8 +100,8 @@ IDN,Indonésie
 IMN,Île de Man (R.-U.)
 IND,Inde
 IRL,Irlande
-IRN,République islamique d'Iran
-IRQ,Iraq
+IRN,Iran
+IRQ,Irak
 ISL,Islande
 ISR,Israël
 ITA,Italie
@@ -111,15 +111,15 @@ JOR,Jordanie
 JPN,Japon
 KAZ,Kazakhstan
 KEN,Kenya
-KGZ,République kirghize
+KGZ,Kirghizstan
 KHM,Cambodge
 KIR,Kiribati
 KNA,Saint-Christophe-et-Niévès
 KOR,République de Corée
 KWT,Koweït
-LAO,République démocratique populaire lao
+LAO,Laos
 LBN,Liban
-LBR,Liberia
+LBR,Libéria
 LBY,Libye
 LCA,Sainte-Lucie
 LIE,Liechtenstein
@@ -154,7 +154,7 @@ NAM,Namibie
 NCL,Nouvelle-Calédonie (Fr.)
 NER,Niger
 NFK,Île Norfolk (Aus.)
-NGA,Nigeria
+NGA,Nigéria
 NIC,Nicaragua
 NIU,Niue (N.-Z.)
 NLD,Pays-Bas
@@ -197,13 +197,13 @@ SRB,Serbie
 SSD,Soudan du Sud
 STP,Sao Tomé-et-Principe
 SUR,Suriname
-SVK,République slovaque
+SVK,Slovaquie
 SVN,Slovénie
 SWE,Suède
 SWZ,Eswatini
 SXM,Saint-Martin (P.-B.)
 SYC,Seychelles
-SYR,République arabe syrienne
+SYR,Syrie
 TCA,Îles Turques-et-Caïques (R.-U.)
 TCD,Tchad
 TGO,Togo
@@ -211,11 +211,11 @@ THA,Thaïlande
 TJK,Tadjikistan
 TKL,Tokelau (N.-Z.)
 TKM,Turkménistan
-TLS,Timor-Leste
+TLS,Timor oriental
 TON,Tonga
 TTO,Trinité-et-Tobago
 TUN,Tunisie
-TUR,Türkiye
+TUR,Turquie
 TUV,Tuvalu
 TZA,Tanzanie
 UGA,Ouganda
@@ -224,17 +224,17 @@ UMI,Îles mineures éloignées des États-Unis (É.-U.)
 URY,Uruguay
 USA,États-Unis d'Amérique
 UZB,Ouzbékistan
-VAT,Cité du Vatican
+VAT,Vatican
 VCT,Saint-Vincent-et-les-Grenadines
-VEN,République bolivarienne du Venezuela
+VEN,Venezuela
 VGB,Îles Vierges britanniques (R.-U.)
 VIR,Îles Vierges des États-Unis (É.-U.)
-VNM,Viêt Nam
+VNM,Vietnam
 VUT,Vanuatu
 WLF,Wallis-et-Futuna (Fr.)
 WSM,Samoa
 XKX,Kosovo
-YEM,République du Yémen
+YEM,Yémen
 ZAF,Afrique du Sud
 ZMB,Zambie
 ZWE,Zimbabwe
