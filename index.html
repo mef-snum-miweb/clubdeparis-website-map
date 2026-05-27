@@ -661,7 +661,15 @@ class ClubParisMap extends HTMLElement {
 
     this._zoom = d3.zoom()
       .scaleExtent([1, 8])
-      .on('zoom', (event) => g.attr('transform', event.transform));
+      .on('zoom', (event) => {
+        g.attr('transform', event.transform);
+        const k = event.transform.k;
+        this._currentZoomK = k;
+        // Maintenir un contour visuellement constant à tous les niveaux de zoom :
+        // l'épaisseur SVG est divisée par k pour compenser le scale du `g`.
+        g.selectAll('path.country').attr('stroke-width', 0.5 / k);
+        g.selectAll('.selection-overlay').attr('stroke-width', 1.5 / k);
+      });
     svg.call(this._zoom);
 
     const self = this;
@@ -699,7 +707,8 @@ class ClubParisMap extends HTMLElement {
       })
       .on('mouseenter', function(event, d) {
         const iso = d.properties.ISO_A3;
-        d3.select(this).attr('stroke', '#fff').attr('stroke-width', 1.5);
+        const k = self._currentZoomK ?? 1;
+        d3.select(this).attr('stroke', '#fff').attr('stroke-width', 1.5 / k);
         self._showTooltip(event, iso);
       })
       .on('mousemove', function(event, d) {
@@ -708,7 +717,8 @@ class ClubParisMap extends HTMLElement {
         if (iso === 'CHN') self._refreshChnTooltip(event);
       })
       .on('mouseleave', function() {
-        d3.select(this).attr('stroke', '#90a4ae').attr('stroke-width', 0.5);
+        const k = self._currentZoomK ?? 1;
+        d3.select(this).attr('stroke', '#90a4ae').attr('stroke-width', 0.5 / k);
         self._hideTooltip();
       })
       .on('keydown', function(event) { self._onCountryKeydown(event); })
@@ -752,7 +762,7 @@ class ClubParisMap extends HTMLElement {
         return iso ? self._getFill(iso) : 'url(#pattern-no-data-0)';
       })
       .attr('stroke', '#90a4ae')
-      .attr('stroke-width', 0.5);
+      .attr('stroke-width', 0.5 / (this._currentZoomK ?? 1));
     this._updateSelectionOverlay();
   }
 
@@ -767,7 +777,7 @@ class ClubParisMap extends HTMLElement {
     this._g.append('path').attr('class', 'selection-overlay')
       .attr('d', pathD)
       .attr('fill', 'url(#pattern-selection)')
-      .attr('stroke', '#1e293b').attr('stroke-width', 1.5)
+      .attr('stroke', '#05243a').attr('stroke-width', 1.5 / (this._currentZoomK ?? 1))
       .attr('pointer-events', 'none');
   }
 
@@ -1508,17 +1518,19 @@ class ClubParisMap extends HTMLElement {
          épais sur les bandes et les tirets — sous 22px les périodes 12-14 du
          pattern SVG ne tiennent qu'une fois dans le swatch et tous les rendus
          se ressemblent. */
-      .legend-swatch { width: 30px; height: 30px; border-radius: 3px; flex-shrink: 0; border: 1px solid rgba(15,23,42,0.25); background-repeat: repeat; }
-      /* Creditors — bandes blanches continues \ sur fond bleu.
+      .legend-swatch { width: 30px; height: 30px; border-radius: 3px; flex-shrink: 0; border: 1px solid rgba(15,23,42,0.45); background-repeat: repeat; box-sizing: border-box; }
+      /* Creditors — bandes blanches continues / sur fond bleu (sens identique
+         à la carte : SVG rotate(45) et CSS 135deg produisent tous deux des
+         bandes orientées bas-gauche → haut-droite).
          Period 12px, bande blanche = 1 / 4 / 6 px (sync. avec mkStripes). */
       .legend-swatch-creditor-permanent {
-        background: repeating-linear-gradient(45deg, #4d84bc 0 11px, #ffffff 11px 12px);
+        background: repeating-linear-gradient(135deg, #4d84bc 0 11px, #ffffff 11px 12px);
       }
       .legend-swatch-creditor-adhoc {
-        background: repeating-linear-gradient(45deg, #4d84bc 0 8px, #ffffff 8px 12px);
+        background: repeating-linear-gradient(135deg, #4d84bc 0 8px, #ffffff 8px 12px);
       }
       .legend-swatch-creditor-prospective {
-        background: repeating-linear-gradient(45deg, #7fa9d1 0 8px, #ffffff 8px 14px);
+        background: repeating-linear-gradient(135deg, #7fa9d1 0 8px, #ffffff 8px 14px);
       }
       /* Debtors — petits tirets blancs courts en quinconce / sur fond jaune.
          SVG inline pour gérer la rotation + les segments courts (que
