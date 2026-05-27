@@ -786,12 +786,15 @@ class ClubParisMap extends HTMLElement {
   }
 
   _tooltipText(iso, opts = {}) {
+    if (iso === 'CHN' && opts.taiwan) {
+      // Sur la zone Taïwan, le tooltip est limité au préfixe + nom : les stats
+      // de dette/créancier de la Chine continentale ne sont pas attribuables
+      // sémantiquement à l'île selon la convention WB/FMI.
+      return this._t('map.taiwan_prefix') + this._isoToName(iso);
+    }
     const yd = this._getYearData();
     const c = yd?.countries[iso];
     let text = this._isoToName(iso);
-    if (iso === 'CHN' && opts.taiwan) {
-      text = this._t('map.taiwan_prefix') + text;
-    }
     if (c) {
       if (c.debtor && c.debtor.total > 0) text += ` — ${this._t('map.debt')}: ${this._fmt(c.debtor.total)}`;
       if (c.creditor) text += ` — ${this._t('map.creditor_label')} (${c.creditor.nbAccords} ${this._t('map.agreements')})`;
