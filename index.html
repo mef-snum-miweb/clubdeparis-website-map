@@ -559,16 +559,16 @@ class ClubParisMap extends HTMLElement {
     this._data = await dataResp.json();
     const topo = await topoResp.json();
     this._geojson = topojson.feature(topo, topo.objects.countries);
-    // Land backdrop : on dissout les pays plutôt que d'utiliser
-    // `topo.objects.land`. Les deux objets du fichier ne partagent aucun arc
-    // (land = 132 arcs très simplifiés, countries = 1668 arcs détaillés), ce
-    // qui faisait déborder le backdrop blanc dans l'océan le long des côtes
-    // découpées (fjords, Sinaï, etc.). La fusion topologique garantit que le
-    // contour land = union exacte des contours countries, au pixel près.
-    this._landGeojson = {
-      type: 'Feature',
-      geometry: topojson.merge(topo, topo.objects.countries.geometries),
-    };
+    // Land backdrop : on garde `topo.objects.land` du topojson, qui couvre
+    // les territoires non listés dans `countries` (Sahara Occidental, Taïwan,
+    // Antarctique, Cachemire, etc.). Le tradeoff connu est que cette couche
+    // est simplifiée (132 arcs vs 1668 pour countries), donc elle peut
+    // légèrement déborder dans l'océan le long des côtes très découpées
+    // (fjords scandinaves, Sinaï). Corriger ça proprement demanderait une
+    // diff géométrique runtime, hors scope du projet stdlib-only.
+    this._landGeojson = topo.objects.land
+      ? topojson.feature(topo, topo.objects.land)
+      : null;
     this._wbNames = {};
     for (const f of this._geojson.features) {
       const p = f.properties || {};
@@ -683,7 +683,7 @@ class ClubParisMap extends HTMLElement {
     // antécédent" (rendus avec le pattern no-data sur fond blanc + hachures).
     if (this._landGeojson) {
       g.selectAll('path.land')
-        .data([this._landGeojson])
+        .data(this._landGeojson.features)
         .join('path')
         .attr('class', 'land')
         .attr('d', this._pathGen)
