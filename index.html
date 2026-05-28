@@ -515,6 +515,7 @@ class ClubParisMap extends HTMLElement {
         const sel = activeIdx >= 0 ? options[activeIdx] : options[0];
         if (sel) {
           this._selectCountry(sel.dataset.iso);
+          this._zoomToCountry(sel.dataset.iso);
           searchInput.value = this._isoToName(sel.dataset.iso);
           searchDropdown.classList.remove('open');
         }
@@ -528,6 +529,7 @@ class ClubParisMap extends HTMLElement {
       const opt = e.target.closest('.search-option');
       if (opt) {
         this._selectCountry(opt.dataset.iso);
+        this._zoomToCountry(opt.dataset.iso);
         searchInput.value = this._isoToName(opt.dataset.iso);
         searchDropdown.classList.remove('open');
       }
@@ -667,7 +669,7 @@ class ClubParisMap extends HTMLElement {
 
     this._zoom = d3.zoom()
       .scaleExtent([1, 8])
-      .translateExtent([[0, 0], [w, h]])
+      .translateExtent([[-Infinity, 0], [Infinity, h]])
       .on('zoom', (event) => {
         g.attr('transform', event.transform);
         const k = event.transform.k;
@@ -757,7 +759,7 @@ class ClubParisMap extends HTMLElement {
     this._g.selectAll('path.land').attr('d', this._pathGen);
     this._g.selectAll('path.country').attr('d', this._pathGen);
 
-    this._zoom.translateExtent([[0, 0], [w, h]]);
+    this._zoom.translateExtent([[-Infinity, 0], [Infinity, h]]);
     this._svg.call(this._zoom.transform, d3.zoomIdentity);
   }
 
@@ -867,6 +869,33 @@ class ClubParisMap extends HTMLElement {
     panel.classList.add('open');
     panel.removeAttribute('inert');
     this._announce(this._t('a11y.country_selected').replace('{0}', this._isoToName(iso)));
+  }
+
+  // Zoome et recentre la viewport sur le pays cible. Utilisé après une
+  // sélection depuis l'autocomplete de recherche (pas depuis un clic carte,
+  // où le contexte spatial est déjà sous les yeux de l'utilisateur).
+  _zoomToCountry(iso) {
+    if (!this._g || !this._geojson || !this._svg || !this._pathGen) return;
+    const feature = this._geojson.features.find(f => f.properties.ISO_A3 === iso);
+    if (!feature) return;
+    const container = this.shadowRoot.getElementById('map-area');
+    if (!container) return;
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    const bounds = this._pathGen.bounds(feature);
+    const dx = bounds[1][0] - bounds[0][0];
+    const dy = bounds[1][1] - bounds[0][1];
+    if (!(dx > 0) || !(dy > 0)) return;
+    const cx = (bounds[0][0] + bounds[1][0]) / 2;
+    const cy = (bounds[0][1] + bounds[1][1]) / 2;
+    // 60% du viewport occupé par le pays, borné par scaleExtent [1, 8].
+    const scale = Math.max(1, Math.min(8, 0.6 / Math.max(dx / w, dy / h)));
+    const tx = w / 2 - scale * cx;
+    const ty = h / 2 - scale * cy;
+    this._svg.transition().duration(600).call(
+      this._zoom.transform,
+      d3.zoomIdentity.translate(tx, ty).scale(scale)
+    );
   }
 
   _closePanel() {
