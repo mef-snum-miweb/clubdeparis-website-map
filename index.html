@@ -4,16 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Club de Paris — Carte interactive</title>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     ZONE DE CONFIGURATION POUR L'INTÉGRATEUR
+     Tout ce qui peut devoir être adapté lors de l'intégration dans une autre
+     page (Jahia, etc.) est regroupé ici, au début du fichier.
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- (1) LIBRAIRIES JS — par défaut servies depuis un CDN.
+        Pour utiliser des copies LOCALES, remplacez simplement les deux URLs
+        ci-dessous (ex. src="lib/d3.v7.min.js" et src="lib/topojson-client.min.js"). -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+
+<!-- (2) CHEMINS DES DONNÉES (2 JSON + 4 CSV).
+        - basePath : préfixe appliqué à TOUTES les ressources ci-dessous.
+            • '' (défaut)            → fichiers à côté de la page hôte
+            • '/fileadmin/clubdeparis/' → chemin local absolu
+            • 'https://mon-serveur/…/'  → URL absolue (penser au CORS pour les JSON)
+          Gardez le '/' final.
+        - Chaque entrée peut aussi contenir une URL complète : dans ce cas,
+          laissez basePath = ''. -->
+<script>
+  window.CLUB_PARIS_CONFIG = {
+    basePath: '',
+    data: {
+      json:     'data.json',
+      topojson: 'wb_countries.topojson',
+    },
+    csv: {
+      debtorsFr:   'downloads/club_de_paris_pays_debiteurs.csv',
+      debtorsEn:   'downloads/club_de_paris_debtor_countries.csv',
+      creditorsFr: 'downloads/club_de_paris_pays_crediteurs.csv',
+      creditorsEn: 'downloads/club_de_paris_creditor_countries.csv',
+    },
+  };
+</script>
+
+<!-- (3) STYLES À COPIER avec le composant.
+        Aucune règle ne cible <body> : tout est encapsulé sous la classe
+        .club-paris-map-wrapper (et dans le Shadow DOM interne du composant),
+        donc rien ne « fuit » dans la page hôte. -->
 <style>
-  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 0; box-sizing: border-box; }
-  club-paris-map { width: 100%; height: 100vh; }
+  .club-paris-map-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1a1a2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  .club-paris-map-wrapper club-paris-map { display: block; width: 100%; height: 100vh; }
 </style>
+
+<!-- Reset propre à CETTE page de démonstration autonome.
+     NE PAS copier dans la page hôte (Jahia gère déjà les marges de <body>). -->
+<style>body { margin: 0; }</style>
 </head>
 <body>
 
-<club-paris-map></club-paris-map>
+<!-- ↓ Wrapper à copier dans la page hôte, avec les blocs (1), (2) et (3) ci-dessus. ↓ -->
+<div class="club-paris-map-wrapper">
+  <club-paris-map></club-paris-map>
+</div>
 
 <script>
 // ---------------------------------------------------------------------------
@@ -243,6 +296,18 @@ class ClubParisMap extends HTMLElement {
     return TRANSLATIONS[this._lang][key] ?? TRANSLATIONS.fr[key] ?? key;
   }
 
+  // Résolution des chemins de ressources à partir de window.CLUB_PARIS_CONFIG
+  // (défini en tête de fichier dans la zone de configuration de l'intégrateur).
+  _basePath() {
+    return (window.CLUB_PARIS_CONFIG && window.CLUB_PARIS_CONFIG.basePath) || '';
+  }
+  _dataUrl(key) {
+    return this._basePath() + window.CLUB_PARIS_CONFIG.data[key];
+  }
+  _csvUrl(key) {
+    return this._basePath() + window.CLUB_PARIS_CONFIG.csv[key];
+  }
+
   _isoToName(iso) {
     if (this._lang === 'fr') {
       const yd = this._getYearData();
@@ -348,10 +413,10 @@ class ClubParisMap extends HTMLElement {
               <div class="info-dl-title">${this._t('info.dl_title')}</div>
               <div class="info-dl-note">${this._t('info.dl_note')}</div>
               <ul class="info-dl-list">
-                <li><a href="downloads/club_de_paris_pays_debiteurs.csv" download>${this._t('info.dl_debt_fr')}</a></li>
-                <li><a href="downloads/club_de_paris_debtor_countries.csv" download>${this._t('info.dl_debt_en')}</a></li>
-                <li><a href="downloads/club_de_paris_pays_crediteurs.csv" download>${this._t('info.dl_cred_fr')}</a></li>
-                <li><a href="downloads/club_de_paris_creditor_countries.csv" download>${this._t('info.dl_cred_en')}</a></li>
+                <li><a href="${this._csvUrl('debtorsFr')}" download>${this._t('info.dl_debt_fr')}</a></li>
+                <li><a href="${this._csvUrl('debtorsEn')}" download>${this._t('info.dl_debt_en')}</a></li>
+                <li><a href="${this._csvUrl('creditorsFr')}" download>${this._t('info.dl_cred_fr')}</a></li>
+                <li><a href="${this._csvUrl('creditorsEn')}" download>${this._t('info.dl_cred_en')}</a></li>
               </ul>
               <h3 class="info-tables-title" id="info-tables-title"></h3>
               <div class="info-tables-search">
@@ -551,10 +616,9 @@ class ClubParisMap extends HTMLElement {
   */
 
   async _loadData() {
-    const base = new URL('.', location.href).href;
     const [dataResp, topoResp] = await Promise.all([
-      fetch(base + 'data.json'),
-      fetch(base + 'wb_countries.topojson')
+      fetch(this._dataUrl('json')),
+      fetch(this._dataUrl('topojson'))
     ]);
     this._data = await dataResp.json();
     const topo = await topoResp.json();
