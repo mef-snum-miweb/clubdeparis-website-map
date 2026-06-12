@@ -10,6 +10,7 @@ Carte du monde zoomable, slider temporel, bascule FR/EN, données par pays créd
 .
 ├── index.html          # Application (HTML + JS, un seul fichier, zéro build)
 ├── data.json           # Dataset consolidé, généré — ne pas éditer à la main
+├── wb_countries.topojson  # Fond cartographique (TopoJSON), généré — voir plus bas
 ├── sources/            # Source de vérité, éditable à la main
 │   ├── countries.csv           # iso, name_fr, name_en
 │   ├── debtors.csv             # year, iso, apd_eur, napd_eur
@@ -116,6 +117,64 @@ Colonnes :
 - Créditeurs EN : `iso, country, nb_agreements, status, first_participation, country_profile`
 
 Pour le dataset complet 2010-2024, consulter directement `sources/debtors.csv` et `sources/creditors.csv` (long format).
+
+## Intégration dans une page tierce (Jahia, CMS…)
+
+La carte est un Web Component autonome (`<club-paris-map>`, Shadow DOM) pensé pour être réinséré dans une autre page sans build. Tout ce qui peut devoir être adapté est **regroupé en tête de `index.html`**, dans une zone de configuration commentée. L'intégrateur ne touche normalement qu'à ce bloc.
+
+### Les 3 blocs configurables (tête de `index.html`)
+
+| Bloc | Rôle | À modifier si… |
+|---|---|---|
+| **(1)** `<script src>` D3 + topojson | Librairies JS (CDN par défaut) | …on veut servir les libs en local (réseau sans CDN) → remplacer les deux URLs par des chemins locaux (`lib/d3.v7.min.js`, etc.). |
+| **(2)** `window.CLUB_PARIS_CONFIG` | Chemins des **2 JSON** + **4 CSV** | …les données ne sont pas dans le même dossier que la page hôte → renseigner `basePath` (voir ci-dessous). |
+| **(3)** `<style>.club-paris-map-wrapper{…}</style>` | Habillage du conteneur | …on veut une hauteur autre que `100vh`, un autre fond, etc. |
+
+```js
+// Bloc (2) — valeurs par défaut
+window.CLUB_PARIS_CONFIG = {
+  basePath: '',                       // préfixe appliqué à TOUTES les ressources (garder le '/' final)
+  data: { json: 'data.json', topojson: 'wb_countries.topojson' },
+  csv:  {
+    debtorsFr:   'downloads/club_de_paris_pays_debiteurs.csv',
+    debtorsEn:   'downloads/club_de_paris_debtor_countries.csv',
+    creditorsFr: 'downloads/club_de_paris_pays_crediteurs.csv',
+    creditorsEn: 'downloads/club_de_paris_creditor_countries.csv',
+  },
+};
+```
+
+### Comprendre `basePath`
+
+`basePath` est préfixé à chaque chemin de ressource. Les chemins relatifs sont résolus **par rapport au dossier de la page hôte** (pas la racine du domaine).
+
+| `basePath` | Résultat pour `data.json` (page servie en `/maps/page.html`) | Quand l'utiliser |
+|---|---|---|
+| `''` (défaut) | `/maps/data.json` | Les 6 fichiers sont déposés **à côté de la page** (et `downloads/` juste en dessous). |
+| `'/fileadmin/clubdeparis/'` | `/fileadmin/clubdeparis/data.json` | **Cas Jahia courant** : données dans un espace média séparé. Chemin absolu sur le même domaine, robuste quelle que soit l'URL de la page. |
+| `'https://cdn.exemple/clubdeparis/'` | `https://cdn.exemple/clubdeparis/data.json` | Hébergement sur un **autre domaine** (FQDN). Penser au CORS, cf. ci-dessous. |
+
+> En clair : `basePath: ''` suffit **si** l'intégrateur peut poser les fichiers dans le dossier de la page. Dès que les données vivent dans un espace média distinct (fréquent en Jahia), `basePath` devient le réglage attendu — ce n'est plus une simple sécurité.
+
+### Mode opératoire
+
+1. **Récupérer les ressources** : `index.html`, `data.json`, `wb_countries.topojson`, et les 4 CSV de `downloads/`.
+2. **Déposer les fichiers** sur l'hébergement cible (même dossier que la page, ou espace média).
+3. **Régler le bloc (2)** : ajuster `basePath` (ou mettre des URLs complètes par entrée en laissant `basePath: ''`).
+4. **Copier dans la page hôte**, dans cet ordre :
+   - les `<script src>` des libs — bloc (1) ;
+   - le `<script>window.CLUB_PARIS_CONFIG = …</script>` — bloc (2) ;
+   - le `<style>.club-paris-map-wrapper{…}</style>` — bloc (3) ;
+   - le wrapper `<div class="club-paris-map-wrapper"><club-paris-map></club-paris-map></div>` ;
+   - le gros `<script>` du composant (en bas de `index.html`).
+5. **Ne PAS copier** le `<style>body{margin:0}</style>` : il est propre à la page de démo autonome (marqué comme tel dans le fichier). Jahia gère ses propres marges.
+
+### Points de vigilance
+
+- **CORS (JSON uniquement)** : `data.json` et `wb_countries.topojson` sont chargés via `fetch()`. Si `basePath` pointe vers un **domaine différent** de la page, le serveur de fichiers doit renvoyer l'en-tête `Access-Control-Allow-Origin`, sinon le navigateur bloque le chargement. Sur le même domaine (chemin relatif ou absolu) : aucun souci.
+- **CSV cross-origin** : les 4 CSV sont de simples liens `<a download>`, non soumis au CORS. En revanche, l'attribut `download` peut être ignoré si le CSV est sur un autre domaine (il s'ouvrira dans l'onglet au lieu de se télécharger).
+- **Isolation CSS** : aucune règle ne cible `<body>` ; tout le style est encapsulé sous `.club-paris-map-wrapper` et dans le Shadow DOM interne. Rien ne « fuit » dans la page hôte, et la page hôte ne peut pas casser la carte (Shadow DOM).
+- **Langue** : le composant choisit FR/EN via l'attribut `<club-paris-map lang="en">`, le paramètre `?lang=en`, ou l'attribut `lang` du `<html>` hôte (dans cet ordre de priorité).
 
 ## Fond cartographique et conventions
 
