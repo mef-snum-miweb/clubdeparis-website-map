@@ -126,7 +126,7 @@ const TRANSLATIONS = {
     'info.summary': 'Descriptif et téléchargement des données',
     'info.desc_title': 'À propos de cette carte',
     'info.desc_body':
-      '<p>Cette carte interactive présente les créances d\'Aide Publique au Développement (APD) gérées par le <a href="https://clubdeparis.org" target="_blank" rel="noopener">Club de Paris</a> en 2024. Utilisez les filtres pour isoler les pays créanciers ou débiteurs, et cliquez sur un pays pour ouvrir sa fiche détaillée.</p>' +
+      '<p>Cette carte interactive présente les créances d\'Aide Publique au Développement (APD) gérées par le <a href="https://clubdeparis.org" target="_blank" rel="noopener">Club de Paris</a> en 2025. Utilisez les filtres pour isoler les pays créanciers ou débiteurs, et cliquez sur un pays pour ouvrir sa fiche détaillée.</p>' +
       '<p>Les pays <strong>débiteurs</strong> (en orange) bénéficient d\'accords de restructuration de dette. Les pays <strong>créanciers</strong> (en bleu) sont membres permanents, <em>ad hoc</em> ou prospectifs du Club de Paris.</p>',
     'info.dl_title': 'Télécharger les données (snapshot année la plus récente)',
     'info.dl_note':
@@ -212,7 +212,7 @@ const TRANSLATIONS = {
     'info.summary': 'Map description and data downloads',
     'info.desc_title': 'About this map',
     'info.desc_body':
-      '<p>This interactive map shows Official Development Assistance (ODA) claims managed by the <a href="https://clubdeparis.org/en" target="_blank" rel="noopener">Paris Club</a> as of 2024. Use the filters to isolate creditor or debtor countries, and click on any country to open its detailed profile.</p>' +
+      '<p>This interactive map shows Official Development Assistance (ODA) claims managed by the <a href="https://clubdeparis.org/en" target="_blank" rel="noopener">Paris Club</a> as of 2025. Use the filters to isolate creditor or debtor countries, and click on any country to open its detailed profile.</p>' +
       '<p><strong>Debtor</strong> countries (orange) benefit from debt restructuring agreements. <strong>Creditor</strong> countries (blue) are permanent, <em>ad hoc</em> or prospective members of the Paris Club.</p>',
     'info.dl_title': 'Download the data (latest year snapshot)',
     'info.dl_note':
@@ -269,7 +269,7 @@ class ClubParisMap extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._data = null;
-    this._selectedYear = 2024;
+    this._selectedYear = 2025;
     this._filterMode = 'all';
     this._selectedIso = null;
     this._geojson = null;

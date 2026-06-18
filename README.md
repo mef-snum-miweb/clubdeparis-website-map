@@ -1,8 +1,8 @@
 # map-creances-apd
 
-Visualisation interactive des créances APD (Aide Publique au Développement) gérées par le Club de Paris, 2010-2024.
+Visualisation interactive des créances APD (Aide Publique au Développement) gérées par le Club de Paris (millésime annuel).
 
-Carte du monde zoomable, slider temporel, bascule FR/EN, données par pays créditeur et débiteur.
+Carte du monde zoomable, bascule FR/EN, données par pays créditeur et débiteur.
 
 ## Structure
 
@@ -39,6 +39,25 @@ Les 4 CSV de `sources/` sont la **seule source de vérité**. `data.json` et `do
 3. Le workflow `build-data.yml` regénère `data.json` automatiquement et le commit.
 4. Le workflow `deploy.yml` déploie la nouvelle version sur GitHub Pages.
 
+> ⚠️ **Si la colonne `year` des CSV change** (passage au millésime suivant), il faut aussi mettre à jour `index.html` — voir [Mise à jour annuelle (changement de millésime)](#mise-à-jour-annuelle-changement-de-millésime).
+
+### Mise à jour annuelle (changement de millésime)
+
+`data.json` est indexé par année (clé `"2025"`, `"2026"`…). `index.html` lit cette clé via une **valeur hardcodée** dans le composant. Si on bump l'année dans les CSV sans synchroniser le HTML, **la carte se vide silencieusement** (le code cherche `data["2025"]` alors que `data.json` contient maintenant `"2026"` — `undefined`, plus rien à afficher). C'est le bug rencontré en juin 2026 lors du passage 2024 → 2025.
+
+**Procédure** quand le millésime change (ex. `YYYY → YYYY+1`) :
+
+1. Mettre à jour la colonne `year` de [`sources/debtors.csv`](sources/debtors.csv) et [`sources/creditors.csv`](sources/creditors.csv) (le pipeline n'exporte que la dernière année trouvée).
+2. Dans [`index.html`](index.html), remplacer `YYYY` par `YYYY+1` aux 3 endroits suivants :
+   - `this._selectedYear = YYYY;` (champ unique du composant — c'est la cause du bug si oublié).
+   - Description FR : `…gérées par le Club de Paris en YYYY.`
+   - Description EN : `…managed by the Paris Club as of YYYY.`
+3. Commit + push. Le workflow `build-data.yml` régénère `data.json` et `downloads/`, `deploy.yml` publie sur GitHub Pages.
+
+Un `grep -n "YYYY" index.html` avant commit suffit à vérifier qu'aucune occurrence ne traîne (le slider d'années est désactivé — les références `2010..2024` dans les blocs `/* SLIDER TEMPORAIREMENT DÉSACTIVÉ */` peuvent être ignorées).
+
+> Note pour les intégrateurs Jahia/CMS : si `index.html` a été copié dans une page tierce (cf. [Intégration dans une page tierce](#intégration-dans-une-page-tierce-jahia-cms)), il faut **re-copier** le bloc du composant après chaque bump, sinon la page hôte continuera de pointer sur l'ancien millésime.
+
 ### Régénérer localement
 
 ```bash
@@ -69,7 +88,7 @@ Montants des créances APD / non-APD par pays débiteur et par année.
 
 | Colonne | Exemple | Note |
 |---|---|---|
-| `year` | `2024` | |
+| `year` | `2025` | Millésime courant. Si on bump cette valeur, **synchroniser `index.html`** — cf. [Mise à jour annuelle](#mise-à-jour-annuelle-changement-de-millésime). |
 | `iso` | `AFG` | Doit exister dans `countries.csv` |
 | `source_label` | `Afghanistan` | Nom tel qu'apparaissait dans le fichier source d'origine — sert au rapprochement manuel lors des mises à jour. Ignoré par le pipeline. |
 | `apd_eur` | `111000000.00` | Aide publique au développement, en euros bruts |
@@ -80,7 +99,7 @@ Informations sur les pays créditeurs membres du Club de Paris.
 
 | Colonne | Exemple | Note |
 |---|---|---|
-| `year` | `2024` | |
+| `year` | `2025` | Millésime courant. Si on bump cette valeur, **synchroniser `index.html`** — cf. [Mise à jour annuelle](#mise-à-jour-annuelle-changement-de-millésime). |
 | `iso` | `DEU` | Doit exister dans `countries.csv` |
 | `source_label` | `ALLEMAGNE` | Nom tel qu'apparaissait dans le fichier source d'origine (MAJUSCULES, sans accents) — sert au rapprochement manuel. Ignoré par le pipeline. |
 | `nb_accords` | `380` | Nombre d'accords signés |
@@ -116,7 +135,7 @@ Colonnes :
 - Créditeurs FR : `iso, pays, nb_accords, statut, premiere_participation, fiche_pays`
 - Créditeurs EN : `iso, country, nb_agreements, status, first_participation, country_profile`
 
-Pour le dataset complet 2010-2024, consulter directement `sources/debtors.csv` et `sources/creditors.csv` (long format).
+Pour le dataset complet du millésime courant, consulter directement `sources/debtors.csv` et `sources/creditors.csv` (long format).
 
 ## Intégration dans une page tierce (Jahia, CMS…)
 
@@ -175,6 +194,7 @@ window.CLUB_PARIS_CONFIG = {
 - **CSV cross-origin** : les 4 CSV sont de simples liens `<a download>`, non soumis au CORS. En revanche, l'attribut `download` peut être ignoré si le CSV est sur un autre domaine (il s'ouvrira dans l'onglet au lieu de se télécharger).
 - **Isolation CSS** : aucune règle ne cible `<body>` ; tout le style est encapsulé sous `.club-paris-map-wrapper` et dans le Shadow DOM interne. Rien ne « fuit » dans la page hôte, et la page hôte ne peut pas casser la carte (Shadow DOM).
 - **Langue** : le composant choisit FR/EN via l'attribut `<club-paris-map lang="en">`, le paramètre `?lang=en`, ou l'attribut `lang` du `<html>` hôte (dans cet ordre de priorité).
+- **Bump d'année (chaque nouveau millésime)** : `data.json` est indexé par année (`"2025"`, `"2026"`…) et le composant lit cette clé via une valeur hardcodée. Quand le dépôt source publie un nouveau millésime, il faut **re-copier le bloc du composant** dans la page hôte, sinon la carte se vide silencieusement (`undefined` au lieu des données). Procédure détaillée côté repo : [Mise à jour annuelle](#mise-à-jour-annuelle-changement-de-millésime). Côté intégrateur, c'est juste « re-coller le `<script>` à jour ».
 
 ## Fond cartographique et conventions
 
@@ -282,7 +302,7 @@ Premier élément focusable de la page, visuellement caché (`top: -100px`) jusq
 
 ### Attributs ARIA
 
-- `<svg role="img" aria-label="Carte mondiale des créances du Club de Paris pour l'année 2024" aria-describedby="map-instructions">` — mis à jour à chaque changement d'année.
+- `<svg role="img" aria-label="Carte mondiale des créances du Club de Paris pour l'année {millésime}" aria-describedby="map-instructions">` — mis à jour à chaque changement d'année.
 - Paragraphe `.sr-only#map-instructions` lu par les lecteurs d'écran : explique `Tab`, flèches, `Entrée`, et renvoie vers le panneau descriptif.
 - Région `aria-live="polite"` (`#sr-announce`) qui annonce `« {Pays} sélectionné »` aux lecteurs d'écran quand un pays est choisi.
 - `<details>` natif pour l'accordéon (support clavier et ARIA inclus).
@@ -319,7 +339,7 @@ Bascule automatique via `?lang=en` ou `html[lang]`. Toutes les chaînes a11y (in
 
 - Zoom/pan de la carte non accessibles au clavier (mais le parcours des pays via flèches couvre l'essentiel du cas d'usage « trouver un pays »).
 - Pas de mode sombre auto (mais bon contraste garanti en mode clair).
-- Alternative tableau ne couvre que l'**année courante** — le dataset complet 2010-2024 reste accessible via le téléchargement CSV long format dans `sources/`.
+- Alternative tableau ne couvre que l'**année courante** — le dataset complet du millésime reste accessible via le téléchargement CSV long format dans `sources/`.
 
 ### Tester l'accessibilité
 
