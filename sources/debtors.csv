@@ -22,8 +22,8 @@ year,iso,source_label,apd_usd,napd_usd,type
 2025,CHN,Chine,7180676016,472017668.8,encours
 2025,CIV,Côte d'Ivoire,2163306059,981771289.2,accord
 2025,CMR,Cameroun,1323672529,132941802.3,accord
-2025,COD,Congo. République démocratique du,77448981.39,8612750,accord
-2025,COG,Congo. République du,259616447,280930988.1,accord
+2025,COD,"Congo, République démocratique du",77448981.39,8612750,accord
+2025,COG,"Congo, République du",259616447,280930988.1,accord
 2025,COL,Colombie,5010592419,97938067.79,encours
 2025,COM,Comores,,2131547.18,accord
 2025,CPV,Cap Vert,120623163,50759439.68,accord
@@ -40,10 +40,10 @@ year,iso,source_label,apd_usd,napd_usd,type
 2025,ETH,Ethiopie,1203866465,749396069.6,accord
 2025,FJI,Fidji,154548560.5,36740000,accord
 2025,GAB,Gabon,501237414.6,458519355.4,accord
-2025,GEO,Gambie,464125,,accord
-2025,GHA,Géorgie,1491778887,98070397.56,accord
+2025,GMB,Gambie,464125,,accord
+2025,GEO,Géorgie,1491778887,98070397.56,accord
 2025,GIN,Guinée,233987061.4,257548137.9,accord
-2025,GMB,Ghana,1189630940,2661778058,accord
+2025,GHA,Ghana,1189630940,2661778058,accord
 2025,GNB,Guinée-Bissau,,25210000,accord
 2025,GNQ,Guinée équatoriale,,79161640.81,accord
 2025,GRC,Grèce,,24145414610,encours
@@ -99,7 +99,7 @@ year,iso,source_label,apd_usd,napd_usd,type
 2025,PLW,Palau,,5134204,encours
 2025,PNG,Papouasie-Nouvelle-Guinée,441515290.6,1953088327,accord
 2025,POL,Pologne,2309604211,4547144181,accord
-2025,PRK,Corée. République populaire démocratique de ,53385860.52,2019142839,encours
+2025,PRK,"Corée, République populaire démocratique de ",53385860.52,2019142839,encours
 2025,PRY,Paraguay,282351903.1,29257500,encours
 2025,ROU,Roumanie,334812684,,accord
 2025,RWA,Rwanda,657182513.3,7378862.08,encours
