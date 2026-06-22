@@ -633,10 +633,19 @@ class ClubParisMap extends HTMLElement {
     this._landGeojson = topo.objects.land
       ? topojson.feature(topo, topo.objects.land)
       : null;
+    // Plusieurs features peuvent partager le même ISO_A3 après remap (FRA =
+    // Hexagone + 7 COM). On retient le NAM_0 de l'entrée WB_STATUS='Member State'
+    // pour ne pas qu'un territoire outre-mer écrase le nom du pays principal
+    // (sans cette règle, FRA finit sur "Wallis and Futuna"). Même logique que
+    // load_countries() dans processing/build_data.py.
     this._wbNames = {};
     for (const f of this._geojson.features) {
       const p = f.properties || {};
-      if (p.ISO_A3 && p.NAM_0) this._wbNames[p.ISO_A3] = p.NAM_0;
+      const iso = p.ISO_A3, name = p.NAM_0;
+      if (!iso || !name) continue;
+      if (!(iso in this._wbNames) || p.WB_STATUS === 'Member State') {
+        this._wbNames[iso] = name;
+      }
     }
   }
 
