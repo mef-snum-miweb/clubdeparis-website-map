@@ -80,19 +80,19 @@ Liste de tous les pays présents dans le dataset.
 | Colonne | Exemple | Note |
 |---|---|---|
 | `iso` | `AFG` | ISO 3166-1 alpha-3 |
-| `name_fr` | `Afghanistan` | Nom affiché en français |
-| `name_en` | `Afghanistan` | Nom affiché en anglais |
+| `name_fr` | `Afghanistan` | Nom affiché en français. Le nom anglais est lu côté pipeline depuis le topojson Banque Mondiale (`NAM_0`), pas depuis ce CSV. |
 
 ### `debtors.csv`
-Montants des créances APD / non-APD par pays débiteur et par année.
+Montants des créances APD / non-APD par pays débiteur et par année. Montants en **dollars US bruts** (source : Banque Mondiale / DGT).
 
 | Colonne | Exemple | Note |
 |---|---|---|
 | `year` | `2025` | Millésime courant. Si on bump cette valeur, **synchroniser `index.html`** — cf. [Mise à jour annuelle](#mise-à-jour-annuelle-changement-de-millésime). |
 | `iso` | `AFG` | Doit exister dans `countries.csv` |
 | `source_label` | `Afghanistan` | Nom tel qu'apparaissait dans le fichier source d'origine — sert au rapprochement manuel lors des mises à jour. Ignoré par le pipeline. |
-| `apd_eur` | `111000000.00` | Aide publique au développement, en euros bruts |
-| `napd_eur` | `957000000.00` | Non-APD, en euros bruts |
+| `apd_usd` | `111000000.00` | Aide publique au développement, en dollars US bruts |
+| `napd_usd` | `957000000.00` | Non-APD, en dollars US bruts |
+| `type` | `accord` | `accord` (accord signé) ou `encours` (en cours de négociation). Affecté côté frontend au style des hachures. |
 
 ### `creditors.csv`
 Informations sur les pays créditeurs membres du Club de Paris.
@@ -101,7 +101,7 @@ Informations sur les pays créditeurs membres du Club de Paris.
 |---|---|---|
 | `year` | `2025` | Millésime courant. Si on bump cette valeur, **synchroniser `index.html`** — cf. [Mise à jour annuelle](#mise-à-jour-annuelle-changement-de-millésime). |
 | `iso` | `DEU` | Doit exister dans `countries.csv` |
-| `source_label` | `ALLEMAGNE` | Nom tel qu'apparaissait dans le fichier source d'origine (MAJUSCULES, sans accents) — sert au rapprochement manuel. Ignoré par le pipeline. |
+| `sources_label` | `ALLEMAGNE` | Nom tel qu'apparaissait dans le fichier source d'origine (MAJUSCULES, sans accents) — sert au rapprochement manuel. Ignoré par le pipeline. |
 | `nb_accords` | `380` | Nombre d'accords signés |
 | `statut` | `Ad hoc` | `Ad hoc`, `Prospectif`, ou vide (permanent) |
 | `premiere_participation` | `1956` | Année de première participation |
