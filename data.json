@@ -1483,6 +1483,16 @@
           "url": null
         }
       },
+      "BDI": {
+        "country": "Burundi",
+        "debtor": {
+          "apd": 0,
+          "napd": 0,
+          "total": 0,
+          "type": "",
+          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/pays-accords-signes/sommaire-pays-debiteurs/par%20pays-debiteurs/burundi.html"
+        }
+      },
       "AUS": {
         "country": "Australie",
         "creditor": {
@@ -1726,9 +1736,6 @@
       "ATF": {
         "country": "Terres australes et antarctiques françaises (Fr.)"
       },
-      "BDI": {
-        "country": "Burundi"
-      },
       "BES": {
         "country": "Bonaire, Saint-Eustache et Saba (P.-B.)"
       },
@@ -1932,7 +1939,7 @@
       "debtorApd": 214696518286,
       "debtorNapd": 128050712011.62,
       "debtorTotal": 342747230297.62,
-      "debtorCount": 141,
+      "debtorCount": 142,
       "creditorCount": 37
     }
   }
