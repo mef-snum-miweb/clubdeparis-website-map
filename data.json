@@ -1493,6 +1493,22 @@
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/pays-accords-signes/sommaire-pays-debiteurs/par%20pays-debiteurs/burundi.html"
         }
       },
+      "BRA": {
+        "country": "Brésil",
+        "debtor": {
+          "apd": 0,
+          "napd": 0,
+          "total": 0,
+          "type": "accord",
+          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/pays-accords-signes/sommaire-pays-debiteurs/par%20pays-debiteurs/bresil.html"
+        },
+        "creditor": {
+          "nbAccords": 78,
+          "statut": null,
+          "premiereParticipation": 1985,
+          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/pays-accords-signes/sommaire-pays-creanciers/par-pays-crediteurs/bresil.html"
+        }
+      },
       "AUS": {
         "country": "Australie",
         "creditor": {
@@ -1518,15 +1534,6 @@
           "statut": null,
           "premiereParticipation": 1956,
           "url": "https://clubdeparis.org/sites/clubdeparis/accueil/pays-accords-signes/sommaire-pays-creanciers/par-pays-crediteurs/belgique.html"
-        }
-      },
-      "BRA": {
-        "country": "Brésil",
-        "creditor": {
-          "nbAccords": 78,
-          "statut": null,
-          "premiereParticipation": 1985,
-          "url": "https://clubdeparis.org/sites/clubdeparis/accueil/pays-accords-signes/sommaire-pays-creanciers/par-pays-crediteurs/bresil.html"
         }
       },
       "CAN": {
@@ -1939,7 +1946,7 @@
       "debtorApd": 214696518286,
       "debtorNapd": 128050712011.62,
       "debtorTotal": 342747230297.62,
-      "debtorCount": 142,
+      "debtorCount": 143,
       "creditorCount": 37
     }
   }
