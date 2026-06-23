@@ -1299,12 +1299,17 @@ class ClubParisMap extends HTMLElement {
     if (!c) { el.innerHTML = `<p class="no-data">${this._t('map.no_data')}</p>`; return; }
 
     const name = this._isoToName(this._selectedIso);
-    const isDebtor = c.debtor && c.debtor.total > 0;
+    // hasDebtorEntry = présence dans debtors.csv (peut avoir montants nuls/indéfinis).
+    // hasDebtorAmount = montants effectivement > 0. On affiche la section débiteur
+    // dès qu'il y a une entrée (avec lien fiche), et on n'affiche les cartes
+    // APD/non-APD que s'il y a un montant à montrer.
+    const hasDebtorEntry = !!c.debtor;
+    const hasDebtorAmount = hasDebtorEntry && c.debtor.total > 0;
     const isCreditor = !!c.creditor;
 
     let html = `<h2 class="panel-title">${this._escapeHtml(name)}</h2>`;
 
-    if (!isDebtor && !isCreditor) {
+    if (!hasDebtorEntry && !isCreditor) {
       html += `<p class="no-data">${this._t('map.no_data')}</p>`;
       el.innerHTML = html;
       return;
@@ -1336,29 +1341,31 @@ class ClubParisMap extends HTMLElement {
       }
     }
 
-    if (isDebtor) {
+    if (hasDebtorEntry) {
       const d = c.debtor;
       html += `<div class="panel-section-title">${this._t('panel.section_debtor').toUpperCase()}</div>`;
-      html += `
-        <div class="info-card">
-          <div class="info-icon info-icon-blue">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      if (hasDebtorAmount) {
+        html += `
+          <div class="info-card">
+            <div class="info-icon info-icon-blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="info-body">
+              <span class="info-label">${this._t('panel.apd_label')}</span>
+              <span class="info-value">${this._fmtPanel(d.apd)}</span>
+            </div>
           </div>
-          <div class="info-body">
-            <span class="info-label">${this._t('panel.apd_label')}</span>
-            <span class="info-value">${this._fmtPanel(d.apd)}</span>
+          <div class="info-card">
+            <div class="info-icon info-icon-orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="info-body">
+              <span class="info-label">${this._t('panel.napd_label')}</span>
+              <span class="info-value">${this._fmtPanel(d.napd)}</span>
+            </div>
           </div>
-        </div>
-        <div class="info-card">
-          <div class="info-icon info-icon-orange">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <div class="info-body">
-            <span class="info-label">${this._t('panel.napd_label')}</span>
-            <span class="info-value">${this._fmtPanel(d.napd)}</span>
-          </div>
-        </div>
-      `;
+        `;
+      }
       if (d.url) {
         html += `<a class="panel-cta" href="${this._escapeHtml(this._localizedUrl(d.url))}" target="_blank" rel="noopener">${this._t('panel.debtor_link')}</a>`;
       }
