@@ -147,6 +147,7 @@ const TRANSLATIONS = {
     'info.tables_title': 'Données détaillées pour l\'année {0}',
     'info.tables_search_placeholder': 'Filtrer les pays du tableau…',
     'info.tables_no_result': 'Aucun pays ne correspond à la recherche.',
+    'info.tables_count_status': 'Résultats du filtre : {0} pays créancier(s), {1} pays débiteur(s).',
     'info.table_creditors': 'Pays créditeurs ({0})',
     'info.table_debtors': 'Pays débiteurs ({0})',
     'info.col_country': 'Pays',
@@ -233,6 +234,7 @@ const TRANSLATIONS = {
     'info.tables_title': 'Detailed data for year {0}',
     'info.tables_search_placeholder': 'Filter countries in the table…',
     'info.tables_no_result': 'No country matches the search.',
+    'info.tables_count_status': 'Filter results: {0} creditor result(s), {1} debtor result(s).',
     'info.table_creditors': 'Creditor countries ({0})',
     'info.table_debtors': 'Debtor countries ({0})',
     'info.col_country': 'Country',
@@ -444,7 +446,7 @@ class ClubParisMap extends HTMLElement {
                 <label class="sr-only" for="info-table-filter">${this._t('info.tables_search_placeholder')}</label>
                 <input type="search" id="info-table-filter" class="info-table-filter-input" placeholder="${this._t('info.tables_search_placeholder')}" autocomplete="off" />
               </div>
-              <div class="info-tables" id="info-tables">
+              <div class="info-tables" id="info-tables" role="region" aria-labelledby="info-tables-title">
                 <!-- populated by _buildTables() -->
               </div>
               <p class="info-table-empty sr-only" id="info-table-empty" role="status" aria-live="polite">${this._t('info.tables_no_result')}</p>
@@ -1155,6 +1157,21 @@ class ClubParisMap extends HTMLElement {
     });
     const emptyEl = sr.getElementById('info-table-empty');
     if (emptyEl) emptyEl.hidden = anyVisible;
+
+    // RGAA 7.5 — restituer le nombre de résultats par tableau aux technologies
+    // d'assistance après chaque filtrage. Le cas « 0 résultat » est déjà couvert
+    // par #info-table-empty ; on annonce ici les cas intermédiaires.
+    if (q && anyVisible) {
+      const countRole = (role) => {
+        const sec = sr.querySelector(`.info-table-section[data-role="${role}"]`);
+        return sec ? [...sec.querySelectorAll('tbody tr')].filter(r => !r.hidden).length : 0;
+      };
+      this._announce(
+        this._t('info.tables_count_status')
+          .replace('{0}', countRole('creditors'))
+          .replace('{1}', countRole('debtors'))
+      );
+    }
   }
 
   // ------- Roving tabindex on country paths (keyboard accessibility) -------
@@ -1448,7 +1465,9 @@ class ClubParisMap extends HTMLElement {
         font-family: inherit;
         box-shadow: 0 2px 8px rgba(0,0,0,.15);
       }
-      .search-input::placeholder { color: #94a3b8; }
+      /* Contraste ≥ 4,5:1 sur fond blanc (RGAA 3.2/3.3) — #64748b = 4,76:1 */
+      .search-input::placeholder,
+      .info-table-filter-input::placeholder { color: #64748b; }
       .search-input:focus {
         background: #fff;
         box-shadow: 0 2px 12px rgba(0,0,0,.2);
