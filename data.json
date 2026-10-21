@@ -163,6 +163,16 @@
           "url": null
         }
       },
+      "BLZ": {
+        "country": "Bélize",
+        "debtor": {
+          "apd": 300000,
+          "napd": 0,
+          "total": 300000,
+          "type": "encours",
+          "url": null
+        }
+      },
       "BOL": {
         "country": "Bolivie",
         "debtor": {
@@ -499,8 +509,8 @@
         "country": "Grèce",
         "debtor": {
           "apd": 0,
-          "napd": 24145414610,
-          "total": 24145414610,
+          "napd": 30003773334,
+          "total": 30003773334,
           "type": "encours",
           "url": null
         }
@@ -1769,9 +1779,6 @@
       "BLM": {
         "country": "Saint-Barthélemy (Fr.)"
       },
-      "BLZ": {
-        "country": "Bélize"
-      },
       "BMU": {
         "country": "Bermudes (R.-U.)"
       },
@@ -1957,10 +1964,10 @@
       }
     },
     "totals": {
-      "debtorApd": 214696518286,
-      "debtorNapd": 128050712011.62,
-      "debtorTotal": 342747230297.62,
-      "debtorCount": 145,
+      "debtorApd": 214696818286,
+      "debtorNapd": 133909070735.62,
+      "debtorTotal": 348605889021.62,
+      "debtorCount": 146,
       "creditorCount": 37
     }
   }
