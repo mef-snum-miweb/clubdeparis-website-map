@@ -1317,11 +1317,9 @@ class ClubParisMap extends HTMLElement {
 
     const name = this._isoToName(this._selectedIso);
     // hasDebtorEntry = présence dans debtors.csv (peut avoir montants nuls/indéfinis).
-    // hasDebtorAmount = montants effectivement > 0. On affiche la section débiteur
-    // dès qu'il y a une entrée (avec lien fiche), et on n'affiche les cartes
-    // APD/non-APD que s'il y a un montant à montrer.
+    // On affiche la section débiteur dès qu'il y a une entrée (avec lien fiche),
+    // et chaque carte APD / non-APD seulement si son montant existe.
     const hasDebtorEntry = !!c.debtor;
-    const hasDebtorAmount = hasDebtorEntry && c.debtor.total > 0;
     const isCreditor = !!c.creditor;
 
     let html = `<h2 class="panel-title">${this._escapeHtml(name)}</h2>`;
@@ -1361,7 +1359,9 @@ class ClubParisMap extends HTMLElement {
     if (hasDebtorEntry) {
       const d = c.debtor;
       html += `<div class="panel-section-title">${this._t('panel.section_debtor').toUpperCase()}</div>`;
-      if (hasDebtorAmount) {
+      // Chaque carte n'est affichée que si le montant existe (demande DGTrésor :
+      // masquer la rubrique entière plutôt qu'afficher une valeur vide).
+      if (d.apd) {
         html += `
           <div class="info-card">
             <div class="info-icon info-icon-blue">
@@ -1372,6 +1372,10 @@ class ClubParisMap extends HTMLElement {
               <span class="info-value">${this._fmtPanel(d.apd)}</span>
             </div>
           </div>
+        `;
+      }
+      if (d.napd) {
+        html += `
           <div class="info-card">
             <div class="info-icon info-icon-orange">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
