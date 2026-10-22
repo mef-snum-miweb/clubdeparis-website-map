@@ -1402,7 +1402,10 @@ class ClubParisMap extends HTMLElement {
     return url.replace('clubdeparis.org/', 'clubdeparis.org/en/');
   }
 
+  // Valeur absente (cellule vide dans le CSV → 0 dans data.json) : on n'affiche
+  // rien, pour ne pas confondre avec une valeur réelle arrondie à 0 (demande DGTrésor).
   _fmt(val) {
+    if (!val) return '';
     const m = Math.round(val / 1e6);
     if (m === 0) return '0 \u0024';
     if (m >= 1000) return `${(m / 1000).toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Md\u0024`;
@@ -1410,6 +1413,7 @@ class ClubParisMap extends HTMLElement {
   }
 
   _fmtPanel(val) {
+    if (!val) return '';
     const m = Math.round(val / 1e6);
     if (m === 0) return '0 \u0024';
     if (m >= 1000) {
