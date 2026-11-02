@@ -1318,7 +1318,7 @@ class ClubParisMap extends HTMLElement {
     const name = this._isoToName(this._selectedIso);
     // hasDebtorEntry = présence dans debtors.csv (peut avoir montants nuls/indéfinis).
     // On affiche la section débiteur dès qu'il y a une entrée (avec lien fiche),
-    // et chaque carte APD / non-APD seulement si son montant existe.
+    // et toujours les deux cartes APD / non-APD, même si un montant est vide.
     const hasDebtorEntry = !!c.debtor;
     const isCreditor = !!c.creditor;
 
@@ -1359,10 +1359,9 @@ class ClubParisMap extends HTMLElement {
     if (hasDebtorEntry) {
       const d = c.debtor;
       html += `<div class="panel-section-title">${this._t('panel.section_debtor').toUpperCase()}</div>`;
-      // Chaque carte n'est affichée que si le montant existe (demande DGTrésor :
-      // masquer la rubrique entière plutôt qu'afficher une valeur vide).
-      if (d.apd) {
-        html += `
+      // Les deux cartes sont toujours affichées ; un montant absent laisse la
+      // valeur vide (demande DGTrésor).
+      html += `
           <div class="info-card">
             <div class="info-icon info-icon-blue">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -1372,10 +1371,6 @@ class ClubParisMap extends HTMLElement {
               <span class="info-value">${this._fmtPanel(d.apd)}</span>
             </div>
           </div>
-        `;
-      }
-      if (d.napd) {
-        html += `
           <div class="info-card">
             <div class="info-icon info-icon-orange">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -1386,7 +1381,6 @@ class ClubParisMap extends HTMLElement {
             </div>
           </div>
         `;
-      }
       if (d.url) {
         html += `<a class="panel-cta" href="${this._escapeHtml(this._localizedUrl(d.url))}" target="_blank" rel="noopener">${this._t('panel.debtor_link')}</a>`;
       }
@@ -1409,22 +1403,25 @@ class ClubParisMap extends HTMLElement {
   // Valeur absente (cellule vide dans le CSV → 0 dans data.json) : on n'affiche
   // rien, pour ne pas confondre avec une valeur réelle arrondie à 0 (demande DGTrésor).
   _fmt(val) {
-    if (!val) return '';
-    const m = Math.round(val / 1e6);
-    if (m === 0) return '0 \u0024';
-    if (m >= 1000) return `${(m / 1000).toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Md\u0024`;
-    return `${m.toLocaleString('fr-FR')} M\u0024`;
+    return this._fmtAmount(val, 'M\u0024', 'Md\u0024');
   }
 
   _fmtPanel(val) {
+    return this._fmtAmount(val, 'millions \u0024', 'milliards \u0024');
+  }
+
+  // Arrondi à un chiffre après la virgule, en millions (ou en milliards à
+  // partir de 1 000 M$). Ex. : 372,4 millions $ / 1,9 milliards $.
+  _fmtAmount(val, unitM, unitMd) {
     if (!val) return '';
-    const m = Math.round(val / 1e6);
+    const opts = { minimumFractionDigits: 1, maximumFractionDigits: 1 };
+    const m = Math.round(val / 1e5) / 10;
     if (m === 0) return '0 \u0024';
     if (m >= 1000) {
-      const mds = (m / 1000).toLocaleString('fr-FR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-      return `${mds} milliards \u0024`;
+      const md = Math.round(val / 1e8) / 10;
+      return `${md.toLocaleString('fr-FR', opts)} ${unitMd}`;
     }
-    return `${m.toLocaleString('fr-FR')} millions \u0024`;
+    return `${m.toLocaleString('fr-FR', opts)} ${unitM}`;
   }
 
   _getStyles() {
